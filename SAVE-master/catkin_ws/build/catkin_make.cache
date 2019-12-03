@@ -1,2 +1,0 @@
-airsim
--DCMAKE_BUILD_TYPE=RelWithDebInfo -DCATKIN_DEVEL_PREFIX=C:\Users\james\catkin_ws\devel -DCMAKE_INSTALL_PREFIX=C:\Users\james\catkin_ws\install -G NMake Makefiles

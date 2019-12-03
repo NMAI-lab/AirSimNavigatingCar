@@ -1,0 +1,8 @@
+prefix=C:/Users/james/catkin_ws/install
+
+Name: airsim
+Description: Description of airsim
+Version: 0.0.0
+Cflags: 
+Libs: -LC:/Users/james/catkin_ws/install/lib 
+Requires: 

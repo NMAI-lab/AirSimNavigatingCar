@@ -1,6 +1,8 @@
 ## SAVE
 Simulated Autonomous Vehicle Engine
 
+**roscore is the first thing you should run when using ROS.**
+
 ### ROS Tutorial [http://wiki.ros.org/ROS/Tutorials]: ###
 
 1. Creating or building a ROS workspace:
@@ -35,9 +37,8 @@ cp AirSim/PythonClient/airsim/*.py ../catkin_ws/src/airsim/scripts/airsim
 # copy ROS examples
 cp AirSim/PythonClient/ros/*.py ../catkin_ws/src/airsim/scripts
 ```
-From http://wiki.ros.org/ROS/Tutorials/UnderstandingNodes:
-*roscore is the first thing you should run when using ROS.*
 
+From http://wiki.ros.org/ROS/Tutorials/UnderstandingNodes:
 `rosnode list` - lists all nodes running in ROS
 `rosnode info /<node>` - provide more information on the given node
 

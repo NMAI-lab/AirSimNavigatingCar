@@ -22,6 +22,7 @@ Getting to the log package where the logs are stored:
 Packages are stored in the src of the project.
 
 Creating a new package:
+Ensure that you are in the src directory
 `catkin_create_pkg <package name>`
 
 Build package:

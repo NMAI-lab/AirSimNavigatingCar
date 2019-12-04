@@ -1,9 +1,15 @@
 ## SAVE
-Simulated Autonomous Vehicle Engine
+### Simulated Autonomous Vehicle Engine
 
-**roscore is the first thing you should run when using ROS.**
+All commands below must be run in a ROS console. A ROS console is one which has been setup with the appropriate setup scripts and has the necessary environment variables setup.
+
+It is recommended that developers of the system use Visual Studio Code. It is an open source IDE that contains excellent support Python and ROS APIs.
+
+**`roscore` is the first thing you should run when using ROS.**
 
 ### ROS Tutorial [http://wiki.ros.org/ROS/Tutorials]: ###
+
+#### Frequently used commands:
 
 1. Creating or building a ROS workspace:
 `catkin_make when in project folder...`
@@ -39,6 +45,8 @@ cp AirSim/PythonClient/airsim/*.py ../catkin_ws/src/airsim/scripts/airsim
 cp AirSim/PythonClient/ros/*.py ../catkin_ws/src/airsim/scripts
 ```
 
+#### ROS Nodes:
+
 From http://wiki.ros.org/ROS/Tutorials/UnderstandingNodes:
 `rosnode list` - lists all nodes running in ROS
 `rosnode info /<node>` - provide more information on the given node
@@ -49,7 +57,7 @@ Running a new node:
 View nodes and their connections
 `rosrun rqt_graph rqt_graph`
 
-Topics and msg [http://wiki.ros.org/ROS/Tutorials/UnderstandingTopics]:
+#### Topics and msg [http://wiki.ros.org/ROS/Tutorials/UnderstandingTopics]:
 ```
 rostopic -h - list available commands for rostopic command
 	echo [topic] - Shows the data published for a topic
@@ -59,3 +67,27 @@ rostopic -h - list available commands for rostopic command
 	type [/topic] - returns the message type of the published topic
 			Can also use 'rosmsg show <msg type>'
 ```
+
+#### ROS Services [http://wiki.ros.org/ROS/Tutorials/UnderstandingServicesParams]:
+`rosservice -h` for further details.
+
+##### Process of making Services and their messages [http://wiki.ros.org/ROS/Tutorials/CreatingMsgAndSrv]:
+The link above contains the valid type fields of messages and also here: http://wiki.ros.org/msg
+
+Messages are used with Messages are contained in a `msg` folder in ROS package directories.
+
+The `package.xml` and the `CMakeLists.txt` of the package must be updated to allow messages and services in the package.
+
+`rosmsg` - Command to interact with messages
+`rossrv` - Command to interact with services
+
+Creating Publisher/Subscriber in Rospy: http://wiki.ros.org/ROS/Tutorials/WritingPublisherSubscriber%28python%29
+Creating services in Rospy: http://wiki.ros.org/ROS/Tutorials/WritingServiceClient%28python%29
+
+#### Logging in ROS [http://wiki.ros.org/ROS/Tutorials/UsingRqtconsoleRoslaunch]:
+
+The link above contains an example on how to use the RQT Console and Logger.
+`rosrun rqt_console rqt_console` - Open the console for logging of ROS nodes
+`rosrun rqt_logger_level rqt_logger_level` - Open an application to control verbosity of logging
+
+The link above also contains information on how to create a launch file to start multiple nodes using the `roslaunch` command and a `.launch` file.

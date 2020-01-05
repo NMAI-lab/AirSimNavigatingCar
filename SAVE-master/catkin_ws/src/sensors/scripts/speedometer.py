@@ -5,9 +5,10 @@ import airsim
 
 import rospy
 from sensors.msg import Speed
+from std_msgs.msg import Float64
 
 def speedometer():
-    pub = rospy.Publisher('speed', Speed, queue_size=1)
+    pub = rospy.Publisher('sensor/speed', Float64, queue_size=1)
     rospy.init_node('speedometer', anonymous=True)
     rate = rospy.Rate(10) # 10 Hz
 

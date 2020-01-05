@@ -68,6 +68,12 @@ rostopic -h - list available commands for rostopic command
 			Can also use 'rosmsg show <msg type>'
 ```
 
+Publish to a topic from the command line for testing purposes:
+`rostopic pub [topic] [msg_type] [args]`
+Ex:
+`rostopic pub -1 /turtle1/cmd_vel geometry_msgs/Twist -- '[2.0, 0.0, 0.0]' '[0.0, 0.0, 1.8]'`
+http://wiki.ros.org/ROS/Tutorials/UnderstandingTopics
+
 #### ROS Services [http://wiki.ros.org/ROS/Tutorials/UnderstandingServicesParams]:
 `rosservice -h` for further details.
 

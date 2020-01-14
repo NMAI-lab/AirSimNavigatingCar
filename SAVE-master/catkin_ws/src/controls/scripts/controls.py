@@ -25,12 +25,19 @@ def throttle(data):
     car_controls.throttle = val
     client.setCarControls(car_controls)
 
+def steering(data):
+    val = data.data
+    rospy.loginfo('steering: {}'.format(val))
+    car_controls.steering = val
+    client.setCarControls(car_controls)
+
 def controlListener():
     rospy.init_node('control', anonymous=True)
 
     # Subscribe to the different types of controls
     rospy.Subscriber('control/brake', Float64, brake)
     rospy.Subscriber('control/throttle', Float64, throttle)
+    rospy.Subscriber('control/steering', Float64, steering)
 
     # Repeat the listener
     rospy.spin()

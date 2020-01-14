@@ -93,7 +93,7 @@ class ACC:
 
 
 # test ACC
-acc = ACC(Distance.MEDIUM, 15)
+acc = ACC(Distance.MEDIUM, 8)
 
 while True:
     acc.control_speed()

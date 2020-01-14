@@ -97,3 +97,6 @@ The link above contains an example on how to use the RQT Console and Logger.
 `rosrun rqt_logger_level rqt_logger_level` - Open an application to control verbosity of logging
 
 The link above also contains information on how to create a launch file to start multiple nodes using the `roslaunch` command and a `.launch` file.
+
+### Troubleshooting
+If you are unable to find the SAVE packages in the windows workspace, please ensure that `ROS_PACKAGE_PATH` in the devel/setup.bat is setup correctly and there are no spaces in the path. Spaces may create issues for users.

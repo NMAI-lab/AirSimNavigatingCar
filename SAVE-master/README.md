@@ -1,6 +1,15 @@
 ## SAVE
 ### Simulated Autonomous Vehicle Engine
 
+### Installation
+
+How to install ROS on Windows:
+http://wiki.ros.org/Installation/Windows
+
+How to use AirSim with ROS:
+https://microsoft.github.io/AirSim/docs/ros/
+
+
 All commands below must be run in a ROS console. A ROS console is one which has been setup with the appropriate setup scripts and has the necessary environment variables setup.
 
 It is recommended that developers of the system use Visual Studio Code. It is an open source IDE that contains excellent support Python and ROS APIs.

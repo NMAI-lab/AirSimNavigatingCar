@@ -9,6 +9,9 @@ http://wiki.ros.org/Installation/Windows
 How to use AirSim with ROS:
 https://microsoft.github.io/AirSim/docs/ros/
 
+The `settings.json` in this folder contains camera settings that are needed to use the Lane Keep Assist. The resolution and other camera parameters should not be changed unless the LKA ROS node is changed as well.
+
+#### Note
 
 All commands below must be run in a ROS console. A ROS console is one which has been setup with the appropriate setup scripts and has the necessary environment variables setup.
 

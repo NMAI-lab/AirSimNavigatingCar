@@ -1,0 +1,7 @@
+<launch>
+  <node name="raw_image" pkg="sensors" type="car_image_raw.py" />
+  <node name="speed" pkg="sensors" type="speedometer.py" />
+  <node name="controls" pkg="controls" type="controls.py" />
+  <node name="lka" pkg="lka" type="lane_detect.py" />
+  <node name="acc" pkg="acc" type="acc.py" />
+</launch>

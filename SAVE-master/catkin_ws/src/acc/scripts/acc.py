@@ -3,6 +3,8 @@
 import rospy
 from std_msgs.msg import Float64
 
+import time
+
 class Distance:
     LOW = 1
     MEDIUM = 2
@@ -11,6 +13,8 @@ class Distance:
 
 class ACC:
     """
+    Automated cruise control class
+    Controls the speed of the car 
     """
 
     def __init__(self, distance, speed):
@@ -24,6 +28,15 @@ class ACC:
         self.brake = 0
         self.throttlePub = rospy.Publisher('control/throttle', Float64, queue_size=5)
         self.brakePub = rospy.Publisher('control/brake', Float64, queue_size=5)
+
+        self.integral = 0
+        self.derivative = 0
+        self.last_time = time.time()
+        self.last_error = 0
+        # TODO fine tune the pid controller
+        self.Kp = 1.2
+        self.Ki = 0.003
+        self.Kd = 1.0
         return
 
     """
@@ -33,22 +46,36 @@ class ACC:
         speed = speed_data.data
         rospy.loginfo('Speed: {}'.format(speed))
 
-        if speed < (self.set_speed - 5):
-            self.throttle = 1.0
-            self.brake = 0
-        elif speed < self.set_speed:
-            self.throttle = 0.5
-            self.brake = 0
-        elif speed > (self.set_speed + 5):
-            self.throttle = 0.0
-            self.brake = 1
+        dt = time.time() - self.last_time
+
+        error = self.set_speed - speed
+
+        self.integral = self.integral + (error * dt)
+
+        derivative = (error - self.last_error)/dt
+
+        output = (self.Kp * error) + (self.Ki * self.integral) + (self.Kd * self.derivative)
+
+        rospy.loginfo('Output: {}'.format(output))
+
+        self.last_error = error
+        
+        # TODO: what to do with the output 
+        if output > 0:
+            self.throttle = output
+            self.brake = 0.0
+        elif output < 0:
+            self.throttle = 0.0 
+            self.brake = -1 * output 
         else:
             self.throttle = 0.0
-            self.brake = 0
+            self.brake = 0.0
+
+        rospy.loginfo('Brake: {} Throttle: {}'.format(self.brake, self.throttle))
 
         self.throttlePub.publish(self.throttle)
         self.brakePub.publish(self.brake)
-
+        
     def control_speed(self):
         rospy.Subscriber('sensor/speed', Float64, self.update_speed)
         rospy.spin()

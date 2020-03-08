@@ -67,12 +67,13 @@ def lane_detect(cv_img, size):
     segment = do_segment(canny, size)
     hough = cv.HoughLinesP(segment, 1, np.pi/180, 100, np.array([]), minLineLength = 40, maxLineGap = 10)
     
-    for l in hough:
-        line = l[0]
-        cv.line(cv_img, (line[0],line[1]), (line[2],line[3]), (0,0,255), 2)
+    # Debug to show Hough Transform
+    # for l in hough:
+    #     line = l[0]
+    #     cv.line(cv_img, (line[0],line[1]), (line[2],line[3]), (0,0,255), 2)
 
-    cv.imshow("hough", cv_img)
-    cv.waitKey(1)
+    # cv.imshow("hough", cv_img)
+    # cv.waitKey(1)
     
     if len(hough) > 0:
         # Averages multiple detected lines from hough into one line for left border of lane and one line for right border of lane

@@ -26,8 +26,8 @@ class ACC:
         self.set_speed = speed
         self.throttle = 0
         self.brake = 0
-        self.throttlePub = rospy.Publisher('control/throttle', Float64, queue_size=5)
-        self.brakePub = rospy.Publisher('control/brake', Float64, queue_size=5)
+        self.throttlePub = rospy.Publisher('acc/throttle', Float64, queue_size=1)
+        self.brakePub = rospy.Publisher('acc/brake', Float64, queue_size=1)
 
         self.integral = 0
         self.derivative = 0
@@ -121,6 +121,4 @@ class ACC:
 
 # test ACC
 acc = ACC(Distance.MEDIUM, 8)
-
-while True:
-    acc.control_speed()
+acc.control_speed()

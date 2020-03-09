@@ -58,7 +58,7 @@ def processImage(img):
 def listener():
     global steeringPub
     rospy.init_node('lka', anonymous=True)
-    steeringPub = rospy.Publisher('control/steering', Float64, queue_size=1)
+    steeringPub = rospy.Publisher('lka/steering', Float64, queue_size=1)
     rospy.Subscriber('airsim/image_raw', Image, processImage)
     rospy.spin()
 

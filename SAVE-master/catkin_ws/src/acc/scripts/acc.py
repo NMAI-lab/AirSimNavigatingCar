@@ -5,6 +5,8 @@ from std_msgs.msg import Float64
 
 import time
 
+import matplotlib.pyplot as plt
+
 class Distance:
     LOW = 1
     MEDIUM = 2
@@ -33,10 +35,20 @@ class ACC:
         self.derivative = 0
         self.last_time = time.time()
         self.last_error = 0
+        
         # TODO fine tune the pid controller
-        self.Kp = 1.2
-        self.Ki = 0.003
+        self.Kp = 1.7
+        self.Ki = 0.001
         self.Kd = 1.0
+
+        # for tunning pid
+        """
+        self.plot_xaxis=[]
+        self.count = 0
+        self.plot_speed = []
+        self.plot_output = []
+        self.plot_set_speed = []
+        """
         return
 
     """
@@ -52,15 +64,27 @@ class ACC:
 
         self.integral = self.integral + (error * dt)
 
-        derivative = (error - self.last_error)/dt
+        self.derivative = (error - self.last_error)/dt
 
         output = (self.Kp * error) + (self.Ki * self.integral) + (self.Kd * self.derivative)
 
         rospy.loginfo('Output: {}'.format(output))
 
         self.last_error = error
+
+        # add information to the graph for tuning pid
+        """
+        self.plot_xaxis.append(self.count)
+        self.count = self.count + 1
+        self.plot_output.append(output)
+        self.plot_speed.append(speed)
+        self.plot_set_speed.append(self.set_speed)
         
-        # TODO: what to do with the output 
+
+        if self.count > 200 :
+            self.plot_graph()
+        """
+
         if output > 0:
             self.throttle = output
             self.brake = 0.0
@@ -103,6 +127,20 @@ class ACC:
 
         print("Distance: \n" + str(distance))
         return
+
+    """
+    Function for plotting speed, output and set_speed
+    Used for tuning the pid 
+    """
+    """
+    def plot_graph(self):
+        plt.plot(self.plot_xaxis, self.plot_speed, 'r' )
+        plt.plot(self.plot_xaxis, self.plot_output, 'g')
+        plt.plot(self.plot_xaxis, self.plot_set_speed, 'b')
+        plt.show()
+
+        return 
+    """
 
     # """
     # Updates the set_speed of the car

@@ -55,7 +55,7 @@ class DetectPedestrians():
             cv.rectangle(image, (xA, yA), (xB, yB), (0, 255, 0), 2)
         # display image
         cv.imshow("After NMS", image)
-        cv.waitKey(0)
+        cv.waitKey(1)
         # what information to return for ros?
 
 ## ==============================================================================================================================================================================

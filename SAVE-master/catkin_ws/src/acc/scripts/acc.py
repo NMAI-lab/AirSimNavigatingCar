@@ -105,7 +105,7 @@ class ACC:
         # Simple conditional for now. Needs to be updated: TODO
         if steering > 1:
             self.set_speed = 5.0 # 5 m/s -> take turn slow
-        elif steering > 0.4:
+        elif steering > 0.7:
             self.set_speed = 8.0
         elif steering > 0.2:
             self.set_speed = self.max_speed - 5.0

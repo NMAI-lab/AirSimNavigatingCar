@@ -28,8 +28,8 @@ class ACC:
         self.set_speed = speed
         self.throttle = 0
         self.brake = 0
-        self.throttlePub = rospy.Publisher('control/throttle', Float64, queue_size=5)
-        self.brakePub = rospy.Publisher('control/brake', Float64, queue_size=5)
+        self.throttlePub = rospy.Publisher('acc/throttle', Float64, queue_size=1)
+        self.brakePub = rospy.Publisher('acc/brake', Float64, queue_size=1)
 
         self.integral = 0
         self.derivative = 0
@@ -99,9 +99,22 @@ class ACC:
 
         self.throttlePub.publish(self.throttle)
         self.brakePub.publish(self.brake)
+
+    def adjust_for_turn(self, steering_data):
+        steering = abs(steering_data.data)
+        # Simple conditional for now. Needs to be updated: TODO
+        if steering > 1:
+            self.set_speed = 5.0 # 5 m/s -> take turn slow
+        elif steering > 0.7:
+            self.set_speed = 8.0
+        elif steering > 0.2:
+            self.set_speed = self.max_speed - 5.0
+        else:
+            self.set_speed = self.max_speed
         
     def control_speed(self):
         rospy.Subscriber('sensor/speed', Float64, self.update_speed)
+        rospy.Subscriber('control/steering', Float64, self.adjust_for_turn)
         rospy.spin()
 
     """
@@ -159,6 +172,4 @@ class ACC:
 
 # test ACC
 acc = ACC(Distance.MEDIUM, 8)
-
-while True:
-    acc.control_speed()
+acc.control_speed()

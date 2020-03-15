@@ -4,4 +4,5 @@
   <node name="controls" pkg="controls" type="controls.py" />
   <node name="lka" pkg="lka" type="lane_keep.py" />
   <node name="acc" pkg="acc" type="acc.py" />
+  <node name="agent" pkg="agent" type="reactive_agent.py"/>
 </launch>

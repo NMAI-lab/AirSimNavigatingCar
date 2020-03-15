@@ -20,3 +20,8 @@ class Action:
         self.sem.release()
         return action
 
+    def clear(self):
+        self.sem.acquire()
+        self.actions = {}
+        self.sem.release()
+

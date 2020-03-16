@@ -16,6 +16,7 @@ def start_agent():
     # Create Layers
     lka_layer = Layer(10, 'lka', [('steering', Float64)])
     acc_layer = Layer(5, 'acc', [('throttle', Float64),('brake', Float64)])
+    object_layer = Layer(10, 'object_avoid', [('brake', Float64)])
 
     # Create Tasks
     highway_driving = Task(
@@ -25,7 +26,8 @@ def start_agent():
             'brake'    : brakePub
         },
         [
-            acc_layer, # highest priority
+            object_layer, # highest priority
+            acc_layer, 
             lka_layer
         ]
     )

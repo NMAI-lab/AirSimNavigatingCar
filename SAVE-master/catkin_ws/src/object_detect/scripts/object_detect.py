@@ -8,16 +8,22 @@ from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
 
 from imutils.object_detection import non_max_suppression
-import imutils   
+import imutils 
+
+from object_avoid import AvoidPedestrians
+
+from lka.msg import Lane
+from lka.msg import Lanes
 
 """
 Class for pedestrian detection 
 """      
 class DetectPedestrians():
 
-    def __init__(self):
+    def __init__(self, avoid_class):
         self.hog = cv.HOGDescriptor()
         self.hog.setSVMDetector(cv.HOGDescriptor_getDefaultPeopleDetector())
+        self.avoid = avoid_class
         
     def getImage(self, img):
         bridge  = CvBridge()
@@ -56,16 +62,19 @@ class DetectPedestrians():
         # display image
         cv.imshow("After NMS", image)
         cv.waitKey(1)
-        # what information to return for ros?
+
+        self.avoid.objects_in_road(pick)
 
 ## ==============================================================================================================================================================================
 
 def listener():
-    global detect_ped 
+    #global detect_ped 
+    #global avoid_ped 
     rospy.init_node('object_detect', anonymous=True)
-    detect_ped = DetectPedestrians()
-    # where to publish information?
+    avoid_ped = AvoidPedestrians()
+    detect_ped = DetectPedestrians(avoid_ped)
     rospy.Subscriber('airsim/image_raw', Image, detect_ped.detectAndDisplay)
+    rospy.Subscriber('lka/lanes', Lanes, avoid_ped.get_lines)
     rospy.spin()
 
 if __name__ == "__main__":

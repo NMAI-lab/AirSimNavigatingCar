@@ -75,9 +75,10 @@ def lane_detect(cv_img, size):
     # cv.imshow("hough", cv_img)
     # cv.waitKey(1)
     
-    if (not (hough is None)) & (len(hough) > 0):
-        # Averages multiple detected lines from hough into one line for left border of lane and one line for right border of lane
-        ret = calculate_lines(cv_img, hough)
+    if not (hough is None):
+        if len(hough) > 0:
+            # Averages multiple detected lines from hough into one line for left border of lane and one line for right border of lane
+            ret = calculate_lines(cv_img, hough)
     else:
         ret = None
 

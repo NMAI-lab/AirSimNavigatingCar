@@ -23,10 +23,13 @@ class AvoidPedestrians():
         self.clearPub = rospy.Publisher('object_detect/clear', Empty, queue_size=1)
 
     def objects_in_road(self, rectangles):
-        rospy.loginfo('left lane info: {}'.format(self.left_line_info))
         self.sem.acquire()
-        (left_exists, left_slope, left_yint) = self.left_line_info
-        (right_exists, right_slope, right_yint) = self.right_line_info
+        left_exists = self.left_line_info.exists
+        left_slope = self.left_line_info.slope
+        left_yint = self.left_line_info.y_cept
+        right_exists = self.right_line_info.exists
+        right_slope = self.right_line_info.slope
+        right_yint = self.right_line_info.y_cept
         self.sem.release()
 
         left_in_lane = False

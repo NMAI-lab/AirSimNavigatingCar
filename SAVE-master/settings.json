@@ -12,11 +12,11 @@
           "MotionBlurAmount": 0
         }
     ]
-  }
+  },
   "DefaultSensors": {
-  "Distance": {
-         "SensorType": 5,
-         "Enabled" : true
+    "Distance": {
+      "SensorType": 5,
+      "Enabled" : true
     }
   }
 }

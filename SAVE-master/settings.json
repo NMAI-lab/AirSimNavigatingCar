@@ -13,4 +13,10 @@
         }
     ]
   }
+  "DefaultSensors": {
+  "Distance": {
+         "SensorType": 5,
+         "Enabled" : true
+    }
+  }
 }

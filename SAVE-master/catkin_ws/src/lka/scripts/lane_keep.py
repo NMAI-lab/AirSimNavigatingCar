@@ -8,20 +8,30 @@ from std_msgs.msg import Float64
 from sensor_msgs.msg import Image
 from lka.msg import Lane
 from lka.msg import Lanes
+from lka.msg import Margins
 from cv_bridge import CvBridge, CvBridgeError
 
 import lane_detect
 
 class LaneKeepAssist:
 
-    def __init__(self):
+    def __init__(self, metrics):
         self.steeringPub = rospy.Publisher('lka/steering', Float64, queue_size=1)
         self.lanePub = rospy.Publisher('lka/lanes', Lanes, queue_size=1)
+        self.marginsPub = rospy.Publisher('lka/margins', Margins, queue_size=1)
+
         self.steering = 0.0
+        self.metrics = metrics
 
     def margin_correction(self, left_line, right_line, height, width):
         left_margin = (width/2) - ((height - left_line[1])/left_line[0])
         right_margin = ((height - right_line[1])/right_line[0]) - (width/2)
+        # If metrics are enabled, then send margins to metrics node for analysis
+        if self.metrics:
+            margins = Margins()
+            margins.margin_diff = right_margin - left_margin
+            self.marginsPub.publish(margins)
+
         return (right_margin - left_margin)/(width/2)
 
     def construct_lane_msg(self, lane, values):
@@ -83,7 +93,7 @@ class LaneKeepAssist:
 
 def listener():
     rospy.init_node('lka', anonymous=True)
-    lka = LaneKeepAssist()
+    lka = LaneKeepAssist(True)
     rospy.Subscriber('airsim/image_raw', Image, lka.processImage)
     rospy.spin()
 

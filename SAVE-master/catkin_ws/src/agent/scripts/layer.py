@@ -24,6 +24,7 @@ class Layer:
     def getAction(self):
         return self.action.get()
 
-    def clearAction(self):
+    def clearAction(self, data):
+        rospy.loginfo('Attempting clear')
         self.action.clear()
     

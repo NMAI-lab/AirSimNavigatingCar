@@ -1,3 +1,3 @@
 bool exists
-int32 slope
-int32 y_cept
+float64 slope
+float64 y_cept

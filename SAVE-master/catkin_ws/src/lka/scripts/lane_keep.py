@@ -36,6 +36,7 @@ class LaneKeepAssist:
 
     def construct_lane_msg(self, lane, values):
         lane.exists = True
+        rospy.loginfo("lane values:{}".format(values))
         lane.slope = values[0]
         lane.y_cept = values[1]
 

@@ -74,7 +74,7 @@ def listener():
     avoid_ped = AvoidPedestrians()
     detect_ped = DetectPedestrians(avoid_ped)
     rospy.Subscriber('airsim/image_raw', Image, detect_ped.detectAndDisplay)
-    rospy.Subscriber('lka/lanes', Lanes, avoid_ped.get_lines)
+    rospy.Subscriber('lka/lanes', Lanes, detect_ped.avoid.get_lines)
     rospy.spin()
 
 if __name__ == "__main__":

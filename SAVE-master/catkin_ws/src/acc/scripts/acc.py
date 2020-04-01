@@ -4,6 +4,7 @@ import rospy
 from std_msgs.msg import Float64
 
 import time
+import math
 
 import matplotlib.pyplot as plt
 
@@ -52,6 +53,13 @@ class ACC:
         return
 
     """
+    Bounds the input between 0 and 1 using the function {1-e^(-x)}
+    """
+    def _bound(self, inp):
+        out = 1 - math.exp(-1 * inp)
+        return out
+
+    """
     Controls the speed of the car and keeps it around the control speed.    
     """
     def update_speed(self, speed_data):
@@ -86,11 +94,11 @@ class ACC:
         """
 
         if output > 0:
-            self.throttle = output
+            self.throttle = self._bound(output)
             self.brake = 0.0
         elif output < 0:
             self.throttle = 0.0 
-            self.brake = -1 * output 
+            self.brake = self._bound(-1 * output)
         else:
             self.throttle = 0.0
             self.brake = 0.0

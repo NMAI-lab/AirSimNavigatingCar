@@ -75,20 +75,18 @@ class AvoidPedestrians():
         in_lane = False
         on_road = False
 
-        # for rectangles found in object detect determine if they're between the lines and therefore on the road 
-        for rect in rectangles:
-            # rectangles have the following parameters
-            # xAyA---------
-            # |           |
-            # |           |
-            # |           |
-            # ---------xByB
-            for (xA, yA, xB, yB) in rect:
-                # bottom right corner inside left line -> pedestrian is partly in the road 
-                if(yB > (slope*xB + yint)):
-                    # pedestrian is in lane
-                    # keep searching to make sure a pedstrian is not in the road
-                    in_lane = True
+        # rectangles have the following parameters
+        # xAyA---------
+        # |           |
+        # |           |
+        # |           |
+        # ---------xByB
+        for (xA, yA, xB, yB) in rectangles:
+            # bottom right corner inside left line -> pedestrian is partly in the road 
+            if(yB > (slope*xB + yint)):
+                # pedestrian is in lane
+                # keep searching to make sure a pedstrian is not in the road
+                in_lane = True
                 # top left corner inside left lane -> pedestrian is completly on the road 
                 if(yA > (slope*xA + yint)):
                     on_road = True
@@ -100,24 +98,23 @@ class AvoidPedestrians():
         on_road = False
 
         # for rectangles found in object detect determine if they're between the lines and therefore on the road 
-        for rect in rectangles:
-            # rectangles have the following parameters
-            # xAyA---------
-            # |           |
-            # |           |
-            # |           |
-            # ---------xByB
-            for (xA, yA, xB, yB) in rect:
-                # bottom left corner inside right line -> pedestrian is partly in the road 
-                if(yB > (slope*xA + yint)):
-                    # pedestrian is in lane
-                    # keep searching to make sure a pedstrian is not in the road
-                    in_lane = True
+        # rectangles have the following parameters
+        # xAyA---------
+        # |           |
+        # |           |
+        # |           |
+        # ---------xByB
+        for (xA, yA, xB, yB) in rectangles:
+            # bottom left corner inside right line -> pedestrian is partly in the road
+            if(yB > (slope*xA + yint)):
+                # pedestrian is in lane
+                # keep searching to make sure a pedstrian is not in the road
+                in_lane = True
 
-                # top right corner inside left lane -> pedestrian is completly on the road 
-                if(yA > (slope*xB + yint)):
-                    on_road = True
-                    break
+            # top right corner inside left lane -> pedestrian is completly on the road
+            if(yA > (slope*xB + yint)):
+                on_road = True
+                break
 
         return (in_lane, on_road)
 

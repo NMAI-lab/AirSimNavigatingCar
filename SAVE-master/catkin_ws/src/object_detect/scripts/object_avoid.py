@@ -19,8 +19,8 @@ class AvoidPedestrians():
         # Used to ensure getting line info is an atomic instructions
         # due to the time required for object detection 
         self.sem = threading.Semaphore() 
-        self.brakePub = rospy.Publisher('object_detect/brake', Float64, queue_size=1)
-        self.clearPub = rospy.Publisher('object_detect/clear', Empty, queue_size=1)
+        self.brakePub = rospy.Publisher('object_avoid/brake', Float64, queue_size=1)
+        self.clearPub = rospy.Publisher('object_avoid/clear', Empty, queue_size=1)
 
     def objects_in_road(self, rectangles):
         self.sem.acquire()

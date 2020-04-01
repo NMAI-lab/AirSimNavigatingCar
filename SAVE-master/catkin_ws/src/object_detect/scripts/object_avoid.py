@@ -19,6 +19,7 @@ class AvoidPedestrians():
         # Used to ensure getting line info is an atomic instructions
         # due to the time required for object detection 
         self.sem = threading.Semaphore() 
+        self.throttlePub = rospy.Publisher('object_avoid/throttle', Float64, queue_size=1)
         self.brakePub = rospy.Publisher('object_avoid/brake', Float64, queue_size=1)
         self.clearPub = rospy.Publisher('object_avoid/clear', Empty, queue_size=1)
 
@@ -56,14 +57,17 @@ class AvoidPedestrians():
         if (right_in_road and left_in_road):
             # stop car
             self.brakePub.publish(1.0)
+            self.throttlePub.publish(0.0)
             rospy.loginfo("Found person in road -> stopping")
         elif (left_in_lane):
             # slow down
             self.brakePub.publish(0.5)
+            self.throttlePub.publish(0.0)
             rospy.loginfo("Found person overlapping left lane -> slowing down")
         elif (right_in_lane):
             # slow down
             self.brakePub.publish(0.5)
+            self.throttlePub.publish(0.0)
             rospy.loginfo("Found person overlapping right lane -> slowing down")
         else:
             self.clearPub.publish()

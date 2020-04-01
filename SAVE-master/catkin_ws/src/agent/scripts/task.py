@@ -1,19 +1,18 @@
 #!/usr/bin/env python
 from layer import Layer
 from action import Action
-
-import time
+from controls.msg import Control
 
 import rospy
 
 class Task:
 
-    def __init__(self, controls_dict, layers = []):
+    def __init__(self, controls_pub, layers = []):
         self.layers = layers # Ordered series of layers, first layer in list is fundamental
         self.running = False
         self.action = {}
         self.prev_action = {}
-        self.controls = controls_dict # Each action type key maps to a publisher to control vehicle 
+        self.controls = controls_pub # Each action type key maps to a publisher to control vehicle 
 
     def add_layer(self, layer):
         if isinstance(layer, Layer):
@@ -28,6 +27,7 @@ class Task:
                 freq = layer.frequency
             
         if freq > 0:
+            r = rospy.Rate(freq)
             self.running = True
             # Start running the task
             while self.running:
@@ -40,11 +40,17 @@ class Task:
 
                 # if self.action != self.prev_action:
                 # If action differs from previous, then publish the actions to their respective controls
+                control = Control()
                 for action_type in self.action:
-                    rospy.loginfo(action_type)
-                    rospy.loginfo(self.action[action_type])
-                    rospy.loginfo('end...')
-                    self.controls[action_type].publish(self.action[action_type])
+                    if action_type == "throttle":
+                        control.throttle = self.action[action_type]
+                    elif action_type == "brake":
+                        control.brake = self.action[action_type]
+                    elif action_type == "steering":
+                        control.steering = self.action[action_type]
+                    
+                
+                self.controls.publish(control)
                 self.prev_action = self.action
                 
-                time.sleep(1/freq)
+                r.sleep()

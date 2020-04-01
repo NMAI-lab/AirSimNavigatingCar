@@ -83,6 +83,7 @@ class ACC:
         rospy.loginfo('Output: {}'.format(output))
 
         self.last_error = error
+        self.last_time  = time.time()
 
         # add information to the graph for tuning pid
         """

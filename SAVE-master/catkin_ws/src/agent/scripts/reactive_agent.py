@@ -1,5 +1,6 @@
 from task import Task
 from layer import Layer
+from controls.msg import Control
 
 import rospy
 
@@ -8,10 +9,8 @@ from std_msgs.msg import Float64
 
 def start_agent():
     rospy.init_node('agent', anonymous=True)
-    # Create publishers to control
-    steeringPub = rospy.Publisher('control/steering', Float64, queue_size=1) # Queue size one due to hard real-time deadline
-    throttlePub = rospy.Publisher('control/throttle', Float64, queue_size=1)
-    brakePub    = rospy.Publisher('control/brake', Float64, queue_size=1)
+    # Create publisher to control
+    controlPub = rospy.Publisher('control/control', Control, queue_size=1) # Queue size one due to hard real-time deadline
 
     # Create Layers
     lka_layer = Layer(10, 'lka', [('steering', Float64)])
@@ -20,11 +19,7 @@ def start_agent():
 
     # Create Tasks
     highway_driving = Task(
-        {
-            'steering' : steeringPub,
-            'throttle' : throttlePub,
-            'brake'    : brakePub
-        },
+        controlPub,
         [
             object_layer, # highest priority
             acc_layer, 

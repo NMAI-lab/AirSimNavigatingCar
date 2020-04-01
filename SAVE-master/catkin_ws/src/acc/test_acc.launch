@@ -1,5 +1,5 @@
 <launch>
   <node name="speed" pkg="sensors" type="speedometer.py" />
-  <node name="controls" pkg="controls" type="controls.py" />
+  <node name="controls" pkg="controls" type="handle_controls.py" />
   <node name="acc" pkg="acc" type="acc.py" />
 </launch>

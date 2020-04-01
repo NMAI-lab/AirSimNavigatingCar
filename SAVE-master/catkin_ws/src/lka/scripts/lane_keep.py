@@ -23,9 +23,7 @@ class LaneKeepAssist:
         self.steering = 0.0
         self.metrics = metrics
 
-    def margin_correction(self, left_line, right_line, height, width):
-        left_margin = (width/2) - ((height - left_line[1])/left_line[0])
-        right_margin = ((height - right_line[1])/right_line[0]) - (width/2)
+    def margin_correction(self, left_margin, right_margin, height, width):
         # If metrics are enabled, then send margins to metrics node for analysis
         if self.metrics:
             margins = Margins()
@@ -46,6 +44,10 @@ class LaneKeepAssist:
         width  = img.width
         margin_steer = 0.0
         x_intersection = None
+        # Weights
+        x_to_margin = 0.6
+        current_to_prev = 0.9
+        
 
         if img != None:
             try:
@@ -59,27 +61,44 @@ class LaneKeepAssist:
                     lanes_msg = Lanes() # Left lane is first element and right lane is second.
 
                     if left_line != [] and right_line != []: # There are both left and right lane lines
+                        left_margin  = (width/2) - ((height - left_line[1])/left_line[0])
+                        right_margin = ((height - right_line[1])/right_line[0]) - (width/2)
+                        
                         x_intersection = (left_line[1] - right_line[1])/(right_line[0] - left_line[0])
-                        margin_steer = self.margin_correction(left_line, right_line, height, width)
+                        margin_steer = self.margin_correction(left_margin, right_margin, height, width)
+
                         self.construct_lane_msg(lanes_msg.lane_lines[0], left_line)
                         self.construct_lane_msg(lanes_msg.lane_lines[1], right_line)
+
                     elif left_line == [] and right_line != []: # Probably too close to the right side of the lane
+                        right_margin = ((height - right_line[1])/right_line[0]) - (width/2)
+                        left_margin  = (width) - right_margin
+
                         x_intersection = ((height/2) - right_line[1])/(right_line[0] - 0)
+                        margin_steer = self.margin_correction(left_margin, right_margin, height, width)
+
                         self.construct_lane_msg(lanes_msg.lane_lines[1], right_line)
+
                     elif right_line == [] and left_line != []: # Probably too close to the left side of the lane
+                        left_margin  = (width/2) - ((height - left_line[1])/left_line[0])
+                        right_margin = (width) - left_margin
+
                         x_intersection = (left_line[1] - (height/2))/(0 - left_line[0])
+                        margin_steer = self.margin_correction(left_margin, right_margin, height, width)
+
                         self.construct_lane_msg(lanes_msg.lane_lines[0], left_line)
 
+                    # Calculate x-intersection and steering correction to center x-intersection steering correction
                     if x_intersection != None:
                         x_steering = (x_intersection / (width / 2)) - 1
                     else:
                         x_steering = self.steering
 
+                    # Use margin steering correction or just use x-intersection or previous steering value
                     if (margin_steer != 0):
-                        rospy.loginfo('margin correction: {}'.format(margin_steer))
-                        self.steering = (0.6 * x_steering) + (0.4 * margin_steer)
-                    else:
-                        self.steering = x_steering
+                        x_steering = (x_to_margin * x_steering) + ((1-x_to_margin) * margin_steer)
+                    
+                    self.steering = (current_to_prev * x_steering) + ((1-current_to_prev) * self.steering)
 
                     rospy.loginfo(self.steering)
 

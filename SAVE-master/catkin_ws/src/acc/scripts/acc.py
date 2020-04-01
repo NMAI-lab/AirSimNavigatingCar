@@ -66,6 +66,10 @@ class ACC:
         speed = speed_data.data
         rospy.loginfo('Speed: {}'.format(speed))
 
+        # If we are stuck, then don't continue to increase integral variable
+        if speed == 0:
+            self.integral = 0
+
         dt = time.time() - self.last_time
 
         error = self.set_speed - speed
@@ -113,7 +117,7 @@ class ACC:
         # Simple conditional for now. Needs to be updated: TODO
         if steering > 1:
             self.set_speed = 5.0 # 5 m/s -> take turn slow
-        elif steering > 0.7:
+        elif steering > 0.5:
             self.set_speed = 8.0
         elif steering > 0.2:
             self.set_speed = self.max_speed - 5.0

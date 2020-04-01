@@ -38,20 +38,18 @@ class AvoidPedestrians():
         right_in_lane = False 
         right_in_road = False
 
-        if (not left_exists):
+        if (left_exists):
             left_in_lane, left_in_road = self.in_left_lane(left_slope, left_yint, rectangles)
             rospy.loginfo("Left lane exists")
         else: 
-            # because we can't see this side of the road assume pedestrian is in the road 
-            left_in_road = True
+            left_in_road = False
             rospy.loginfo("Left lane does not exist")
 
-        if (not right_exists):
+        if (right_exists):
             right_in_lane, left_in_road = self.in_right_lane(right_slope, right_yint, rectangles)
             rospy.loginfo("Right lane exists")
         else:
-            # because we can't see this side of the road assume pedestrian is in the road 
-            right_in_road = True
+            right_in_road = False
             rospy.loginfo("Right lane does not exist")
 
         if (right_in_road and left_in_road):

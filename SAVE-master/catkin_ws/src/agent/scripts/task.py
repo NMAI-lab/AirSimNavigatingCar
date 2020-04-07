@@ -19,27 +19,27 @@ class Task:
             self.layers.append(layer)
 
     def run(self):
+        # Obtain the highest frequency polling layer to determine loop period
         freq = 0
         for layer in self.layers:
             if freq == 0:
                 freq = layer.frequency
             elif (layer.frequency > freq):
                 freq = layer.frequency
-            
+        
+        # If there is a valid polling rate
         if freq > 0:
             r = rospy.Rate(freq)
             self.running = True
             # Start running the task
             while self.running:
-                # Update the task actions with each layer
+                # Update the task action with each layers preferred action
                 for i in range(len(self.layers) - 1, -1, -1):
-                    # rospy.loginfo(i)
                     self.action.update(self.layers[i].getAction())
 
                 rospy.loginfo(self.action)
 
-                # if self.action != self.prev_action:
-                # If action differs from previous, then publish the actions to their respective controls
+                # Create a control message and populate it with the action
                 control = Control()
                 for action_type in self.action:
                     if action_type == "throttle":
@@ -49,8 +49,9 @@ class Task:
                     elif action_type == "steering":
                         control.steering = self.action[action_type]
                     
-                
+                # Publish the control message to the vehicle's control process
                 self.controls.publish(control)
                 self.prev_action = self.action
                 
+                # Wait for next cycle to update the vehicle's action
                 r.sleep()

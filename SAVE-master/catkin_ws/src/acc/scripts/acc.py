@@ -120,14 +120,14 @@ class ACC:
             self.set_speed = 5.0 # 5 m/s -> take turn slow
         elif steering > 0.5:
             self.set_speed = 8.0
-        elif steering > 0.2:
+        elif steering > 0.3:
             self.set_speed = self.max_speed - 5.0
         else:
             self.set_speed = self.max_speed
         
     def control_speed(self):
         rospy.Subscriber('sensor/speed', Float64, self.update_speed)
-        rospy.Subscriber('control/steering', Float64, self.adjust_for_turn)
+        rospy.Subscriber('lka/steering', Float64, self.adjust_for_turn)
         rospy.spin()
 
     """

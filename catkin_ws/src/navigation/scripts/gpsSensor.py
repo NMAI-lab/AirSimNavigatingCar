@@ -6,11 +6,15 @@
 #import setup_path 
 import airsim
 
-#import numpy as np
-#import os
-#import tempfile
-#import pprint
-#import cv2
+from Calculations import getDistance, getTrueBearing
+
+#Location,	Name,					Latitude,			Longitude,
+#A,			Eary Approach, 			47.641482370883864,	-122.14036499180827,
+#B,			Approach intersection,	47.64254900577103,	-122.14036358759651,
+#C,			Turn right,				47.64261369134199,	-122.14022863966349,
+#D,			Right, End of Street,	47.642632115856806,	-122.13892325834075,
+#E,			Turn Left,				47.642635167315994,	-122.14049925386175,
+#F, 		Left, end of street,	47.642634517703016,	-122.14203898419318,
 
 import rospy
 from navigation.msg import GPS
@@ -21,6 +25,8 @@ def gpsSensor():
     client.confirmConnection()
 
 
+    destination = (47.64254900577103, -122.14036358759651)
+    
     pub = rospy.Publisher('sensor/gps', GPS, queue_size=1)
     rospy.init_node('gpsSensor', anonymous=True)
     rate = rospy.Rate(2) # 2 Hz
@@ -33,15 +39,10 @@ def gpsSensor():
         # altitude = data.gnss.geo_point.altitude
         message.latitude = data.gnss.geo_point.latitude
         message.longitude = data.gnss.geo_point.longitude
-        message.bearing = 0
-        message.distance = 0
+        current = (message.latitude, message.longitude)
 
-        #velocity = (data.gnss.velocity.x_val,
-        #            data.gnss.velocity.y_val,
-        #            data.gnss.velocity.z_val)
-
-        #print("(altitude, latitude, longitude): " + str(position))
-        #print("velocity: " + str(velocity))
+        message.bearing = getTrueBearing(current,destination)
+        message.distance = getDistance(current, destination)
         
         rospy.loginfo(message)
         pub.publish(message)

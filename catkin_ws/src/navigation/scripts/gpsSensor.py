@@ -6,7 +6,7 @@
 #import setup_path 
 import airsim
 
-from Calculations import getDistance, getTrueBearing
+from Calculations import getDistance, getMagneticBearing, getCompassAngle
 
 #Location,	Name,					Latitude,			Longitude,
 #A,			Eary Approach, 			47.641482370883864,	-122.14036499180827,
@@ -34,6 +34,9 @@ def gpsSensor():
     while not rospy.is_shutdown():
 
         data = client.getGpsData()
+        magData = client.getMagnetometerData()
+        compassAngle = getCompassAngle(magData.magnetic_field_body.x_val, magData.magnetic_field_body.y_val)
+
         message = GPS()
     
         # altitude = data.gnss.geo_point.altitude
@@ -41,7 +44,7 @@ def gpsSensor():
         message.longitude = data.gnss.geo_point.longitude
         current = (message.latitude, message.longitude)
 
-        message.bearing = getTrueBearing(current,destination)
+        message.bearing = getMagneticBearing(current,destination)
         message.distance = getDistance(current, destination)
         
         rospy.loginfo(message)

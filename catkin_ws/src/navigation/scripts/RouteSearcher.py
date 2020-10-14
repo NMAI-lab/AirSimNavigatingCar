@@ -12,6 +12,7 @@ from astar import AStar
 import math
 import json
 import numpy as np
+import geopy.distance
 
 class RouteSearcher(AStar):
 
@@ -26,8 +27,27 @@ class RouteSearcher(AStar):
         f = open('nodeLocations.json')
         self.nodeLocations = json.load(f)
         
+        # Load node names
+        f = open('nodeNames.json')
+        self.nodeNames = json.load(f)
+                
         # assign a dummy value for the destination until we have one specified
         self.setDestination(-1)
+        
+        # Clean up the map format, tuples, distances.
+        self.setupMap()
+        
+    # Clean up the map format, tuples, distances.
+    def setupMap(self):
+        for location in self.nodeNames:
+            self.nodeLocations[location] = tuple(self.nodeLocations[location])
+            for destination in self.nodeGraph[location]:
+                destination = tuple(destination)
+                locationCoord = self.nodeLocations[location]
+                destinationName = destination[0]
+                destinationCoord = self.nodeLocations[destinationName]
+                destination[1] = geopy.distance.distance(locationCoord, destinationCoord)
+        
 
      # Compute the distance between two (x,y) tuples
     def heuristic_cost_estimate(self, n1, n2):      

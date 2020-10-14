@@ -7,7 +7,6 @@
 import rospy
 from RouteSearcher import RouteSearcher
 from std_msgs.msg import String
-import re
 
 current = (0,0)
 previous = (0,0)
@@ -94,8 +93,8 @@ def unitTest():
 
 if __name__ == '__main__':
     try:
-        #rosMain()
-        unitTest()
+        rosMain()
+        #unitTest()
     except rospy.ROSInterruptException:
         pass
         

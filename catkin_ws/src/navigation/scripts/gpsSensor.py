@@ -5,8 +5,10 @@
 
 #import setup_path 
 import airsim
+import rospy
+from navigation.msg import GPS
 
-from Calculations import getDistance, getMagneticBearing, getCompassAngle
+#from Calculations import getBearing, getDistance#, getMagneticBearing, getCompassAngle, getBearing
 
 #Location,	Name,					Latitude,			Longitude,
 #A,			Eary Approach, 			47.641482370883864,	-122.14036499180827,
@@ -16,8 +18,7 @@ from Calculations import getDistance, getMagneticBearing, getCompassAngle
 #E,			Turn Left,				47.642635167315994,	-122.14049925386175,
 #F, 		Left, end of street,	47.642634517703016,	-122.14203898419318,
 
-import rospy
-from navigation.msg import GPS
+
 
 def gpsSensor():
     # connect to the AirSim simulator
@@ -25,7 +26,7 @@ def gpsSensor():
     client.confirmConnection()
 
 
-    destination = (47.64254900577103, -122.14036358759651)
+    #destination = (47.64254900577103, -122.14036358759651)
     
     pub = rospy.Publisher('sensor/gps', GPS, queue_size=1)
     rospy.init_node('gpsSensor', anonymous=True)
@@ -34,18 +35,12 @@ def gpsSensor():
     while not rospy.is_shutdown():
 
         data = client.getGpsData()
-        magData = client.getMagnetometerData()
-        compassAngle = getCompassAngle(magData.magnetic_field_body.x_val, magData.magnetic_field_body.y_val)
 
         message = GPS()
     
         # altitude = data.gnss.geo_point.altitude
         message.latitude = data.gnss.geo_point.latitude
         message.longitude = data.gnss.geo_point.longitude
-        current = (message.latitude, message.longitude)
-
-        message.bearing = getMagneticBearing(current,destination)
-        message.distance = getDistance(current, destination)
         
         rospy.loginfo(message)
         pub.publish(message)

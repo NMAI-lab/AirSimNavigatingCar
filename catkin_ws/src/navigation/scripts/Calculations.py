@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Fri Jul 10 20:26:41 2020
+#"""
+#Created on Fri Jul 10 20:26:41 2020
+#
+#@author: Patrick
+#"""
 
-@author: Patrick
-"""
-
-from numpy import arctan2,sin,cos,degrees, arctan, pi
+from numpy import arctan2,sin,cos,degrees#, arctan, pi
 import geopy.distance
-from geomag import geomag
+#from geomag import geomag
+
 
 def getDistance(a,b):
     return geopy.distance.distance(a, b)
@@ -30,15 +31,15 @@ def getBearing(a, b):
 
 
 # Correct the bearing for declenation error
-def correctDeclination(bearing, location):
-    gm = geomag.GeoMag()
-    mag = gm.GeoMag(location[0], location[1], 0)    # Assume altitude is 0
-    declination = mag.dec
-    correctBearing = (declination + bearing) % 360
-    return correctBearing
+#def correctDeclination(bearing, location):
+#    gm = geomag.GeoMag()
+#    mag = gm.GeoMag(location[0], location[1], 0)    # Assume altitude is 0
+#    declination = mag.dec
+#    correctBearing = (declination + bearing) % 360
+#    return correctBearing
 
-def getMagneticBearing(a, b):
-    return correctDeclination(getBearing(a,b), b)
+#def getMagneticBearing(a, b):
+#    return correctDeclination(getBearing(a,b), b)
 
 
 # https://cdn-shop.adafruit.com/datasheets/AN203_Compass_Heading_Using_Magnetometers.pdf
@@ -46,24 +47,24 @@ def getMagneticBearing(a, b):
 # Direction (y<0) = 270 - [arcTAN(x/y)]*180/pi
 # Direction (y=0, x<0) = 180.0
 # Direction (y=0, x>0) = 0.0  
-def getCompassAngle(x, y):
-    if y > 0:
-        return  90 - (arctan(x/y)) * 180 / pi   # Direction (y>0) = 90 - [arcTAN(x/y)]*180/pi
-    elif y < 0:
-        return 270 - (arctan(x/y)) * 180 / pi   # Direction (y<0) = 270 - [arcTAN(x/y)]*180/pi
-    elif ((y == 0) and (x < 0)):    # Direction (y=0, x<0) = 180.0
-        return 180.0
-    else:
-        return 0.0  # Direction (y=0, x>0) = 0.0
+#def getCompassAngle(x, y):
+#    if y > 0:
+#        return  90 - (arctan(x/y)) * 180 / pi   # Direction (y>0) = 90 - [arcTAN(x/y)]*180/pi
+#    elif y < 0:
+#        return 270 - (arctan(x/y)) * 180 / pi   # Direction (y<0) = 270 - [arcTAN(x/y)]*180/pi
+#    elif ((y == 0) and (x < 0)):    # Direction (y=0, x<0) = 180.0
+#        return 180.0
+#    else:
+#        return 0.0  # Direction (y=0, x>0) = 0.0
 
     
-def getRelativeBearing(current, destination):
-    relativeBearing = (destination - current) % 360
-    
-    while (relativeBearing > 180):
-        relativeBearing = relativeBearing - 360
-    
-    return relativeBearing
+#def getRelativeBearing(current, destination):
+#    relativeBearing = (destination - current) % 360
+#    
+#    while (relativeBearing > 180):
+#        relativeBearing = relativeBearing - 360
+#    
+#    return relativeBearing
 
     
 def tester():
@@ -73,10 +74,10 @@ def tester():
     bearing = getBearing(a, b)
     print("bearing: " + str(bearing))
 
-    print("declination corrected bearing: " + str(correctDeclination(bearing, b)))
+    #print("declination corrected bearing: " + str(correctDeclination(bearing, b)))
     
-    mag = 7.388
-    print("Relative bearing: " + str(getRelativeBearing(mag,bearing)))
+    #mag = 7.388
+    #print("Relative bearing: " + str(getRelativeBearing(mag,bearing)))
     
     print("Range: " + str(getDistance(a,b)))
     

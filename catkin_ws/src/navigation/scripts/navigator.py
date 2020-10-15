@@ -7,23 +7,30 @@
 import rospy
 from RouteSearcher import RouteSearcher
 from std_msgs.msg import String
+import nvector as nv
 
 current = (0,0)
 previous = (0,0)
+wgs84 = nv.FrameE(name='WGS84')
 
 # Send the direction update
 def sendDirection(data, args):
     (publisher, searcher) = args
     
     # Extract the message
-    position = (data.latitude, data.longitude)
+    global wgs84
+    position = wgs84.GeoPoint(latitude=data.latitude, longitude=data.longitude, degrees = True)
 
     # Get access to the global variables (a bit hacky)
     global previous
     global current
     
     # Check if the post point changed, update history if necessary
-    if position != current:
+    delta = current.delta_to(previous)
+    distance = delta.length[0]
+
+    # Only update previous if we have moved more than a meter, (makes sure we've actually moved, crude filter of signal noise)
+    if distance >= 1:
         previous = current
         current = position
     

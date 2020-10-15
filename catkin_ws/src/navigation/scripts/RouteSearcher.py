@@ -12,7 +12,6 @@ from astar import AStar
 import math
 import json
 import numpy as np
-import geopy.distance
 import nvector as nv
 
 class RouteSearcher(AStar):
@@ -63,12 +62,12 @@ class RouteSearcher(AStar):
                 self.nodeGraph[location][i] = destination
                 i += 1
         
-
      # Compute the distance between two location codes
     def heuristic_cost_estimate(self, n1, n2):
         locationCoord = self.nodeLocations[n1]
         destinationCoord = self.nodeLocations[n2]
-        distance = geopy.distance.distance(locationCoord, destinationCoord)
+        delta = locationCoord.delta_to(destinationCoord)
+        distance = delta.length[0]
         return distance
 
     # Return the distance between two neighbouring nodes  
@@ -132,25 +131,53 @@ class RouteSearcher(AStar):
             nextPoint = solutionPath[1]
             current = solutionPath[0]
             return self.getNextPointBearing(previous, current, nextPoint)        
+
+
+    # Return the range (in m) to a location specified by locationCode and a 
+    # coordinate    
+    def rangeToLocation(self, locationCode, coordinate):
+        locationCoordinate = self.nodeLocations[locationCode]
+        delta = coordinate.delta_to(locationCoordinate)
+        distance = delta.length[0]
+        return distance
     
+    # Find the location nearest to the current position. Returns the name and 
+    # range (m) to that location as a tuple: (name, range)
+    def getNearestLocationAndRange(self, position):
+        nearestRange = 90000    # Arbitrary large number to start us with
+        nearestName = "meow"    # Arbitrary starting name
+        
+        for locationName in self.nodeNames:
+            thisRange = self.rangeToLocation(locationName, position)
+            if thisRange < nearestRange:
+                nearestRange = thisRange
+                nearestName = locationName
+            
+        return (nearestName, nearestRange)
+            
     
     def getNextDirection(self, previous, current):
         # Deal with the special case where there is no destination set
         if self.destination == -1:
             return "direction(unknown,unknown)"
         
+        # Get the name and range to the nearest codded location
+        (nearestLocationName, rangeToNearest) = self.getNearestLocationAndRange(current)
+        
         # Deal with special case where we are already at the destination
-        if current == self.destination:
+        # (If we are withing a meter of the destination, close enough)
+        if ((self.destination in nearestLocationName) and (rangeToNearest < 1)):
             return "direction(" + str(self.destination) + ",arrived)"
     
-        # Deal with special case where there is no previous location
-        if (previous == -1) or ("unknown" in previous):
-            # Try straight ahead, no other way to know what direction you are facing
-            # TODO: Investigate if there are alternatives to this (perhaps pick something from the graph at random)
+        # Deal with special case where there is no previous location or we 
+        # are not near any specific codded location
+        # Just drive forward to get to a codded location
+        if ((previous == -1) or ("unknown" in previous) or (rangeToNearest > 1)):
             return "direction(" + str(self.destination) + ",forward)"  
         
-        solutionPath = list(self.astar(current,self.destination))
-        bearing = self.getNextTurnAngle(solutionPath, previous)
+        # We are near a codded location. Get directions
+        solutionPath = list(self.astar(nearestLocationName,self.destination)) ###############
+        bearing = self.getNextTurnAngle(solutionPath, previous)               ###############
 
         # print("bearing: " + str(bearing))
         

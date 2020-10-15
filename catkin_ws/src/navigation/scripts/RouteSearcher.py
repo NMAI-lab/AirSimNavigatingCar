@@ -40,13 +40,17 @@ class RouteSearcher(AStar):
     # Clean up the map format, tuples, distances.
     def setupMap(self):
         for location in self.nodeNames:
-            self.nodeLocations[location] = tuple(self.nodeLocations[location])
+            # Make the location coord a tuple
+            locationCoord = tuple(self.nodeLocations[location])
+            self.nodeLocations[location] = locationCoord
+            i = 0
             for destination in self.nodeGraph[location]:
-                destination = tuple(destination)
-                locationCoord = self.nodeLocations[location]
                 destinationName = destination[0]
-                destinationCoord = self.nodeLocations[destinationName]
-                destination[1] = geopy.distance.distance(locationCoord, destinationCoord)
+                destinationCoord = tuple(self.nodeLocations[destinationName])
+                distance = geopy.distance.distance(locationCoord, destinationCoord)
+                destination = (destinationName, distance.meters)
+                self.nodeGraph[location][i] = destination
+                i += 1
         
 
      # Compute the distance between two (x,y) tuples

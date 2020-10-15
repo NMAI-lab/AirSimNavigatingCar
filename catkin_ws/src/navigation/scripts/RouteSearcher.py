@@ -13,12 +13,16 @@ import math
 import json
 import numpy as np
 import geopy.distance
+import nvector as nv
 
 class RouteSearcher(AStar):
 
     # Define the map
     def __init__(self):
-            
+        
+        # Set a reference frame for nvector
+        self.wgs84 = nv.FrameE(name='WGS84')
+        
         # Load node graph
         f = open('nodeGraph.json')
         self.nodeGraph = json.load(f)
@@ -39,25 +43,33 @@ class RouteSearcher(AStar):
         
     # Clean up the map format, tuples, distances.
     def setupMap(self):
+        
+        # Make the location coords a dict of tuples using nvector objects
         for location in self.nodeNames:
-            # Make the location coord a tuple
-            locationCoord = tuple(self.nodeLocations[location])
+            locationTuple = tuple(self.nodeLocations[location])
+            locationCoord = self.wgs84.GeoPoint(latitude=locationTuple[0], longitude=locationTuple[1], degrees = True)
             self.nodeLocations[location] = locationCoord
+            
+        # Update distances between neighbouring nodes to be real (in meters)
+        for location in self.nodeNames:
+            locationCoord = self.nodeLocations[location]
             i = 0
             for destination in self.nodeGraph[location]:
                 destinationName = destination[0]
-                destinationCoord = tuple(self.nodeLocations[destinationName])
-                distance = geopy.distance.distance(locationCoord, destinationCoord)
-                destination = (destinationName, distance.meters)
+                destinationCoord = self.nodeLocations[destinationName]
+                delta = locationCoord.delta_to(destinationCoord)
+                distance = delta.length[0]
+                destination = (destinationName, distance)
                 self.nodeGraph[location][i] = destination
                 i += 1
         
 
-     # Compute the distance between two (x,y) tuples
-    def heuristic_cost_estimate(self, n1, n2):      
-        (x1,y1) = self.nodeLocations[n1]
-        (x2,y2) = self.nodeLocations[n2]
-        return math.hypot(x2 - x1, y2 - y1)
+     # Compute the distance between two location codes
+    def heuristic_cost_estimate(self, n1, n2):
+        locationCoord = self.nodeLocations[n1]
+        destinationCoord = self.nodeLocations[n2]
+        distance = geopy.distance.distance(locationCoord, destinationCoord)
+        return distance
 
     # Return the distance between two neighbouring nodes  
     def distance_between(self, n1, n2):
@@ -89,22 +101,23 @@ class RouteSearcher(AStar):
     
     # Returns a direction for where to go to continue on the journey
     def getNextPointBearing(self, previous, current, nextPoint):
-        (xCurrent, yCurrent) = self.nodeLocations[current]
-        (xPrevious, yPrevious) = self.nodeLocations[previous]
-        (xNextPoint, yNextPoint) = self.nodeLocations[nextPoint]
+        currentCoord = self.nodeLocations[current]
+        previousCoord = self.nodeLocations[previous]
+        nextPointCoord = self.nodeLocations[nextPoint]
         
-        current = np.array([xCurrent, yCurrent])
-        previous = np.array([xPrevious, yPrevious])
-        destination = np.array([xNextPoint, yNextPoint])
+        #current = np.array([xCurrent, yCurrent])
+        #previous = np.array([xPrevious, yPrevious])
+        #destination = np.array([xNextPoint, yNextPoint])
         
-        currentDirection = current - previous
-        desiredDirection = destination - current
+        #currentDirection = current - previous
+        #desiredDirection = destination - current
  
         #print("current direction: " + str(currentDirection))
         #print("Desired direction: " + str(desiredDirection))
                 
-        turnAngle = self.angleBetweenDeg(desiredDirection, currentDirection)
+        #turnAngle = self.angleBetweenDeg(desiredDirection, currentDirection)
         #print("Turn angle: " + str(turnAngle))
+        turnAngle = 1
         return turnAngle
     
     # get the bearing angle for the next step in the plan

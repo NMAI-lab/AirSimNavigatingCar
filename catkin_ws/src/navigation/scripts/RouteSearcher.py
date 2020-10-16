@@ -9,9 +9,9 @@
 # https://pypi.org/project/astar/
 
 from astar import AStar
-import math
+#import math
 import json
-import numpy as np
+#import numpy as np
 import nvector as nv
 
 class RouteSearcher(AStar):
@@ -80,43 +80,18 @@ class RouteSearcher(AStar):
         neighbourNames = [a_tuple[0] for a_tuple in neighbourNodes]
         return neighbourNames
     
-    # Returns the unit vector of the vector.
-    def unitVector(self, vector):
-        return vector / np.linalg.norm(vector)
-    
-    # Returns the angle in radians between vectors 'v1' and 'v2'::
-    def anglBetweenRad(self, v1, v2):
-        v1_u = self.unitVector(v1)
-        v2_u = self.unitVector(v2)
-        
-        dot = np.dot(v1_u,v2_u)
-        det = np.linalg.det([v1_u, v2_u])
-        
-        return math.atan2(det, dot)  # atan2(y, x) or atan2(sin, cos)
-       
-        
-    def angleBetweenDeg(self, v1, v2):
-        return self.anglBetweenRad(v1, v2) * 180 / np.pi
-    
     # Returns a direction for where to go to continue on the journey
     def getNextPointBearing(self, previous, current, nextPoint):
         currentCoord = self.nodeLocations[current]
         previousCoord = self.nodeLocations[previous]
         nextPointCoord = self.nodeLocations[nextPoint]
         
-        #current = np.array([xCurrent, yCurrent])
-        #previous = np.array([xPrevious, yPrevious])
-        #destination = np.array([xNextPoint, yNextPoint])
+        deltaCurrent = previousCoord.delta_to(currentCoord)
+        azCurrent = deltaCurrent.azimuth_deg
+        deltaNext = currentCoord.delta_to(nextPointCoord)
+        azNext = deltaNext.azimuth_deg
         
-        #currentDirection = current - previous
-        #desiredDirection = destination - current
- 
-        #print("current direction: " + str(currentDirection))
-        #print("Desired direction: " + str(desiredDirection))
-                
-        #turnAngle = self.angleBetweenDeg(desiredDirection, currentDirection)
-        #print("Turn angle: " + str(turnAngle))
-        turnAngle = 1
+        turnAngle = azNext - azCurrent
         return turnAngle
     
     # get the bearing angle for the next step in the plan
@@ -176,8 +151,8 @@ class RouteSearcher(AStar):
             return "direction(" + str(self.destination) + ",forward)"  
         
         # We are near a codded location. Get directions
-        solutionPath = list(self.astar(nearestLocationName,self.destination)) ###############
-        bearing = self.getNextTurnAngle(solutionPath, previous)               ###############
+        solutionPath = list(self.astar(nearestLocationName,self.destination))
+        bearing = self.getNextTurnAngle(solutionPath, previous)
 
         # print("bearing: " + str(bearing))
         

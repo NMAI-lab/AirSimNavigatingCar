@@ -7,6 +7,7 @@
 import rospy
 from RouteSearcher import RouteSearcher
 from std_msgs.msg import String
+from navigation.msg import GPS
 import nvector as nv
 
 current = (0,0)
@@ -25,21 +26,29 @@ def sendDirection(data, args):
     global previous
     global current
     
-    # Check if the post point changed, update history if necessary
-    delta = current.delta_to(previous)
-    distance = delta.length[0]
+    # Check if this is the first time this method is running (may need to init
+    # the position values)
+    if (current == (0,0) or previous == (0,0)):
+        # Initialize the current and previous positions
+        current = wgs84.GeoPoint(latitude=0, longitude=0, degrees = True)
+        previous = wgs84.GeoPoint(latitude=0, longitude=0, degrees = True)
+        
+    else :
+        # Check if the post point changed, update history if necessary
+        delta = current.delta_to(previous)
+        distance = delta.length[0]
 
-    # Only update previous if we have moved more than a meter, (makes sure we've actually moved, crude filter of signal noise)
-    if distance >= 1:
-        previous = current
-        current = position
+        # Only update previous if we have moved more than a meter, (makes sure we've actually moved, crude filter of signal noise)
+        if distance >= 1:
+            previous = current
+            current = position
     
-    # Get the next direction solution    
-    solution = searcher.getNextDirection(previous, current)
+        # Get the next direction solution    
+        solution = searcher.getNextDirection(previous, current)
 
-    # Publish    
-    rospy.loginfo("Navigation solution: " + solution)
-    publisher.publish(solution)
+        # Publish    
+        rospy.loginfo("Navigation solution: " + solution)
+        publisher.publish(solution)
 
 
 # Set destination action
@@ -47,6 +56,7 @@ def setDestination(data, args):
     (searcher) = args
     destination = data.data
     searcher.setDestination(destination)
+    rospy.loginfo("Destination set: " + destination)
 
 # Main program
 def rosMain():
@@ -63,7 +73,7 @@ def rosMain():
     publisher = rospy.Publisher('perceptions', String, queue_size=10)
     
     # Listen for post point messages on the perceptions topic
-    rospy.Subscriber('postPoint', String, sendDirection, (publisher, searcher))
+    rospy.Subscriber('sensor/gps', GPS, sendDirection, (publisher, searcher))
 
     # spin() simply keeps python from exiting until this node is stopped
     rospy.spin()

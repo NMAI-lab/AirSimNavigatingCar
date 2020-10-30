@@ -147,7 +147,7 @@ class RouteSearcher(AStar):
         # Deal with special case where there is no previous location or we 
         # are not near any specific codded location
         # Just drive forward to get to a codded location
-        if ((previous == -1) or ("unknown" in previous) or (rangeToNearest > 1)):
+        if ((current.delta_to(previous) < 1) or (rangeToNearest > 1)):
             return "direction(" + str(self.destination) + ",forward)"  
         
         # We are near a codded location. Get directions

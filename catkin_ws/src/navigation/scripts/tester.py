@@ -9,4 +9,7 @@ from RouteSearcher import RouteSearcher
 
 
 searcher = RouteSearcher()
+
+searcher.setDestination("post1")
+
 print("Hello")

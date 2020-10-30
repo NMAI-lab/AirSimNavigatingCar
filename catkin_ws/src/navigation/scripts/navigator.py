@@ -30,24 +30,29 @@ def sendDirection(data, args):
     # the position values)
     if (current == (0,0) or previous == (0,0)):
         # Initialize the current and previous positions
-        current = wgs84.GeoPoint(latitude=0, longitude=0, degrees = True)
-        previous = wgs84.GeoPoint(latitude=0, longitude=0, degrees = True)
+        current = position
+        previous = position
         
     else :
         # Check if the post point changed, update history if necessary
-        delta = current.delta_to(previous)
+        delta = position.delta_to(current)
         distance = delta.length[0]
 
         # Only update previous if we have moved more than a meter, (makes sure we've actually moved, crude filter of signal noise)
         if distance >= 1:
+            rospy.loginfo("UPDATING PREVIOUS!!!!!!!!")
             previous = current
             current = position
     
         # Get the next direction solution    
-        solution = searcher.getNextDirection(previous, current)
+        (solution, nearestLocationName, rangeToNearest) = searcher.getNextDirection(previous, current)
 
         # Publish    
         rospy.loginfo("Navigation solution: " + solution)
+        rospy.loginfo("Nearest post point: " + nearestLocationName + " Range: " + str(rangeToNearest))
+        rospy.loginfo("Distance travelled: " + str(distance))
+        rospy.loginfo("Current: " + str(current.latitude) + " " + str(current.longitude))
+        rospy.loginfo("Previous: " + str(previous.latitude) + " " + str(previous.longitude))
         publisher.publish(solution)
 
 

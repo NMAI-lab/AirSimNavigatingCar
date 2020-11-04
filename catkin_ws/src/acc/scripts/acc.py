@@ -132,7 +132,7 @@ class ACC:
     def control_speed(self):
         rospy.Subscriber('sensor/speed', Float64, self.update_speed)
         rospy.Subscriber('lka/steering', Float64, self.adjust_for_turn)
-        rospy.Subscriber('sensor/setSpeed', Float64, self.updateSetSpeed)
+        rospy.Subscriber('action/setSpeed', Float64, self.updateSetSpeed)
         rospy.spin()
 
     """

@@ -40,7 +40,7 @@ def decodeAction(data, args):
         
 # Main execution
 def rosMain():
-    speedPublisher = rospy.Publisher('sensor/setSpeed', Float64, queue_size=1)
+    speedPublisher = rospy.Publisher('action/setSpeed', Float64, queue_size=1)
 #    destinationPublisher = rospy.Publisher('setDestination', String, queue_size=1)
     turnPublisher = rospy.Publisher('action/turn', String, queue_size=1)
     rospy.init_node('actionTranslator', anonymous=True)

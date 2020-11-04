@@ -101,6 +101,10 @@ class ACC:
         else:
             self.throttle = 0.0
             self.brake = 0.0
+            
+        # If speed is zero, hit the brakes
+        if self.max_speed <= 0.0:
+            self.brake = 1.0
 
         rospy.loginfo('Brake: {} Throttle: {}'.format(self.brake, self.throttle))
 
@@ -119,9 +123,16 @@ class ACC:
         else:
             self.set_speed = self.max_speed
         
+    def updateSetSpeed(self, speed):
+        speed = speed.data
+        self.max_speed = speed
+        self.set_speed = speed
+        rospy.loginfo('Updating speed set point: {}'.format(speed))
+        
     def control_speed(self):
         rospy.Subscriber('sensor/speed', Float64, self.update_speed)
         rospy.Subscriber('lka/steering', Float64, self.adjust_for_turn)
+        rospy.Subscriber('sensor/setSpeed', Float64, self.updateSetSpeed)
         rospy.spin()
 
     """

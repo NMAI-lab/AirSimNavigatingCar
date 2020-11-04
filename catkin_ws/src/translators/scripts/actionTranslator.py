@@ -11,7 +11,7 @@ def decodeAction(data, args):
     # Get the parameters
     action = str(data.data)
     
-    (speedPublisher) = args
+    (speedPublisher, turnPublisher) = args
     rospy.loginfo('Action: ' + action)
     
     # Handle the docking station cases
@@ -21,6 +21,18 @@ def decodeAction(data, args):
     
         # Set the new speed    
         speedPublisher.publish(float(parameter))
+        rospy.loginfo('Setting speed: ' + parameter)
+        
+    elif 'turn' in action:
+        # Extract the action parameter between the brackets
+        parameter = re.search('\((.*)\)', action).group(1)
+
+        if ('left' in parameter) or ('right' in parameter):
+            # Send the turn action
+            turnPublisher.publish(str(parameter))
+            rospy.loginfo('Turning ' + parameter)
+        else:
+            rospy.loginfo('Bad turn direction: ' + parameter)
         
     else:
         rospy.loginfo("Received unsupported action: " + str(action))
@@ -30,9 +42,9 @@ def decodeAction(data, args):
 def rosMain():
     speedPublisher = rospy.Publisher('sensor/setSpeed', Float64, queue_size=1)
 #    destinationPublisher = rospy.Publisher('setDestination', String, queue_size=1)
-#    Turn publisher
+    turnPublisher = rospy.Publisher('action/turn', String, queue_size=1)
     rospy.init_node('actionTranslator', anonymous=True)
-    rospy.Subscriber('actions', String, decodeAction, (speedPublisher))
+    rospy.Subscriber('actions', String, decodeAction, (speedPublisher, turnPublisher))
 
     rospy.spin()
 

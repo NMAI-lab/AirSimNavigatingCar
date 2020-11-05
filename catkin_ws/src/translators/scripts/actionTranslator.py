@@ -11,7 +11,7 @@ def decodeAction(data, args):
     # Get the parameters
     action = str(data.data)
     
-    (speedPublisher, turnPublisher) = args
+    (speedPublisher, turnPublisher, destinationPublisher) = args
     rospy.loginfo('Action: ' + action)
     
     # Handle the docking station cases
@@ -27,13 +27,24 @@ def decodeAction(data, args):
         # Extract the action parameter between the brackets
         parameter = re.search('\((.*)\)', action).group(1)
 
-        if ('left' in parameter) or ('right' in parameter):
-            # Send the turn action
+        if 'left' in parameter:
+             # Send the turn action --- SWAP THIS FOR IMPLEMENTING THE TURN
+            turnPublisher.publish(str(parameter))
+            rospy.loginfo('Turning ' + parameter)           
+            
+        elif 'right' in parameter:
+            # Send the turn action --- SWAP THIS FOR IMPLEMENTING THE TURN
             turnPublisher.publish(str(parameter))
             rospy.loginfo('Turning ' + parameter)
         else:
             rospy.loginfo('Bad turn direction: ' + parameter)
         
+    elif 'setDestination' in action:
+        # Extract the action parameter between the brackets
+        parameter = re.search('\((.*)\)', action).group(1)
+        destinationPublisher.publish(str(parameter))
+        rospy.loginfo('Setting destination: ' + str(parameter))
+
     else:
         rospy.loginfo("Received unsupported action: " + str(action))
         
@@ -41,10 +52,10 @@ def decodeAction(data, args):
 # Main execution
 def rosMain():
     speedPublisher = rospy.Publisher('action/setSpeed', Float64, queue_size=1)
-#    destinationPublisher = rospy.Publisher('setDestination', String, queue_size=1)
+    destinationPublisher = rospy.Publisher('setDestination', String, queue_size=1)
     turnPublisher = rospy.Publisher('action/turn', String, queue_size=1)
     rospy.init_node('actionTranslator', anonymous=True)
-    rospy.Subscriber('actions', String, decodeAction, (speedPublisher, turnPublisher))
+    rospy.Subscriber('actions', String, decodeAction, (speedPublisher, turnPublisher, destinationPublisher))
 
     rospy.spin()
 

@@ -150,5 +150,5 @@ class ACC:
     """
 
 # test ACC
-acc = ACC(8)
+acc = ACC(0)#8 # start with the car stopped.
 acc.control_speed()

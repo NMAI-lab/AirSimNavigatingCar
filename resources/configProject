@@ -1,0 +1,25 @@
+#!/bin/bash
+# Sample configuration script for projects that use savi_ros_bdi.
+
+# Set the location of savi_ros_bdi here
+#### EDIT THIS LINE ####
+SAVI_ROS_DIR=~/SAVI_ROS/rosjavaWorkspace/src/savi_ros_java/savi_ros_bdi
+
+# Set the location of this project
+PROJECT_DIR="$(pwd)"
+
+# Set configuration file source path
+CONFIG_FILE_NAME=/settings.cfg
+CONFIG_PATH_SRC=$PROJECT_DIR$CONFIG_FILE_NAME
+
+# Set configuration file destination path
+DEST_SUBPATH=/src/main/resources
+CONFIG_PATH_DST=$SAVI_ROS_DIR$DEST_SUBPATH$CONFIG_FILE_NAME
+
+# Set ASL directory path
+ASL_DIR=../asl
+ASL_DIR_DEST=~/SAVI_ROS/rosjavaWorkspace/src/savi_ros_java/
+
+# Move the settings file to the destination location
+cp -f $CONFIG_PATH_SRC $CONFIG_PATH_DST
+cp -rf $ASL_DIR $ASL_DIR_DEST

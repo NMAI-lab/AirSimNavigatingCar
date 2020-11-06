@@ -33,22 +33,20 @@
 +!goTo(LOCATION)
 	:	direction(LOCATION,arrived)
 	<-	.broadcast(tell, navigationUpdate(arrived));
-		drive(stop).
+		setSpeed(0.0).
 	
 // Destination is behind us: turn and start following the path.
 +!goTo(LOCATION)
 	:	direction(LOCATION,behind)
 	<-	.broadcast(tell, navigationUpdate(behind));
 		turn(left);
-		!followPath;
 		!goTo(LOCATION).
 		
 // Destiantion is forward. Drive forward, follow the path.
 +!goTo(LOCATION)
 	:	direction(LOCATION,forward)
 	<-	.broadcast(tell, navigationUpdate(forward));
-		drive(forward);
-		!followPath;
+		setSpeed(8.0);
 		!goTo(LOCATION).
 
 // Destiantion is either left or right. Turn and then follow the path.
@@ -57,61 +55,10 @@
 		((DIRECTION = left) | (DIRECTION = right))
 	<-	.broadcast(tell, navigationUpdate(DIRECTION));
 		turn(DIRECTION);
-		!followPath;
 		!goTo(LOCATION).
-		
-/** 
- * !followPath
- * Follow the line until a post point is visible, then stop.
- * Search for the line if it is not visible, adjust course if the line is 
- * drifting to the left or right.
- */
- 
- // Case where the postPoint is visible, no driving.
- +!followPath
- 	:	postPoint(_,_) | 
-		direction(_,_)
-	<-	.broadcast(tell, followPath(PostPointStop));
-		drive(stop).
- 
- 
-// Line is center, no post point, drive forward
-+!followPath
-	:	line(center) &
-		(not postPoint(_,_)) &
-		(not direction(_,_))
-	<-	.broadcast(tell, followPath(center));
-		drive(forward);
-		!followPath.
-		
-// Line is lost, use the spiral action to try and find it.
-+!followPath
-	:	line(lost) & 
-		(not postPoint(_,_)) &
-		(not direction(_,_))
-	<-	.broadcast(tell, followPath(lost));
-		drive(spiral);
-		!followPath.
-		
-// Line is accross, use the turn(left) action to re center it
-+!followPath
-	:	line(across) & 
-		(not postPoint(_,_)) &
-		(not direction(_,_))
-	<-	.broadcast(tell, followPath(across));
-		drive(left);
-		!followPath.
 
-// Handle cases for left and right turns.
-+!followPath
-	:	line(DIRECTION) & 
-		((DIRECTION = left) | (DIRECTION = right)) &
-		(not postPoint(_,_)) &
-		(not direction(_,_))
-	<-	.broadcast(tell, followPath(DIRECTION));
-		drive(DIRECTION);
-		!followPath.
 
+		
 /**
  * Default plans.
  * These can run when unrelated perceptions are received, resulting in a 
@@ -122,11 +69,4 @@
 +!goTo(LOCATION)
 	<-	.broadcast(tell, goTo(default, LOCATION));
 		!goTo(LOCATION).
-		
-// Ensure recursion. For example, if only a battery perception is received, you
-// don't want to lose the followPath intention.
-+!followPath
-	<-	.broadcast(tell, followPath(default));
-		drive(stop);	// Safest thing to do is not drive anywhere until something more useful is perceived.
-		!followPath.
 

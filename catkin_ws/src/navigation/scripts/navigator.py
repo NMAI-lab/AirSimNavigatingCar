@@ -75,7 +75,7 @@ def rosMain():
     rospy.Subscriber('setDestination', String, setDestination, (searcher))
 
     # Setup the publisher for the result
-    publisher = rospy.Publisher('perceptions', String, queue_size=10)
+    publisher = rospy.Publisher('sensor/navigation', String, queue_size=10)
     
     # Listen for post point messages on the perceptions topic
     rospy.Subscriber('sensor/gps', GPS, sendDirection, (publisher, searcher))

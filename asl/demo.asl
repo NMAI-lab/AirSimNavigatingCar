@@ -3,8 +3,10 @@
  * @date	6 November 2020
  */
 
+!goTo(post4).
+ 
 /** 
- * !goTo(LOCATION,WATCHDOG)
+ * !goTo(LOCATION)
  * Used for navigating the robot via the post points. Decide if the robot needs 
  * to turn or drive forward. Uses the sub goal of !followPath to move between 
  * post points.
@@ -33,12 +35,13 @@
 +!goTo(LOCATION)
 	:	direction(LOCATION,arrived)
 	<-	.broadcast(tell, navigationUpdate(arrived));
-		setSpeed(0.0).
+		!stopDriving.
 	
 // Destination is behind us: turn and start following the path.
 +!goTo(LOCATION)
 	:	direction(LOCATION,behind)
 	<-	.broadcast(tell, navigationUpdate(behind));
+		!stopDriving;
 		turn(left);
 		!goTo(LOCATION).
 		
@@ -46,7 +49,7 @@
 +!goTo(LOCATION)
 	:	direction(LOCATION,forward)
 	<-	.broadcast(tell, navigationUpdate(forward));
-		setSpeed(8.0);
+		!followPath;
 		!goTo(LOCATION).
 
 // Destiantion is either left or right. Turn and then follow the path.
@@ -54,19 +57,36 @@
 	:	direction(LOCATION,DIRECTION) &
 		((DIRECTION = left) | (DIRECTION = right))
 	<-	.broadcast(tell, navigationUpdate(DIRECTION));
+		!stopDriving;
 		turn(DIRECTION);
 		!goTo(LOCATION).
 
-
++!followPath
+	: 	(not driving) | 
+		(speed(SPEED) & SPEED = 0.0)
+	<-	.broadcast(tell, followPath(startDriving));
+		+driving;
+		setSpeed(6.0).
+		
++!stopDriving
+	:	driving |
+		(speed(SPEED) & not (SPEED = 0.0))
+	<-	.broadcast(tell, followPath(startDriving));
+		-driving;
+		setSpeed(0.0).
 		
 /**
  * Default plans.
  * These can run when unrelated perceptions are received, resulting in a 
  * reasoning cycle where no plan context is applicable for that reasoning cycle.
  */
-// Deal with the scenario where the reasoning cycle runs on a perception other 
-// than a post point. Increment WATCHDOG and try again.
 +!goTo(LOCATION)
 	<-	.broadcast(tell, goTo(default, LOCATION));
 		!goTo(LOCATION).
+		
++!followPath
+	<-	.broadcast(tell, followPath(default)).
+
++!stopDriving
+	<-	.broadcast(tell, stopDriving(default)).
 

@@ -29,8 +29,8 @@ python reactive_agent.py
 D:
 cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\devel
 setup.bat
-cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\src\controls\scripts
-python handle_controls.py
+cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\src\agent\scripts
+python reactive_agent.py
 
 # RUN LKA
 D:
@@ -57,33 +57,33 @@ python navigator.py
 D:
 cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\devel
 setup.bat
-cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\src\sensors
+cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\src\sensors\scripts
 python speedometer.py
 
 # RUN COMPASS
 D:
 cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\devel
 setup.bat
-cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\src\sensors
+cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\src\sensors\scripts
 python compass.py
 
 # RUN CAMERA
 D:
 cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\devel
 setup.bat
-cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\src\sensors
-cd car_image_raw.py
+cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\src\sensors\scripts
+python car_image_raw.py
 
 # RUN ACTION TRANSLATOR
 D:
 cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\devel
 setup.bat
-cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\src\translators
+cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\src\translators\scripts
 python actionTranslator.py
 
 # RUN PERCEPTION TRANSLATOR
 D:
 cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\devel
 setup.bat
-cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\src\translators
+cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\src\translators\scripts
 python perceptionTranslator.py

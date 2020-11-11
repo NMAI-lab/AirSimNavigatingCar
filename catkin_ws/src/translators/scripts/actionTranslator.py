@@ -3,13 +3,17 @@
 import rospy
 from std_msgs.msg import Float64, String, Bool
 import re
+from time import sleep
 
 enable = True
 compassAngle = 0
+speedSetting = 0
 
 # Decode and execute the action
 def decodeAction(data, args):
     global enable
+    global speedSetting
+    
     if enable:              # Simple mutex
         enable = False
         
@@ -27,6 +31,8 @@ def decodeAction(data, args):
             # Set the new speed    
             speedPublisher.publish(Float64(float(parameter)))
             rospy.loginfo('Setting speed: ' + parameter)
+
+            speedSetting = float(parameter)
         
         elif 'turn' in action:
             # Extract the action parameter between the brackets
@@ -38,20 +44,28 @@ def decodeAction(data, args):
             initialCompassAngle = compassAngle
 
             if ('left' in parameter) or ('right' in parameter):
-                turnAngle = 0.69    # RAD (40 deg)
+                turnAngle = 1.0   # RAD
                 
                 if 'left' in parameter:
                     turnAngle = turnAngle * -1
 
+                rospy.loginfo('Turning ' + parameter)  
 
                 # Send the turn action --- SWAP THIS FOR IMPLEMENTING THE TURN
+                #speedPublisher.publish(Float64(0.0))
+                #sleep(1)
                 speedPublisher.publish(Float64(8.0))
+                rospy.loginfo("compasAngle: " + str(initialCompassAngle))
+                
                 while not turnComplete(initialCompassAngle, compassAngle):
                     steeringPub.publish(Float64(turnAngle))
-                steeringPub.publish(Float64(0.0))
-                speedPublisher.publish(Float64(0.0))
                 
-                rospy.loginfo('Turning ' + parameter)           
+                steeringPub.publish(Float64(0.0))
+                
+                speedPublisher.publish(Float64(speedSetting))
+                sleep(3)
+                
+                rospy.loginfo('Turn complete')           
             
             else:
                 rospy.loginfo('Bad turn direction: ' + parameter)
@@ -76,7 +90,7 @@ def updateCompass(data):
 
 def turnComplete(initialAngle, newAngle):
     delta = abs(newAngle - initialAngle)
-    if delta > 80:
+    if delta > 90:
         return True
     else:
         return False

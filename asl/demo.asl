@@ -57,7 +57,7 @@
 	:	direction(LOCATION,DIRECTION) &
 		((DIRECTION = left) | (DIRECTION = right))
 	<-	.broadcast(tell, navigationUpdate(DIRECTION));
-		!stopDriving;
+		//!stopDriving;
 		turn(DIRECTION);
 		!goTo(LOCATION).
 
@@ -66,7 +66,7 @@
 		(speed(SPEED) & SPEED = 0.0)
 	<-	.broadcast(tell, followPath(startDriving));
 		+driving;
-		setSpeed(6.0).
+		setSpeed(8.0).
 		
 +!stopDriving
 	:	driving |

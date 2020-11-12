@@ -44,7 +44,7 @@ def decodeAction(data, args):
             initialCompassAngle = compassAngle
 
             if ('left' in parameter) or ('right' in parameter):
-                turnAngle = 1.0   # RAD
+                turnAngle = 0.69   # RAD
                 
                 if 'left' in parameter:
                     turnAngle = turnAngle * -1

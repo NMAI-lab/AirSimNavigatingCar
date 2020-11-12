@@ -107,6 +107,9 @@ class LaneKeepAssist:
                     global enable   # Only send the steering message if enabled
                     if enable:
                         self.steeringPub.publish(self.steering)
+                        rospy.loginfo("LKA steering message: " + str(self.steering))
+                    else:
+                        rospy.loginfo("LKA disabled, no steering message sent")
                     self.lanePub.publish(lanes_msg)
                 else: # An error
                     rospy.loginfo('Unable to detect lines...')
@@ -116,9 +119,10 @@ class LaneKeepAssist:
                 rospy.loginfo(e)
 
     # Receive a boolean to enable or disable steering control within the LKA
-    def enabler(data):
+    def enabler(self, data):
         global enable
         enable = data.data
+        rospy.loginfo("LKA ENABLE: " + str(enable))
         
 
 def listener():

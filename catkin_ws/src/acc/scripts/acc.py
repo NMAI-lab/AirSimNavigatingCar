@@ -112,7 +112,7 @@ class ACC:
         self.throttlePub.publish(self.throttle)
         self.brakePub.publish(self.brake)
 
-    def adjust_for_turn(self, steering_data):
+    def adjust_for_turn_lka(self, steering_data):
         steering = abs(steering_data.data)
         # Simple conditional for now. Needs to be updated: TODO
         if steering > 1:
@@ -121,6 +121,18 @@ class ACC:
             self.set_speed = 8.0
         elif steering > 0.3:
             self.set_speed = self.max_speed - 5.0
+        else:
+            self.set_speed = self.max_speed
+            
+    def adjust_for_turn_corner(self, steering_data):
+        steering = abs(steering_data.data)
+        # Simple conditional for now. Needs to be updated: TODO
+        if steering > 1:
+            self.set_speed = 3.0 # 5 m/s -> take turn slow
+        elif steering > 0.5:
+            self.set_speed = 3.0
+        elif steering > 0.3:
+            self.set_speed = 3.0
         else:
             self.set_speed = self.max_speed
         
@@ -132,8 +144,8 @@ class ACC:
         
     def control_speed(self):
         rospy.Subscriber('sensor/speed', Float64, self.update_speed)
-        rospy.Subscriber('lka/steering', Float64, self.adjust_for_turn)
-        rospy.Subscriber('action/steering', Float64, self.adjust_for_turn)
+        rospy.Subscriber('lka/steering', Float64, self.adjust_for_turn_lka)
+        rospy.Subscriber('action/steering', Float64, self.adjust_for_turn_corner)
         rospy.Subscriber('action/setSpeed', Float64, self.updateSetSpeed)
         rospy.spin()
 

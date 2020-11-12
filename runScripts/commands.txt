@@ -29,8 +29,8 @@ python reactive_agent.py
 D:
 cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\devel
 setup.bat
-cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\src\agent\scripts
-python reactive_agent.py
+cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\src\controls\scripts
+python handle_controls.py
 
 # RUN LKA
 D:

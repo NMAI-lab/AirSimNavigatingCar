@@ -24,8 +24,8 @@ def start_agent():
         [
             object_layer, # highest priority
             acc_layer, 
-            lka_layer,
-            turn_layer
+            turn_layer,
+            lka_layer
         ]
     )
 

@@ -90,7 +90,7 @@ def updateCompass(data):
 
 def turnComplete(initialAngle, newAngle):
     delta = abs(newAngle - initialAngle)
-    if delta > 90:
+    if delta > 60:
         return True
     else:
         return False

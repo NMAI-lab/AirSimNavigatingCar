@@ -3,7 +3,7 @@
  * @date	6 November 2020
  */
 
-!goTo(post4).
+!goTo(post3).
  
 /** 
  * !goTo(LOCATION)
@@ -41,7 +41,7 @@
 +!goTo(LOCATION)
 	:	direction(LOCATION,behind)
 	<-	.broadcast(tell, navigationUpdate(behind));
-		!stopDriving;
+		//!stopDriving;
 		turn(left);
 		!goTo(LOCATION).
 		
@@ -66,7 +66,7 @@
 		(speed(SPEED) & SPEED = 0.0)
 	<-	.broadcast(tell, followPath(startDriving));
 		+driving;
-		setSpeed(8.0).
+		setSpeed(6.0).
 		
 +!stopDriving
 	:	driving |

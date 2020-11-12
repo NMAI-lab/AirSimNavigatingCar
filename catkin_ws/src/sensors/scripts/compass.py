@@ -9,7 +9,7 @@ from numpy import arctan, pi
 def compass():
     pub = rospy.Publisher('sensor/compass', Float64, queue_size=1)
     rospy.init_node('compass', anonymous=True)
-    rate = rospy.Rate(20) # 20 Hz
+    rate = rospy.Rate(60) # Hz
 
     # connect to the AirSim simulator 
     client = airsim.CarClient()

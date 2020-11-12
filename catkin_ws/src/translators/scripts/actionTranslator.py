@@ -12,15 +12,16 @@ speedSetting = 0
 # Decode and execute the action
 def decodeAction(data, args):
     global enable
-    global speedSetting
     
     if enable:              # Simple mutex
         enable = False
-        
+
+        global speedSetting
+
         # Get the parameters
         action = str(data.data)
-    
         (lkaEnablePub, steeringPub, speedPublisher, destinationPublisher) = args
+        
         rospy.loginfo('Action: ' + action)
     
         # Handle the docking station cases
@@ -44,22 +45,25 @@ def decodeAction(data, args):
             initialCompassAngle = compassAngle
 
             if ('left' in parameter) or ('right' in parameter):
-                turnAngle = 0.69   # RAD
                 
                 if 'left' in parameter:
-                    turnAngle = turnAngle * -1
+                    turnAngle = -0.5
+                else:
+                    turnAngle = 0.4
+                        
 
                 rospy.loginfo('Turning ' + parameter)  
 
                 # Send the turn action --- SWAP THIS FOR IMPLEMENTING THE TURN
-                #speedPublisher.publish(Float64(0.0))
-                #sleep(1)
+                speedPublisher.publish(Float64(0.0))
+                sleep(1)
                 speedPublisher.publish(Float64(8.0))
-                rospy.loginfo("compasAngle: " + str(initialCompassAngle))
+                rospy.loginfo("compasAngle start: " + str(initialCompassAngle))
                 
                 while not turnComplete(initialCompassAngle, compassAngle):
                     steeringPub.publish(Float64(turnAngle))
                 
+                rospy.loginfo("compasAngle finish: " + str(initialCompassAngle))
                 steeringPub.publish(Float64(0.0))
                 
                 speedPublisher.publish(Float64(speedSetting))
@@ -86,11 +90,14 @@ def decodeAction(data, args):
         
 def updateCompass(data):
     global compassAngle
-    compassAngle = data.data  
+    compassAngle = data.data
 
 def turnComplete(initialAngle, newAngle):
-    delta = abs(newAngle - initialAngle)
-    if delta > 60:
+    proximityLimit = 60
+    delta = (newAngle - initialAngle + 180) % 360 - 180
+    
+    if delta > proximityLimit:
+        rospy.loginfo("delta " + str(delta))
         return True
     else:
         return False

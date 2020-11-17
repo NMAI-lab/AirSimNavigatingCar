@@ -38,6 +38,7 @@ def decodeAction(data, args):
         elif 'turn' in action:
             # Extract the action parameter between the brackets
             parameter = re.search('\((.*)\)', action).group(1)
+            turnDelta = float(parameter.split(',')[1])
 
             # Disable LKA
             lkaEnablePub.publish(Bool(False))
@@ -60,22 +61,26 @@ def decodeAction(data, args):
                 speedPublisher.publish(Float64(8.0))
                 rospy.loginfo("compasAngle start: " + str(initialCompassAngle))
                 
-                while not turnComplete(initialCompassAngle, compassAngle):
+                while not turnComplete(initialCompassAngle, compassAngle, turnDelta):
                     steeringPub.publish(Float64(turnAngle))
                 
                 rospy.loginfo("compasAngle finish: " + str(initialCompassAngle))
                 steeringPub.publish(Float64(0.0))
                 
                 speedPublisher.publish(Float64(speedSetting))
-                sleep(3)
+                
+                # Enable LKA
+                lkaEnablePub.publish(Bool(True))
+                rospy.loginfo('Activating LKA')    
+                
+                sleep(5)
                 
                 rospy.loginfo('Turn complete')           
             
             else:
                 rospy.loginfo('Bad turn direction: ' + parameter)
         
-            # Enable LKA
-            lkaEnablePub.publish(Bool(True))
+
         
         elif 'setDestination' in action:
             # Extract the action parameter between the brackets
@@ -92,12 +97,18 @@ def updateCompass(data):
     global compassAngle
     compassAngle = data.data
 
-def turnComplete(initialAngle, newAngle):
-    proximityLimit = 60
-    delta = (newAngle - initialAngle + 180) % 360 - 180
+def turnComplete(initialAngle, newAngle, turnAngle):
+    proximityLimit = 10
     
-    if delta > proximityLimit:
-        rospy.loginfo("delta " + str(delta))
+    turnedSoFar = abs((newAngle - initialAngle + 180) % 360 - 180)
+    
+    diff = abs(turnAngle - turnedSoFar)
+    
+    if diff < proximityLimit:
+        rospy.loginfo("initialAngle: " + str(initialAngle))
+        rospy.loginfo("newAngle:" + str(newAngle))
+        rospy.loginfo("turnAngle:" + str(turnAngle))
+        rospy.loginfo("diff " + str(diff))
         return True
     else:
         return False

@@ -53,26 +53,6 @@ def calculateSteering(courseCorrection):
             return -1
 
 
-# Use the control law defined here (good enough for now) - see (1):
-# https://www.researchgate.net/publication/307568375_Algorithm_of_autonomous_vehicle_steering_system_control_law_estimation_while_the_desired_trajectory_driving
-# deltaW =  wheel turn angle;
-# l = wheelbase;
-# R = turning radius
-# VCoG = velocity of vehicle center of gravity (speed of the car)
-# mCoG - assume this is the mass of the car
-# Assume that the front and rear tires do not slip (simplify the math)
-# deltaW = (l/R + mCoG)(VCoG^2 / R)
-#def calculateSteering(turnRadius, speed):
-#    # Unable to find values for the AirSim car. Use values for typical cars from online
-#    l = 3.025           # Assume Ford Explorer wheelbase of 3.025m
-#    R = turnRadius      # Assume Ford Explorer turning radius of 19.6" = 0.49784m
-#    mCoG = 2794.129     # Assume Ford Explorer mass of 6160lbs = 2794.129 kg
-#    VCoG = speed
-#
-#    deltaW = (l/R + mCoG) * ((VCoG * VCoG) / R)
-#    
-#    return math.radians(deltaW)
-
 # Main execution
 def directTo(steeringPub, speedPub, targetPosition):
     global currentPosition

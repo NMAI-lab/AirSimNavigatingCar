@@ -39,14 +39,15 @@
 		
 // Destiantion is either left or right. Turn and then follow the path.
 +!goTo(LOCATION)
-	:	direction(LOCATION,DIRECTION,BEARING) &
-		((DIRECTION = left) | (DIRECTION = right))
+	:	waypoint(AT,TO)
 	<-	.broadcast(tell, navigationUpdate(DIRECTION));
 		//!stopDriving;
-		turn(DIRECTION,BEARING);
+		setSpeed(1.0)
+		turn(AT,TO);
 		!goTo(LOCATION).
  
 // Destination is behind us: turn and start following the path.
+// We do not have an action that supports turning the car around
 +!goTo(LOCATION)
 	:	direction(LOCATION,behind,BEARING)
 	<-	.broadcast(tell, navigationUpdate(behind));
@@ -65,10 +66,10 @@
 
 +!followPath
 	: 	(not driving) | 
-		(speed(SPEED) & SPEED = 0.0)
+		(speed(SPEED) & SPEED < 6.0)
 	<-	.broadcast(tell, followPath(startDriving));
 		+driving;
-		setSpeed(1.0).
+		setSpeed(8.0).
 		
 +!stopDriving
 	:	driving |

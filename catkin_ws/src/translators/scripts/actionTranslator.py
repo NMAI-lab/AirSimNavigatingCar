@@ -2,25 +2,33 @@
 
 import rospy
 from std_msgs.msg import Float64, String, Bool
+from navigation.msg import GPS
 import re
 import nvector as nv
 import json
 
 enable = True
-compassAngle = 0
+currentBearing = 0
 speedSetting = 0
-position = (0,0)
+speed = 0
 wgs84 = nv.FrameE(name='WGS84')
+currentPosition = wgs84.GeoPoint(latitude=0, longitude=0, degrees = True)
 nodeLocations = 0
 
 def updatePosition(data):
-    global position
+    global currentPosition
     global wgs84
-    position = wgs84.GeoPoint(latitude=data.latitude, longitude=data.longitude, degrees = True)
+    currentPosition = wgs84.GeoPoint(latitude=data.latitude, longitude=data.longitude, degrees = True)
 
 def updateCompass(data):
-    global compass
-    compass = data.data
+    global currentBearing
+    declanation = 10.3881839942
+    compassReading = data.data
+    currentBearing = compassReading + declanation
+    
+def updateSpeed(data):
+    global speed
+    speed = data.data
     
 def calculateSteering(courseCorrection):
     if abs(courseCorrection) < 20:
@@ -42,7 +50,7 @@ def directTo(steeringPub, speedPub, targetPosition):
     speedSetting = 6
  
     # While range to target > 5
-    while targetRange > 10:
+    while targetRange > 5:
         delta = currentPosition.delta_to(targetPosition)
         targetRange = delta.length[0]
         targetBearing = delta.azimuth_deg[0]
@@ -196,6 +204,8 @@ def rosMain():
     rospy.init_node('actionTranslator', anonymous=True)
     rospy.Subscriber('actions', String, decodeAction, (lkaEnablePub, steeringPub, speedPublisher, destinationPublisher))
     rospy.Subscriber('sensor/compass', Float64, updateCompass)
+    rospy.Subscriber('sensor/gps', GPS, updatePosition)
+    rospy.Subscriber('sensor/speed', Float64, updateSpeed)
 
     rospy.spin()
 

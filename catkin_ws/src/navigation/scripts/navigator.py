@@ -10,8 +10,8 @@ from std_msgs.msg import String
 from navigation.msg import GPS
 import nvector as nv
 
-current = (0,0)
-previous = (0,0)
+# current = (0,0)
+# previous = (0,0)
 wgs84 = nv.FrameE(name='WGS84')
 
 # Send the direction update
@@ -23,37 +23,41 @@ def sendDirection(data, args):
     position = wgs84.GeoPoint(latitude=data.latitude, longitude=data.longitude, degrees = True)
 
     # Get access to the global variables (a bit hacky)
-    global previous
-    global current
+    # global previous
+    # global current
     
     # Check if this is the first time this method is running (may need to init
     # the position values)
-    if (current == (0,0) or previous == (0,0)):
-        # Initialize the current and previous positions
-        current = position
-        previous = position
+    # if (current == (0,0) or previous == (0,0)):
+    #     # Initialize the current and previous positions
+    #     current = position
+    #     previous = position
+    #     print("FIRST RUN!!!!!!")
         
-    else :
-        # Check if the post point changed, update history if necessary
-        delta = position.delta_to(current)
-        distance = delta.length[0]
+    # else :
+    #     # Check if the post point changed, update history if necessary
+    #     delta = position.delta_to(current)
+    #     distance = delta.length[0]
+        
+    #     print("DISTANCE: " + str(distance))
 
-        # Only update previous if we have moved more than a meter, (makes sure we've actually moved, crude filter of signal noise)
-        if distance >= 1:
-            rospy.loginfo("UPDATING PREVIOUS!!!!!!!!")
-            previous = current
-            current = position
+    #     # Only update previous if we have moved more than a meter, (makes sure we've actually moved, crude filter of signal noise)
+    #     if distance >= 1:
+    #         rospy.loginfo("UPDATING PREVIOUS!!!!!!!!")
+    #         previous = current
+    #         current = position
     
-        # Get the next direction solution    
-        (solution, nearestLocationName, rangeToNearest) = searcher.getNextDirection(previous, current)
+    # Get the next direction solution    
+    (solution, nearestLocationName, rangeToNearest) = searcher.getNextDirection(position)
 
-        # Publish    
-        rospy.loginfo("Navigation solution: " + solution)
-        rospy.loginfo("Nearest post point: " + nearestLocationName + " Range: " + str(rangeToNearest))
-        rospy.loginfo("Distance travelled: " + str(distance))
-        rospy.loginfo("Current: " + str(current.latitude) + " " + str(current.longitude))
-        rospy.loginfo("Previous: " + str(previous.latitude) + " " + str(previous.longitude))
-        publisher.publish(solution)
+    # Publish    
+    rospy.loginfo("Navigation solution: " + solution)
+    #rospy.loginfo("Next path: " + nextPath)
+    rospy.loginfo("Nearest post point: " + nearestLocationName + " Range: " + str(rangeToNearest))
+    # rospy.loginfo("Distance travelled: " + str(distance))
+    # rospy.loginfo("Current: " + str(current.latitude) + " " + str(current.longitude))
+    # rospy.loginfo("Previous: " + str(previous.latitude) + " " + str(previous.longitude))
+    publisher.publish(solution)# + " " + nextPath)
 
 
 # Set destination action

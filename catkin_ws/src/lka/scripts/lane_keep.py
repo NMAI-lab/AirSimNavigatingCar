@@ -47,7 +47,7 @@ class LaneKeepAssist:
         margin_steer = 0.0
         x_intersection = None
         # Weights
-        x_to_margin = 0.4# 0.6
+        x_to_margin = 1.0# 0.6
         current_to_prev = 0.9
         
 

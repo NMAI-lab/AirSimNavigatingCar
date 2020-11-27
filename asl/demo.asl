@@ -35,26 +35,34 @@
 +!goTo(LOCATION)
 	:	direction(LOCATION,arrived,_)
 	<-	.broadcast(tell, navigationUpdate(arrived));
+		.drop_intentions;
 		!stopDriving.
 		
 // Destiantion is either left or right. Turn and then follow the path.
 +!goTo(LOCATION)
 	:	waypoint(AT,TO) &
 		(direction(LOCATION,left,_) | direction(LOCATION,right,_))
-	<-	.broadcast(tell, navigationUpdate(DIRECTION));
+	<-	.broadcast(tell, navigationUpdateWayPoint(AT,TO));
 		//!stopDriving;
 		setSpeed(4.0)
-		turn(AT,TO);
+		!performTurn(AT,TO);
 		!goTo(LOCATION).
  
+
++!performTurn(AT,TO)
+	:	not turned(AT,TO)
+	<-	+turned(AT,TO);
+		.broadcast(tell, performTurn(AT,TO,doingIt));
+		turn(AT,TO).
+
 // Destination is behind us: turn and start following the path.
 // We do not have an action that supports turning the car around
-+!goTo(LOCATION)
-	:	direction(LOCATION,behind,BEARING)
-	<-	.broadcast(tell, navigationUpdate(behind));
-		//!stopDriving;
-		turn(left,BEARING);
-		!goTo(LOCATION).
+//+!goTo(LOCATION)
+//	:	direction(LOCATION,behind,BEARING)
+//	<-	.broadcast(tell, navigationUpdate(behind));
+//		//!stopDriving;
+//		turn(left,BEARING);
+//		!goTo(LOCATION).
 		
 // Destiantion is forward. Drive forward, follow the path.
 +!goTo(LOCATION)
@@ -67,7 +75,7 @@
 
 +!followPath
 	: 	(not driving) | 
-		(speed(SPEED) & SPEED < 4.0)
+		(speed(SPEED) & SPEED < 1.0)
 	<-	.broadcast(tell, followPath(startDriving));
 		+driving;
 		setSpeed(6.0).
@@ -87,6 +95,9 @@
 +!goTo(LOCATION)
 	<-	.broadcast(tell, goTo(default, LOCATION));
 		!goTo(LOCATION).
+		
++!performTurn(AT,TO)
+	<-	.broadcast(tell, performTurn(AT,TO,default)).
 		
 +!followPath
 	<-	.broadcast(tell, followPath(default)).

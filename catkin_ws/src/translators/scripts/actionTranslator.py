@@ -57,8 +57,8 @@ def directTo(steeringPub, speedPub, targetPosition):
         
         courseCorrection = targetBearing - currentBearing        
         steering = calculateSteering(courseCorrection)
-        rospy.loginfo("course correction: " + str(courseCorrection))
-        rospy.loginfo("steering: " + str(steering))
+        #rospy.loginfo("course correction: " + str(courseCorrection))
+        #rospy.loginfo("steering: " + str(steering))
          
         steeringPub.publish(Float64(steering))
         
@@ -93,14 +93,14 @@ def turnToward(steeringPub, speedPub, targetPosition):
         
         courseCorrection = targetBearing - currentBearing        
         steering = calculateSteering(courseCorrection)
-        rospy.loginfo("course correction: " + str(courseCorrection))
-        rospy.loginfo("steering: " + str(steering))
+        #rospy.loginfo("course correction: " + str(courseCorrection))
+        #rospy.loginfo("steering: " + str(steering))
          
         steeringPub.publish(Float64(steering))
         
         if speed <= 0:
             speedPub.publish(Float64(speedSetting)) 
-            rospy.loginfo("Setting speed: " + str(speedSetting))
+            #rospy.loginfo("Setting speed: " + str(speedSetting))
         
     rospy.loginfo("On track")
 
@@ -179,6 +179,8 @@ def decodeAction(data, args):
             
         enable = True   # Release the mutex
         rospy.loginfo("Action mutex released")
+    else:
+        action = str(data.data)
         
 
 def setupLocationLibrary():

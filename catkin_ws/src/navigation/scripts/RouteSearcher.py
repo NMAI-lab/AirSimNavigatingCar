@@ -146,7 +146,7 @@ class RouteSearcher(AStar):
         
         # Deal with special case where we are already at the destination
         # (If we are withing a meter of the destination, close enough)
-        if ((self.destination in nearestLocationName) and (rangeToNearest < 10)):
+        if ((self.destination in nearestLocationName) and (rangeToNearest < 20)):
             return ("direction(" + str(self.destination) + ",arrived,0)", nearestLocationName, rangeToNearest)
     
         # Deal with special case where there is no previous location or we 
@@ -163,7 +163,7 @@ class RouteSearcher(AStar):
         bearing = self.getNextTurnAngle(solutionPath, current, bearing)[0]
     
         waypoint = ""
-        if len(solutionPath) > 1 and rangeToNearest < 50:
+        if len(solutionPath) > 1 and rangeToNearest < 50 and (nearestLocationName in solutionPath[0]):
             waypoint = "waypoint(" + solutionPath[0] + "," + solutionPath[1] + ") "
 
         print("bearing: " + str(bearing))

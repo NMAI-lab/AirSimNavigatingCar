@@ -22,7 +22,7 @@ def updatePosition(data):
 
 def updateCompass(data):
     global currentBearing
-    declanation = 10.3881839942
+    declanation = 7.5#10.3881839942
     compassReading = data.data
     currentBearing = compassReading + declanation
     
@@ -84,7 +84,7 @@ def turnToward(steeringPub, speedPub, targetPosition):
     speedSetting = 6
  
     # Perform the turn
-    while ((abs(startRange) < 10) and (abs(targetBearing) > 10)) or (abs(targetRange) < 10):
+    while ((abs(startRange) < 51) and (abs(targetBearing) > 5)) or (abs(targetRange) < 10):
         targetDelta = currentPosition.delta_to(targetPosition)
         targetBearing = targetDelta.azimuth_deg[0]
         
@@ -178,6 +178,7 @@ def decodeAction(data, args):
             rospy.loginfo("Received unsupported action: " + str(action))
             
         enable = True   # Release the mutex
+        rospy.loginfo("Action mutex released")
         
 
 def setupLocationLibrary():

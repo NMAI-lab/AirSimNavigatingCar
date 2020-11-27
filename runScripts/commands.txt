@@ -40,11 +40,11 @@ cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\src\lka\scrip
 python lane_keep.py
 
 # RUN OBJECT DETECT
-D:
-cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\devel
-setup.bat
-cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\src\object_detect\scripts
-python object_detect.py
+# D:
+# cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\devel
+# setup.bat
+# cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\src\object_detect\scripts
+# python object_detect.py
 
 
 # RUN GPS SENSOR

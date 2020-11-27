@@ -6,13 +6,18 @@
 
 import rospy
 from RouteSearcher import RouteSearcher
-from std_msgs.msg import String
+from std_msgs.msg import String, Float64
 from navigation.msg import GPS
 import nvector as nv
 
 # current = (0,0)
 # previous = (0,0)
 wgs84 = nv.FrameE(name='WGS84')
+bearing = 0
+
+def updateBearing(data):
+    global bearing
+    bearing = data.data
 
 # Send the direction update
 def sendDirection(data, args):
@@ -21,6 +26,7 @@ def sendDirection(data, args):
     # Extract the message
     global wgs84
     position = wgs84.GeoPoint(latitude=data.latitude, longitude=data.longitude, degrees = True)
+    global bearing
 
     # Get access to the global variables (a bit hacky)
     # global previous
@@ -48,7 +54,7 @@ def sendDirection(data, args):
     #         current = position
     
     # Get the next direction solution    
-    (solution, nearestLocationName, rangeToNearest) = searcher.getNextDirection(position)
+    (solution, nearestLocationName, rangeToNearest) = searcher.getNextDirection(position, bearing)
 
     # Publish    
     rospy.loginfo("Navigation solution: " + solution)
@@ -83,6 +89,8 @@ def rosMain():
     
     # Listen for post point messages on the perceptions topic
     rospy.Subscriber('sensor/gps', GPS, sendDirection, (publisher, searcher))
+    
+    rospy.Subscriber('sensor/compass', Float64, updateBearing)
 
     # spin() simply keeps python from exiting until this node is stopped
     rospy.spin()

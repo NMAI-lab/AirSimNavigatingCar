@@ -81,13 +81,13 @@ class RouteSearcher(AStar):
         return neighbourNames
     
     # Returns a direction for where to go to continue on the journey
-    def getNextPointBearing(self, previousCoord, currentCoord, nextPoint):
+    def getNextPointBearing(self, bearing, currentCoord, nextPoint):
 #        currentCoord = self.nodeLocations[current]
 #        previousCoord = self.nodeLocations[previous]
         nextPointCoord = self.nodeLocations[nextPoint]
         
-        deltaCurrent = previousCoord.delta_to(currentCoord)
-        azCurrent = deltaCurrent.azimuth_deg
+        #deltaCurrent = previousCoord.delta_to(currentCoord)
+        azCurrent = bearing #deltaCurrent.azimuth_deg
         deltaNext = currentCoord.delta_to(nextPointCoord)
         azNext = deltaNext.azimuth_deg
         
@@ -95,7 +95,7 @@ class RouteSearcher(AStar):
         return turnAngle
     
     # get the bearing angle for the next step in the plan
-    def getNextTurnAngle(self, solutionPath, previous, current):
+    def getNextTurnAngle(self, solutionPath, current, bearing):
         
         # Case where we are at the destination, nothing really needs to be done
         if len(solutionPath) == 1:
@@ -106,7 +106,7 @@ class RouteSearcher(AStar):
             # Add a check to make sure that the nextPoint is not where we are now?
             nextPoint = solutionPath[1]
             #current = solutionPath[0]
-            return self.getNextPointBearing(previous, current, nextPoint)        
+            return self.getNextPointBearing(bearing, current, nextPoint)        
 
 
     # Return the range (in m) to a location specified by locationCode and a 
@@ -115,30 +115,34 @@ class RouteSearcher(AStar):
         locationCoordinate = self.nodeLocations[locationCode]
         delta = coordinate.delta_to(locationCoordinate)
         distance = delta.length[0]
-        return distance
+        bearing = delta.azimuth_deg[0]
+        return (distance, bearing)
     
     # Find the location nearest to the current position. Returns the name and 
     # range (m) to that location as a tuple: (name, range)
     def getNearestLocationAndRange(self, position):
         nearestRange = 9000000          # Arbitrary large number to start us with
         nearestName = "meow"            # Arbitrary starting name
+        nearestBearing = 0
         
         for locationName in self.nodeNames:
-            thisRange = self.rangeToLocation(locationName, position)
-            if thisRange < nearestRange:
+            (thisRange, thisBearing) = self.rangeToLocation(locationName, position)
+            
+            if (thisRange < nearestRange) and abs(thisBearing) < 45 :
                 nearestRange = thisRange
+                nearestBearing = thisBearing
                 nearestName = locationName
             
-        return (nearestName, nearestRange)
+        return (nearestName, nearestRange, nearestBearing)
             
     
-    def getNextDirection(self, current):
+    def getNextDirection(self, current, bearing):
         # Deal with the special case where there is no destination set
         if self.destination == -1:
             return ("direction(unknown,unknown,0)", "unknown", 0)
         
-        # Get the name and range to the nearest codded location
-        (nearestLocationName, rangeToNearest) = self.getNearestLocationAndRange(current)
+        # Get the name and range to the nearest codded location that is generally in front of us
+        (nearestLocationName, rangeToNearest, nearestBearing) = self.getNearestLocationAndRange(current)
         
         # Deal with special case where we are already at the destination
         # (If we are withing a meter of the destination, close enough)
@@ -149,46 +153,48 @@ class RouteSearcher(AStar):
         # are not near any specific codded location
         # Just drive forward to get to a codded location
         #if ((current.delta_to(previous) < 5) or (rangeToNearest > 30)):
-        if (rangeToNearest > 30):
+        if (rangeToNearest > 40):
             return ("direction(" + str(self.destination) + ",forward, 0)", nearestLocationName, rangeToNearest)
         
         print("HERE!!!!!!!!!")
         
         # We are near a codded location. Get directions
         solutionPath = list(self.astar(nearestLocationName,self.destination))
-        #bearing = self.getNextTurnAngle(solutionPath, previous, current)[0]
+        bearing = self.getNextTurnAngle(solutionPath, current, bearing)[0]
     
-    
-        if len(solutionPath) > 1:
-            directions = "waypoint(" + solutionPath[0] + "," + solutionPath[1] + ")"
+        waypoint = ""
+        if len(solutionPath) > 1 and rangeToNearest < 50:
+            waypoint = "waypoint(" + solutionPath[0] + "," + solutionPath[1] + ") "
 
-        # print("bearing: " + str(bearing))
+        print("bearing: " + str(bearing))
         
-        # Deal with only positive numbers        
-        #while bearing < 0:
-        #    bearing = bearing + 360
+        # Don't have a bearing smaller than -180        
+        while bearing < -180:
+            bearing = bearing + 360
             
         # Deal with case where the bearing is too big
-        #while bearing > 360:
-        #    bearing = bearing - 360
+        while bearing > 180:
+            bearing = bearing - 360
             
-        #print("bearing: " + str(bearing))
+        print("bearing: " + str(bearing))
 
         # Case where it is more or less straight ahead
-        #if ((bearing >= (360 - 45)) or (bearing < 45)):
-        #    directions = "direction(" + str(self.destination) + ",forward," + str(bearing) + ")"
+        if abs(bearing) <= 45:
+            directions = "direction(" + str(self.destination) + ",forward," + str(bearing) + ")"
         
         # Case where it is more or less the the right
-        #elif (bearing >= (90-45)) and (bearing < (90+45)):
-        #    directions = "direction(" + str(self.destination) + ",right," + str(bearing) + ")"
+        elif bearing > 45:
+            directions = "direction(" + str(self.destination) + ",right," + str(bearing) + ")"
         
         # Case where it is more or less behind
         #elif (bearing >= (180-45)) and (bearing < (180+45)):
         #    directions = "direction(" + str(self.destination) + ",behind," + str(bearing) + ")"
         
         # Case where it is more or less to the left (all that is left)
-        #else:
-        #    directions = "direction(" + str(self.destination) + ",left," + str(bearing) + ")"
+        else:
+            directions = "direction(" + str(self.destination) + ",left," + str(bearing) + ")"
+        
+        directions = waypoint + directions
         
         return (directions, nearestLocationName, rangeToNearest)
         

@@ -39,10 +39,11 @@
 		
 // Destiantion is either left or right. Turn and then follow the path.
 +!goTo(LOCATION)
-	:	waypoint(AT,TO)
+	:	waypoint(AT,TO) &
+		(direction(LOCATION,left,_) | direction(LOCATION,right,_))
 	<-	.broadcast(tell, navigationUpdate(DIRECTION));
 		//!stopDriving;
-		setSpeed(1.0)
+		setSpeed(4.0)
 		turn(AT,TO);
 		!goTo(LOCATION).
  
@@ -57,7 +58,7 @@
 		
 // Destiantion is forward. Drive forward, follow the path.
 +!goTo(LOCATION)
-	:	direction(LOCATION,forward,_) &
+	:	direction(LOCATION,_,_) &		// Actually, just drive forward if I don't need to turn left or right
 		(not direction(_,left,_)) &
 		(not direction(_,right,_))
 	<-	.broadcast(tell, navigationUpdate(forward));
@@ -66,10 +67,10 @@
 
 +!followPath
 	: 	(not driving) | 
-		(speed(SPEED) & SPEED < 6.0)
+		(speed(SPEED) & SPEED < 4.0)
 	<-	.broadcast(tell, followPath(startDriving));
 		+driving;
-		setSpeed(8.0).
+		setSpeed(6.0).
 		
 +!stopDriving
 	:	driving |

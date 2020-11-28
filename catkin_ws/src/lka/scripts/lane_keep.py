@@ -13,14 +13,14 @@ from cv_bridge import CvBridge, CvBridgeError
 
 import lane_detect
 
-enable = True
-
 class LaneKeepAssist:
 
     def __init__(self, metrics):
         self.steeringPub = rospy.Publisher('lka/steering', Float64, queue_size=1)
         self.lanePub = rospy.Publisher('lka/lanes', Lanes, queue_size=1)
         self.marginsPub = rospy.Publisher('lka/margins', Margins, queue_size=1)
+
+        self.enable = True
 
         self.steering = 0.0
         self.metrics = metrics
@@ -104,8 +104,7 @@ class LaneKeepAssist:
 
                     rospy.loginfo(self.steering)
 
-                    global enable   # Only send the steering message if enabled
-                    if enable:
+                    if self.enable:
                         self.steeringPub.publish(self.steering)
                         rospy.loginfo("LKA steering message: " + str(self.steering))
                     else:
@@ -120,9 +119,8 @@ class LaneKeepAssist:
 
     # Receive a boolean to enable or disable steering control within the LKA
     def enabler(self, data):
-        global enable
-        enable = data.data
-        rospy.loginfo("LKA ENABLE: " + str(enable))
+        self.enable = data.data
+        rospy.loginfo("LKA ENABLE: " + str(self.enable))
         
 
 def listener():

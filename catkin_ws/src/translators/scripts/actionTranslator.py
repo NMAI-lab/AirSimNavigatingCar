@@ -126,6 +126,7 @@ def performTurn(command, lkaEnablePub, steeringPub, speedPub):
     
     # Assume control over speed and steering: disable LKA
     lkaEnablePub.publish(Bool(False))
+    rospy.loginfo("LKA Disabled")
     
     # Approach: Direct to the intersection
     directTo(steeringPub, speedPub, nodeLocations[at])
@@ -135,6 +136,7 @@ def performTurn(command, lkaEnablePub, steeringPub, speedPub):
     
     # Release control once clear
     lkaEnablePub.publish(True)
+    rospy.loginfo("LKA Enabled")
 
 
 

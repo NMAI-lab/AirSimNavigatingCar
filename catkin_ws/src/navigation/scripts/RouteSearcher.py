@@ -128,7 +128,7 @@ class RouteSearcher(AStar):
         for locationName in self.nodeNames:
             (thisRange, thisBearing) = self.rangeToLocation(locationName, position)
             
-            if (thisRange < nearestRange) and abs(thisBearing) < 45 :
+            if (thisRange < nearestRange) and abs(thisBearing) < 100 :
                 nearestRange = thisRange
                 nearestBearing = thisBearing
                 nearestName = locationName
@@ -146,7 +146,7 @@ class RouteSearcher(AStar):
         
         # Deal with special case where we are already at the destination
         # (If we are withing a meter of the destination, close enough)
-        if ((self.destination in nearestLocationName) and (rangeToNearest < 20)):
+        if ((self.destination in nearestLocationName) and (rangeToNearest < 30)):
             return ("direction(" + str(self.destination) + ",arrived,0)", nearestLocationName, rangeToNearest)
     
         # Deal with special case where there is no previous location or we 

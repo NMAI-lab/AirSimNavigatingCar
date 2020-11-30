@@ -99,7 +99,7 @@ class RouteSearcher(AStar):
         
         # Case where we are at the destination, nothing really needs to be done
         if len(solutionPath) == 1:
-            return 0
+            return [0]
         
         # len is greater than 1. We only really case about where to go next
         else:
@@ -156,7 +156,7 @@ class RouteSearcher(AStar):
         if (rangeToNearest > 40):
             return ("direction(" + str(self.destination) + ",forward, 0)", nearestLocationName, rangeToNearest)
         
-        print("HERE!!!!!!!!!")
+        #print("HERE!!!!!!!!!")
         
         # We are near a codded location. Get directions
         solutionPath = list(self.astar(nearestLocationName,self.destination))

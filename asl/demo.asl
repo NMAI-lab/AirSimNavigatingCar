@@ -78,7 +78,7 @@
 		(speed(SPEED) & SPEED < 1.0)
 	<-	.broadcast(tell, followPath(startDriving));
 		+driving;
-		setSpeed(6.0).
+		setSpeed(7.0).
 		
 +!stopDriving
 	:	driving |

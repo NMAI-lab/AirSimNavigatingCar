@@ -84,7 +84,7 @@ def turnToward(steeringPub, speedPub, targetPosition):
     speedSetting = 6
  
     # Perform the turn
-    while ((abs(startRange) < 51) and (abs(targetBearing) > 5)) or (abs(targetRange) < 10):
+    while ((abs(startRange) < 50) and (abs(targetBearing) > 5)) or (abs(targetRange) < 10):
         targetDelta = currentPosition.delta_to(targetPosition)
         targetBearing = targetDelta.azimuth_deg[0]
         

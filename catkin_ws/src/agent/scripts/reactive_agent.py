@@ -14,6 +14,7 @@ def start_agent():
 
     # Create Layers
     lka_layer = Layer(10, 'lka', [('steering', Float64)])
+    turn_layer = Layer(10, 'action', [('steering', Float64)])
     acc_layer = Layer(5, 'acc', [('throttle', Float64),('brake', Float64)])
     object_layer = Layer(10, 'object_avoid', [('brake', Float64)])
 
@@ -23,6 +24,7 @@ def start_agent():
         [
             object_layer, # highest priority
             acc_layer, 
+            turn_layer,
             lka_layer
         ]
     )

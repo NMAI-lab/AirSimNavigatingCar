@@ -4,7 +4,7 @@ import numpy as np
 
 import rospy
 
-from std_msgs.msg import Float64
+from std_msgs.msg import Float64, Bool
 from sensor_msgs.msg import Image
 from lka.msg import Lane
 from lka.msg import Lanes
@@ -19,6 +19,8 @@ class LaneKeepAssist:
         self.steeringPub = rospy.Publisher('lka/steering', Float64, queue_size=1)
         self.lanePub = rospy.Publisher('lka/lanes', Lanes, queue_size=1)
         self.marginsPub = rospy.Publisher('lka/margins', Margins, queue_size=1)
+
+        self.enable = True
 
         self.steering = 0.0
         self.metrics = metrics
@@ -45,7 +47,7 @@ class LaneKeepAssist:
         margin_steer = 0.0
         x_intersection = None
         # Weights
-        x_to_margin = 0.6
+        x_to_margin = 1.0# 0.6
         current_to_prev = 0.9
         
 
@@ -102,7 +104,11 @@ class LaneKeepAssist:
 
                     rospy.loginfo(self.steering)
 
-                    self.steeringPub.publish(self.steering)
+                    if self.enable:
+                        self.steeringPub.publish(self.steering)
+                        rospy.loginfo("LKA steering message: " + str(self.steering))
+                    else:
+                        rospy.loginfo("LKA disabled, no steering message sent")
                     self.lanePub.publish(lanes_msg)
                 else: # An error
                     rospy.loginfo('Unable to detect lines...')
@@ -111,10 +117,17 @@ class LaneKeepAssist:
             except CvBridgeError as e:
                 rospy.loginfo(e)
 
+    # Receive a boolean to enable or disable steering control within the LKA
+    def enabler(self, data):
+        self.enable = data.data
+        rospy.loginfo("LKA ENABLE: " + str(self.enable))
+        
+
 def listener():
     rospy.init_node('lka', anonymous=True)
     lka = LaneKeepAssist(True)
     rospy.Subscriber('airsim/image_raw', Image, lka.processImage)
+    rospy.Subscriber('lka/enable', Bool, lka.enabler)
     rospy.spin()
 
 if __name__ == "__main__":

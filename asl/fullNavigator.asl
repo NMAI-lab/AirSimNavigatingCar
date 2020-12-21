@@ -44,9 +44,9 @@ courseCorrection(TargetBearing, Correction) :- compass(CurrentBearing) &
 								declanation(Declanation) &
 								Correction = TargetBearing - (CurrentBearing + Declanation).
 
-destinationRangeBearing(Location,Range,Bearing) :- locationName(Location,[destLat,destLon])
-										& gps(curLat,curtLon)
-										& navigation.rangeBearing(curLat,curLon,destLat,DestLon,Range,Bearing).
+destinationRangeBearing(Location,Range,Bearing) :- locationName(Location,[DestLat,DestLon])
+										& gps(CurLat,CurLon)
+										& savi_ros_java.savi_ros_bdi.navigation.rangeBearing(CurLat,CurLon,DestLat,DestLon,Range,Bearing).
 		
 /**
  * !driveToward(Location)
@@ -61,7 +61,8 @@ destinationRangeBearing(Location,Range,Bearing) :- locationName(Location,[destLa
 +!driveToward(Location)
 	: 	destinationRangeBearing(Location,Range,Bearing)
 	 	& Range > 40
-	<-	!drive(8);
+	<-	.broadcast(tell, driveToward(main, Location));
+		!drive(8);
 		!steer(Bearing);
 		!driveToward(Location).
 		
@@ -69,7 +70,8 @@ destinationRangeBearing(Location,Range,Bearing) :- locationName(Location,[destLa
 +!driveToward(Location)
 	: 	destinationRangeBearing(Location,Range,Bearing)
 	 	& Range <= 40
-	<-	!drive(0);
+	<-	.broadcast(tell, driveToward(arrived, Location));
+		!drive(0);
 		!steer(Bearing).
 		
 /**
@@ -84,19 +86,22 @@ destinationRangeBearing(Location,Range,Bearing) :- locationName(Location,[destLa
 +!steer(Bearing)
 	:	courseCorrection(Bearing, Correction) &
 		math.abs(Correction) < 20
-	<-	steering(Correction/180).
+	<-	.broadcast(tell, steer(1, Bearing));
+		steering(Correction/180).
 	
 +!steer(Bearing)
 	:	courseCorrection(Bearing, Correction) &
 		math.abs(Correction) >= 20 &
 		Correction > 0
-	<-	steering(1).
+	<-	.broadcast(tell, steer(2, Bearing));
+		steering(1).
 	
 +!steer(Bearing)
 	:	courseCorrection(Bearing, Correction) &
 		math.abs(Correction) >= 20 &
 		Correction < 0
-	<-	steering(-1).
+	<-	.broadcast(tell, steer(3, Bearing));
+		steering(-1).
 	
 	
 /**
@@ -109,27 +114,45 @@ destinationRangeBearing(Location,Range,Bearing) :- locationName(Location,[destLa
 +!drive(Speed)
 	:	speedSetting(Old) &
 		not (Old = Speed)
-	<-	-speedSetting(_);
+	<-	.broadcast(tell, drive(1, Speed));
+		-speedSetting(_);
 		+speedSetting(Speed);
 		setSpeed(Speed).
  
 // No speed setting in the knowledge base
 +!drive(Speed)
 	:	not speedSetting(_)
-	<-	+speedSetting(Speed);
+	<-	.broadcast(tell, drive(2, Speed));
+		+speedSetting(Speed);
 		setSpeed(Speed).
 		
 // Nothing to do, speed already set
 +!drive(Speed)
-	:	speedSetting(Speed).
+	:	speedSetting(Speed)
+	<-	.broadcast(tell, drive(3, Speed)).
 	
 
 /**
  * Default plans
  */
  
-// !drive(Speed), should be impossible to reach.
-+!drive(Speed).
+// !driveToward(Location) default
++!driveToward(Location)
+	<-	.broadcast(tell, driveToward(default, Location));
+		!driveToward(Location).
  
 // !steer(Bearing), don't drop.
-+!steer(Bearing) <- !steer(Bearing).
++!steer(Bearing) 
+	<- 	.broadcast(tell, steer(default, Bearing));
+		!steer(Bearing).
+	
+// !drive(Speed), should be impossible to reach.
++!drive(Speed) 
+	<-	.broadcast(tell, drive(default, Speed)).
+ 
+
+// Map of locations that the agent can visit.
+{ include("D:/Local Documents/ROS_Workspaces/AirSimNavigatingCar/asl/map.asl") }
+
+// A Star Nav
+//{ include("D:/Local Documents/ROS_Workspaces/RoombaWorkspaces/src/jason_mobile_agent_ros/asl/a_star.asl") }

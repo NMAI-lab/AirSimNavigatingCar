@@ -5,7 +5,7 @@ from std_msgs.msg import Float64, String
 import re
 
 enable = True
-
+'''
 def updateCompass(data):
     global currentBearing
     declanation = 7.5#10.3881839942
@@ -22,7 +22,7 @@ def calculateSteering(courseCorrection):
             return 1
         else:
             return -1
-
+'''
 # Decode and execute the action
 def decodeAction(data, args):
     global enable
@@ -38,6 +38,8 @@ def decodeAction(data, args):
 
         # Extract the action parameter between the brackets
         parameter = re.search('\((.*)\)', action).group(1)
+        while "(" in parameter:
+            parameter = re.search('\((.*)\)', action).group(1)
     
         # Handle the docking station cases
         if 'setSpeed' in action:

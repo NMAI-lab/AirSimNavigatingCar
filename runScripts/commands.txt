@@ -53,7 +53,7 @@ D:
 cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\devel
 setup.bat
 cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\src\translators\scripts
-python perceptionTranslator.py
+python perceptionTranslatorNavAgent.py
 
 # RUN THE REASONER
 D:

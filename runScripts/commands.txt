@@ -6,6 +6,15 @@ D:
 cd D:\Local Documents\Utilities\AirSim\Neighborhood
 run.bat
 
+# RUN THE CONTROLLER
+D:
+cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\devel
+setup.bat
+cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\src\controls\scripts
+python controller.py
+
+------------------------
+
 # RUN THE REASONER
 D:
 cd D:\Local Documents\ROS_Workspaces\SAVI_ROS\rosjavaWorkspace\src\savi_ros_java\savi_ros_bdi\build\install\savi_ros_bdi\bin

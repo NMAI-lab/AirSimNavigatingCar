@@ -47,6 +47,7 @@ courseCorrection(TargetBearing, Correction) :- compass(CurrentBearing) &
 destinationRangeBearing(Location,Range,Bearing) :- locationName(Location,[DestLat,DestLon])
 										& gps(CurLat,CurLon)
 										& savi_ros_java.savi_ros_bdi.navigation.rangeBearing(CurLat,CurLon,DestLat,DestLon,Range,Bearing).
+										
 		
 /**
  * !driveToward(Location)
@@ -60,8 +61,8 @@ destinationRangeBearing(Location,Range,Bearing) :- locationName(Location,[DestLa
 // Drive toward the location.
 +!driveToward(Location)
 	: 	destinationRangeBearing(Location,Range,Bearing)
-	 	& Range > 40
-	<-	.broadcast(tell, driveToward(main, Location));
+	 	& Range >= 40
+	<-	.broadcast(tell, driveToward(main, Location, Range, Bearing));
 		!drive(8);
 		!steer(Bearing);
 		!driveToward(Location).
@@ -69,8 +70,8 @@ destinationRangeBearing(Location,Range,Bearing) :- locationName(Location,[DestLa
 // Close enough to the location, stop.
 +!driveToward(Location)
 	: 	destinationRangeBearing(Location,Range,Bearing)
-	 	& Range <= 40
-	<-	.broadcast(tell, driveToward(arrived, Location));
+	 	& Range < 40
+	<-	.broadcast(tell, driveToward(arrived, Location, Range,Bearing));
 		!drive(0);
 		!steer(Bearing).
 		

@@ -15,16 +15,10 @@
  */
 
 // Trigger the plan to drive to post3.
-//!goTo(post3).
-!driveToward(post2).
-
-// plans for updating position and bearing knowledge
-//+gps(Lat,Lon)
-//	:	position(_,_)
-//	<-	-position(_,_);
-//		+position(Lat,Lon).
-		
-//+gps(Lat,Lon).
+!navigate(post3).
+//!driveToward(post2).
+//gps(47.6414823712,-122.140364991).
+compass(7.5).
 
 // Expected compass declination. TODO: make this tunable.
 declanation(7.5).
@@ -32,22 +26,98 @@ declanation(7.5).
 // Initial speed of the car.
 speedSetting(0).
 
-// Used for testing the steering plans.
-//!steer(100).
-//compass(90).
-
 /**
  * Rule used for calculating the steering angles based on compass angle and
  * target bearing.
  */ 
-courseCorrection(TargetBearing, Correction) :- compass(CurrentBearing) & 
-								declanation(Declanation) &
-								Correction = TargetBearing - (CurrentBearing + Declanation).
+ 
+courseCorrection(TargetBearing, Correction)
+	:-	compass(CurrentBearing)
+		& declanation(Declanation)
+		& Correction = TargetBearing - (CurrentBearing + Declanation).
 
-destinationRangeBearing(Location,Range,Bearing) :- locationName(Location,[DestLat,DestLon])
-										& gps(CurLat,CurLon)
-										& savi_ros_java.savi_ros_bdi.navigation.rangeBearing(CurLat,CurLon,DestLat,DestLon,Range,Bearing).
+destinationRangeBearing(Location,Range,Bearing) 
+	:- 	locationName(Location,[DestLat,DestLon])
+		& gps(CurLat,CurLon)
+		& navigation.range(CurLat,CurLon,DestLat,DestLon,Range)
+		& navigation.bearing(CurLat,CurLon,DestLat,DestLon,Bearing).
 										
+/**
+ * A* Rules and Beliefs
+ */
+ 
+// Map of locations that the agent can visit.
+{ include("D:/Local Documents/ROS_Workspaces/AirSimNavigatingCar/asl/map.asl") }
+
+// A* Nav Rules
+{ include("D:/Local Documents/ROS_Workspaces/AirSimNavigatingCar/asl/a_star.asl") }
+
+// sucessor definition: suc(CurrentState,NewState,Cost,Operation)
+suc(Current,Next,Range,drive) 
+	:-	possible(Current,Next) 
+		& locationName(Current,[CurLat,CurLon])
+		& locationName(Next,[NextLat,NextLon])
+		& navigation.range(CurLat,CurLon,NextLat,NextLon,Range).
+		
+// heutistic definition: h(CurrentState,Goal,H)
+h(Current,Goal,Range) 
+	:-	locationName(Current,[CurLat,CurLon])
+		& locationName(Goal,[GoalLat,GoalLon])
+		& navigation.range(CurLat,CurLon,GoalLat,GoalLon,Range).
+
+// Rule for determining if the location is nearby.
+atLocation(CurLat,CurLon, Location, Range)
+	:-	nearestLocation(CurLat,CurLon,Location,Range)
+		& Range < 40.
+
+// Rule for determining the name, range and bearing to the nearest location
+nearestLocation(CurLat,CurLon,Location,Range)
+	:-	locationName(Location,[Lat,Lon])
+		& navigation.range(CurLat,CurLon,Lat,Lon,Range)
+		& locationName(OtherLocation,[OtherLat,OtherLon])
+		& navigation.range(CurLat,CurLon,OtherLat,OtherLon,OtherRange)
+		& OtherLocation \== Location
+		& Range < OtherRange.
+
+/*
++!testPlan
+	:	gps(CurLat,CurLon)
+		//& nearestLocation(CurLat,CurLon,Location,Range)
+		& atLocation(CurLat,CurLon,Location,Range)
+	<-	.print(at(Location,Range)).
+*/
+	
+/**
+ * !navigate(Destination)
+ * Used for setting up the navigation path to get from the current location to 
+ * the destination.
+ * Beliefs: Relevant map definitions in map.asl
+ * Actions: None
+ * Goals Adopted: !driveToward(Location)
+ */
+ 
+ // Case where we are already at the destination
++!navigate(Destination)
+	:	gps(CurLat,CurLon) 
+		& atLocation(CurLat,CurLon, Destination, Range)
+	<-	.broadcast(tell, navigate(arrived(Destination,Range)));
+		-destinaton(Destination).
+
+// We don't have a route plan, get one and set the waypoints.
++!navigate(Destination)
+	:	gps(CurLat,CurLon) 
+		& (not atLocation(CurLat,CurLon,Destination,_))
+		& locationName(Destination,[DestLat,DestLon])
+		& nearestLocation(CurLat,CurLon,Current,Range)
+	<-	.broadcast(tell, navigate(gettingRoute(Destination), Range));
+		.broadcast(tell, navigate(current(Current), CurrentRange));
+		+destination(Destination);
+		?a_star(Current,Destination,Solution,Cost);
+		.broadcast(tell, navigate(route(Solution,Cost), Destination, Range));
+		for (.member( op(_,NextPosition), Solution)) {
+			!driveToward(NextPosition);
+		}
+		!navigate(Destination).	
 		
 /**
  * !driveToward(Location)
@@ -113,8 +183,8 @@ destinationRangeBearing(Location,Range,Bearing) :- locationName(Location,[DestLa
  
 // Speed is out of date, update
 +!drive(Speed)
-	:	speedSetting(Old) &
-		not (Old = Speed)
+	:	speedSetting(Old)
+		& (Old \== Speed)
 	<-	.broadcast(tell, drive(1, Speed));
 		-speedSetting(_);
 		+speedSetting(Speed);
@@ -151,9 +221,3 @@ destinationRangeBearing(Location,Range,Bearing) :- locationName(Location,[DestLa
 +!drive(Speed) 
 	<-	.broadcast(tell, drive(default, Speed)).
  
-
-// Map of locations that the agent can visit.
-{ include("D:/Local Documents/ROS_Workspaces/AirSimNavigatingCar/asl/map.asl") }
-
-// A Star Nav
-//{ include("D:/Local Documents/ROS_Workspaces/RoombaWorkspaces/src/jason_mobile_agent_ros/asl/a_star.asl") }

@@ -66,17 +66,22 @@ h(Current,Goal,Range)
 		& savi_ros_java.savi_ros_bdi.navigation.range(CurLat,CurLon,GoalLat,GoalLon,Range).
 
 // Rule for determining if the location is nearby.
-atLocation(CurLat,CurLon, Location, Range)
+nearLocation(CurLat,CurLon, Location, Range)
 	:-	nearestLocation(CurLat,CurLon,Location,Range)
 		& Range < 40.
+		
+// Rule for determining if the location is nearby.
+atLocation(CurLat,CurLon, Location, Range)
+	:-	nearestLocation(CurLat,CurLon,Location,Range)
+		& Range < 4.
 
 // Rule for determining the name, range and bearing to the nearest location
 nearestLocation(CurLat,CurLon,Location,Range)
 	:-	locationName(Location,[Lat,Lon])
-		& savi_ros_java.savi_ros_bdi.navigation.range(CurLat,CurLon,Lat,Lon,Range)
 		& locationName(OtherLocation,[OtherLat,OtherLon])
-		& savi_ros_java.savi_ros_bdi.navigation.range(CurLat,CurLon,OtherLat,OtherLon,OtherRange)
 		& OtherLocation \== Location
+		& savi_ros_java.savi_ros_bdi.navigation.range(CurLat,CurLon,Lat,Lon,Range)
+		& savi_ros_java.savi_ros_bdi.navigation.range(CurLat,CurLon,OtherLat,OtherLon,OtherRange)
 		& Range < OtherRange.
 
 /*
@@ -114,7 +119,7 @@ nearestLocation(CurLat,CurLon,Location,Range)
 		+destination(Destination);
 		?a_star(Current,Destination,Solution,Cost);
 		.broadcast(tell, navigate(route(Solution,Cost), Destination, Range));
-		for (.member( op(_,NextPosition), Solution)) {
+		for (.member( op(drive,NextPosition), Solution)) {
 			!driveToward(NextPosition);
 		}
 		!navigate(Destination).	
@@ -128,22 +133,32 @@ nearestLocation(CurLat,CurLon,Location,Range)
  * Goals Adopted: !drive(_), !steer(_), !driveToward(_)
  */
  
+// Close enough to the location, stop.
++!driveToward(Location)
+	: 	destinationRangeBearing(Location,Range,Bearing)
+	 	& Range < 5
+	<-	.broadcast(tell, driveToward(arrived, Location, Range,Bearing));
+		!steer(Bearing);
+		!drive(0).
+
+// Approaching the location, slow down
++!driveToward(Location)
+	: 	destinationRangeBearing(Location,Range,Bearing)
+	 	& Range < 40 
+		& Range >= 5
+	<-	.broadcast(tell, driveToward(arrived, Location, Range,Bearing));
+		!steer(Bearing);
+		!drive(3);
+		!driveToward(Location).
+		
 // Drive toward the location.
 +!driveToward(Location)
 	: 	destinationRangeBearing(Location,Range,Bearing)
 	 	& Range >= 40
 	<-	.broadcast(tell, driveToward(main, Location, Range, Bearing));
+		!steer(Bearing);	
 		!drive(8);
-		!steer(Bearing);
 		!driveToward(Location).
-		
-// Close enough to the location, stop.
-+!driveToward(Location)
-	: 	destinationRangeBearing(Location,Range,Bearing)
-	 	& Range < 40
-	<-	.broadcast(tell, driveToward(arrived, Location, Range,Bearing));
-		!drive(0);
-		!steer(Bearing).
 		
 /**
  * Steering controller plans, based on compass angles for target bearing and
@@ -154,12 +169,6 @@ nearestLocation(CurLat,CurLon,Location,Range)
  				compass(CurrentBearing)[percept]
  * Actions:		steering(steeringSetting)
  */
-+!steer(Bearing)
-	:	courseCorrection(Bearing, Correction) &
-		math.abs(Correction) < 20
-	<-	.broadcast(tell, steer(1, Bearing));
-		steering(Correction/180).
-	
 +!steer(Bearing)
 	:	courseCorrection(Bearing, Correction) &
 		math.abs(Correction) >= 20 &
@@ -173,7 +182,12 @@ nearestLocation(CurLat,CurLon,Location,Range)
 		Correction < 0
 	<-	.broadcast(tell, steer(3, Bearing));
 		steering(-1).
-	
+ 
++!steer(Bearing)
+	:	courseCorrection(Bearing, Correction) &
+		math.abs(Correction) < 20
+	<-	.broadcast(tell, steer(1, Bearing));
+		steering(Correction/180).
 	
 /**
  * !drive(Speed)plans - used for setting speed.

@@ -39,8 +39,8 @@ courseCorrection(TargetBearing, Correction)
 destinationRangeBearing(Location,Range,Bearing) 
 	:- 	locationName(Location,[DestLat,DestLon])
 		& gps(CurLat,CurLon)
-		& navigation.range(CurLat,CurLon,DestLat,DestLon,Range)
-		& navigation.bearing(CurLat,CurLon,DestLat,DestLon,Bearing).
+		& savi_ros_java.savi_ros_bdi.navigation.range(CurLat,CurLon,DestLat,DestLon,Range)
+		& savi_ros_java.savi_ros_bdi.navigation.bearing(CurLat,CurLon,DestLat,DestLon,Bearing).
 										
 /**
  * A* Rules and Beliefs
@@ -57,13 +57,13 @@ suc(Current,Next,Range,drive)
 	:-	possible(Current,Next) 
 		& locationName(Current,[CurLat,CurLon])
 		& locationName(Next,[NextLat,NextLon])
-		& navigation.range(CurLat,CurLon,NextLat,NextLon,Range).
+		& savi_ros_java.savi_ros_bdi.navigation.range(CurLat,CurLon,NextLat,NextLon,Range).
 		
 // heutistic definition: h(CurrentState,Goal,H)
 h(Current,Goal,Range) 
 	:-	locationName(Current,[CurLat,CurLon])
 		& locationName(Goal,[GoalLat,GoalLon])
-		& navigation.range(CurLat,CurLon,GoalLat,GoalLon,Range).
+		& savi_ros_java.savi_ros_bdi.navigation.range(CurLat,CurLon,GoalLat,GoalLon,Range).
 
 // Rule for determining if the location is nearby.
 atLocation(CurLat,CurLon, Location, Range)
@@ -73,9 +73,9 @@ atLocation(CurLat,CurLon, Location, Range)
 // Rule for determining the name, range and bearing to the nearest location
 nearestLocation(CurLat,CurLon,Location,Range)
 	:-	locationName(Location,[Lat,Lon])
-		& navigation.range(CurLat,CurLon,Lat,Lon,Range)
+		& savi_ros_java.savi_ros_bdi.navigation.range(CurLat,CurLon,Lat,Lon,Range)
 		& locationName(OtherLocation,[OtherLat,OtherLon])
-		& navigation.range(CurLat,CurLon,OtherLat,OtherLon,OtherRange)
+		& savi_ros_java.savi_ros_bdi.navigation.range(CurLat,CurLon,OtherLat,OtherLon,OtherRange)
 		& OtherLocation \== Location
 		& Range < OtherRange.
 

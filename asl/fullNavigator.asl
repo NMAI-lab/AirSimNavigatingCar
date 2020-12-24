@@ -83,6 +83,40 @@ nearestLocation(CurLat,CurLon,Location,Range)
 		& savi_ros_java.savi_ros_bdi.navigation.range(CurLat,CurLon,Lat,Lon,Range)
 		& savi_ros_java.savi_ros_bdi.navigation.range(CurLat,CurLon,OtherLat,OtherLon,OtherRange)
 		& Range < OtherRange.
+		
+/**
+ * Steering and Speed limit settings
+ */
+steeringSetting(Setting)
+	:-	courseCorrection(Bearing, Correction)
+		& steering(Correction/180).
+		
+speedLimitTurn(Steering, Setting)
+	:-	math.abs(Steering) > 0.3
+		& Setting = 1.0.
+		
+speedLimitTurn(Steering, Setting)
+	:-	math.abs(Steering) <= 0.3
+		& Setting = 8.0.
+		
+speedLimitLocation(Location, Setting)
+	:-	gps(Lat,Lon)
+		& locationName(Location,[Lat,Lon])
+		& nearLocation(Lat,Lon, Location, Range)
+		& Range < 20
+		& Setting = 3.0.
+		
+speedLimitLocation(Location, Setting)
+	:-	gps(Lat,Lon)
+		& locationName(Location,[Lat,Lon])
+		& nearLocation(Lat,Lon, Location, Range)
+		& Range < 4
+		& Setting = 1.0.
+		
+//steeringSetting(Setting)
+//	:-	courseCorrection(Bearing, Correction)
+//		& Correction >= 50
+//		& steering(/180).
 
 /*
 +!testPlan
@@ -159,7 +193,17 @@ nearestLocation(CurLat,CurLon,Location,Range)
 		!steer(Bearing);	
 		!drive(8);
 		!driveToward(Location).
+
+				
+/**
+ * !drive(Steering,SpeedSetting)
+ * Control the steering and speed setting of the car
+ */		
+//+!drive(Bearing,SpeedSetting)
+//	:	courseCorrection(Bearing, Correction)
 		
+
+ 
 /**
  * Steering controller plans, based on compass angles for target bearing and
  * compass 
@@ -171,21 +215,21 @@ nearestLocation(CurLat,CurLon,Location,Range)
  */
 +!steer(Bearing)
 	:	courseCorrection(Bearing, Correction) &
-		math.abs(Correction) >= 20 &
+		math.abs(Correction) >= 50 &
 		Correction > 0
 	<-	.broadcast(tell, steer(2, Bearing));
 		steering(1).
 	
 +!steer(Bearing)
 	:	courseCorrection(Bearing, Correction) &
-		math.abs(Correction) >= 20 &
+		math.abs(Correction) >= 50 &
 		Correction < 0
 	<-	.broadcast(tell, steer(3, Bearing));
 		steering(-1).
  
 +!steer(Bearing)
 	:	courseCorrection(Bearing, Correction) &
-		math.abs(Correction) < 20
+		math.abs(Correction) < 50
 	<-	.broadcast(tell, steer(1, Bearing));
 		steering(Correction/180).
 	

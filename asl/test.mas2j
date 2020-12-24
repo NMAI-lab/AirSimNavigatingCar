@@ -1,7 +1,8 @@
 MAS search {
 
     agents:
-		fullNavigator;
+		turnTest;
+		//fullNavigator;
 		//rangeBearing;
 }
 

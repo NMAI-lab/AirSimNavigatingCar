@@ -8,3 +8,5 @@ asl/bin/build.xml
 *.java~
 
 *.mas2j~
+
+*.asl#

@@ -128,11 +128,11 @@ class ACC:
         steering = abs(steering_data.data)
         # Simple conditional for now. Needs to be updated: TODO
         if steering >= 1:
-            self.set_speed = self.max_speed * 0.1
+            self.set_speed = self.max_speed * 0.15
         elif steering > 0.5:
-            self.set_speed = self.max_speed * 0.2
+            self.set_speed = self.max_speed * 0.3
         elif steering > 0.3:
-            self.set_speed = self.max_speed * 0.4
+            self.set_speed = self.max_speed * 0.5
         else:
             self.set_speed = self.max_speed
         

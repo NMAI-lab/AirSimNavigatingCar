@@ -16,9 +16,6 @@
 
 // Trigger the plan to drive to post3.
 !navigate(post3).
-//!driveToward(post2).
-//gps(47.6414823712,-122.140364991).
-compass(7.5).
 
 // Expected compass declination. TODO: make this tunable.
 declanation(7.5).
@@ -85,48 +82,6 @@ nearestLocation(CurLat,CurLon,Location,Range)
 		& Range < OtherRange.
 		
 /**
- * Steering and Speed limit settings
- */
-steeringSetting(Setting)
-	:-	courseCorrection(Bearing, Correction)
-		& steering(Correction/180).
-		
-speedLimitTurn(Steering, Setting)
-	:-	math.abs(Steering) > 0.3
-		& Setting = 1.0.
-		
-speedLimitTurn(Steering, Setting)
-	:-	math.abs(Steering) <= 0.3
-		& Setting = 8.0.
-		
-speedLimitLocation(Location, Setting)
-	:-	gps(Lat,Lon)
-		& locationName(Location,[Lat,Lon])
-		& nearLocation(Lat,Lon, Location, Range)
-		& Range < 20
-		& Setting = 3.0.
-		
-speedLimitLocation(Location, Setting)
-	:-	gps(Lat,Lon)
-		& locationName(Location,[Lat,Lon])
-		& nearLocation(Lat,Lon, Location, Range)
-		& Range < 4
-		& Setting = 1.0.
-		
-//steeringSetting(Setting)
-//	:-	courseCorrection(Bearing, Correction)
-//		& Correction >= 50
-//		& steering(/180).
-
-/*
-+!testPlan
-	:	gps(CurLat,CurLon)
-		//& nearestLocation(CurLat,CurLon,Location,Range)
-		& atLocation(CurLat,CurLon,Location,Range)
-	<-	.print(at(Location,Range)).
-*/
-	
-/**
  * !navigate(Destination)
  * Used for setting up the navigation path to get from the current location to 
  * the destination.
@@ -170,7 +125,7 @@ speedLimitLocation(Location, Setting)
 // Close enough to the location, stop.
 +!driveToward(Location)
 	: 	destinationRangeBearing(Location,Range,Bearing)
-	 	& Range < 5
+	 	& Range < 10
 	<-	.broadcast(tell, driveToward(arrived, Location, Range,Bearing));
 		!steer(Bearing);
 		!drive(0).
@@ -178,32 +133,24 @@ speedLimitLocation(Location, Setting)
 // Approaching the location, slow down
 +!driveToward(Location)
 	: 	destinationRangeBearing(Location,Range,Bearing)
-	 	& Range < 40 
-		& Range >= 5
-	<-	.broadcast(tell, driveToward(arrived, Location, Range,Bearing));
+	 	& Range < 20 
+		& Range >= 10
+	<-	.broadcast(tell, driveToward(near, Location, Range,Bearing));
 		!steer(Bearing);
 		!drive(3);
+		//!drive(1);
 		!driveToward(Location).
 		
 // Drive toward the location.
 +!driveToward(Location)
 	: 	destinationRangeBearing(Location,Range,Bearing)
-	 	& Range >= 40
+	 	& Range >= 20
 	<-	.broadcast(tell, driveToward(main, Location, Range, Bearing));
 		!steer(Bearing);	
 		!drive(8);
+		//!drive(1);
 		!driveToward(Location).
 
-				
-/**
- * !drive(Steering,SpeedSetting)
- * Control the steering and speed setting of the car
- */		
-//+!drive(Bearing,SpeedSetting)
-//	:	courseCorrection(Bearing, Correction)
-		
-
- 
 /**
  * Steering controller plans, based on compass angles for target bearing and
  * compass 
@@ -215,22 +162,22 @@ speedLimitLocation(Location, Setting)
  */
 +!steer(Bearing)
 	:	courseCorrection(Bearing, Correction) &
-		math.abs(Correction) >= 50 &
+		math.abs(Correction) >= 20 &
 		Correction > 0
-	<-	.broadcast(tell, steer(2, Bearing));
+	<-	.broadcast(tell, steer(1, Bearing, Correction));
 		steering(1).
 	
 +!steer(Bearing)
 	:	courseCorrection(Bearing, Correction) &
-		math.abs(Correction) >= 50 &
+		math.abs(Correction) >= 20 &
 		Correction < 0
-	<-	.broadcast(tell, steer(3, Bearing));
+	<-	.broadcast(tell, steer(2, Bearing, Correction));
 		steering(-1).
  
 +!steer(Bearing)
 	:	courseCorrection(Bearing, Correction) &
-		math.abs(Correction) < 50
-	<-	.broadcast(tell, steer(1, Bearing));
+		math.abs(Correction) < 20
+	<-	.broadcast(tell, steer(3, Bearing, Correction));
 		steering(Correction/180).
 	
 /**
@@ -264,6 +211,10 @@ speedLimitLocation(Location, Setting)
 /**
  * Default plans
  */
+ 
+ // !navigate(Destination) - should be impossible
+ +!navigate(Destination)
+ 	<-	.broadcast(tell, navigate(default, Destination)).
  
 // !driveToward(Location) default
 +!driveToward(Location)

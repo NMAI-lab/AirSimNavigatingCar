@@ -2,6 +2,17 @@
  * Definition of the map
  * The map is the shape of the letter 'T'.
  */
+ 
+ /**
+ * Definition of the map
+ * The map is the shape of the letter 'T'.
+ * 
+ * 4----2----3
+ * 		|
+ * 		|
+ * 		|
+ * 		1
+ */
 
 locationName(post1,[47.6414823712,-122.140364991]).
 locationName(post2,[47.6426242556,-122.140354517]).

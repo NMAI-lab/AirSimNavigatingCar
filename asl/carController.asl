@@ -15,44 +15,7 @@
  */
 
 // Trigger the plan to drive to post3.
-!navigate(post3).
-
-/**
- * Rules for calculating the range and bearing to destination.
- */ 
-
-destinationRange(Location,Range) 
-	:- 	locationName(Location,[DestLat,DestLon])
-		& gps(CurLat,CurLon)
-		& navigation.range(CurLat,CurLon,DestLat,DestLon,Range).
-		
-destinationBearing(Location,Bearing) 
-	:- 	locationName(Location,[DestLat,DestLon])
-		& gps(CurLat,CurLon)
-		& navigation.bearing(CurLat,CurLon,DestLat,DestLon,Bearing).	
-								
-/**
- * A* Rules and Beliefs
- */
- 
-// Map of locations that the agent can visit.
-{ include("D:/Local Documents/ROS_Workspaces/AirSimNavigatingCar/asl/map.asl") }
-
-// A* Nav Rules
-{ include("D:/Local Documents/ROS_Workspaces/AirSimNavigatingCar/asl/a_star.asl") }
-
-// sucessor definition: suc(CurrentState,NewState,Cost,Operation)
-suc(Current,Next,Range,drive) 
-	:-	possible(Current,Next) 
-		& locationName(Current,[CurLat,CurLon])
-		& locationName(Next,[NextLat,NextLon])
-		& savi_ros_java.savi_ros_bdi.navigation.range(CurLat,CurLon,NextLat,NextLon,Range).
-		
-// heutistic definition: h(CurrentState,Goal,H)
-h(Current,Goal,Range) 
-	:-	locationName(Current,[CurLat,CurLon])
-		& locationName(Goal,[GoalLat,GoalLon])
-		& savi_ros_java.savi_ros_bdi.navigation.range(CurLat,CurLon,GoalLat,GoalLon,Range).
+!navigate(post4).
 
 /**
  * Rules for determining the nearest location, and if we are at or near a location
@@ -61,13 +24,15 @@ h(Current,Goal,Range)
 // Rule for determining if the location is nearby.
 nearLocation(Location, Range)
 	:-	gps(CurLat,CurLon)
-		& nearestLocation(CurLat,CurLon,Location,Range)
+		& locationName(Location,[Lat,Lon])
+		& savi_ros_java.savi_ros_bdi.navigation.range(CurLat,CurLon,Lat,Lon,Range)
 		& Range < 20.
 		
 // Rule for determining if the location is nearby.
 atLocation(Location, Range)
 	:-	gps(CurLat,CurLon)
-		& nearestLocation(CurLat,CurLon,Location,Range)
+		& locationName(Location,[Lat,Lon])
+		& savi_ros_java.savi_ros_bdi.navigation.range(CurLat,CurLon,Lat,Lon,Range)
 		& Range < 10.
 
 // Rule for determining the name, range and bearing to the nearest location
@@ -79,6 +44,21 @@ nearestLocation(Location,Range)
 		& savi_ros_java.savi_ros_bdi.navigation.range(CurLat,CurLon,Lat,Lon,Range)
 		& savi_ros_java.savi_ros_bdi.navigation.range(CurLat,CurLon,OtherLat,OtherLon,OtherRange)
 		& Range < OtherRange.
+
+/**
+ * Rules for calculating the range and bearing to destination.
+ */ 
+
+destinationRange(Location,Range) 
+	:- 	locationName(Location,[DestLat,DestLon])
+		& gps(CurLat,CurLon)
+		& savi_ros_java.savi_ros_bdi.navigation.range(CurLat,CurLon,DestLat,DestLon,Range).
+		
+destinationBearing(Location,Bearing) 
+	:- 	locationName(Location,[DestLat,DestLon])
+		& gps(CurLat,CurLon)
+		& savi_ros_java.savi_ros_bdi.navigation.bearing(CurLat,CurLon,DestLat,DestLon,Bearing).	
+	
 		
 /**
  * !navigate(Destination)
@@ -160,4 +140,28 @@ nearestLocation(Location,Range)
 	
 // Speed controller.
 { include("D:/Local Documents/ROS_Workspaces/AirSimNavigatingCar/asl/speedController.asl") }
+
+			
+/**
+ * A* Rules and Beliefs
+ */
+ 
+// Map of locations that the agent can visit.
+{ include("D:/Local Documents/ROS_Workspaces/AirSimNavigatingCar/asl/map.asl") }
+
+// A* Nav Rules
+{ include("D:/Local Documents/ROS_Workspaces/AirSimNavigatingCar/asl/a_star.asl") }
+
+// sucessor definition: suc(CurrentState,NewState,Cost,Operation)
+suc(Current,Next,Range,drive) 
+	:-	possible(Current,Next) 
+		& locationName(Current,[CurLat,CurLon])
+		& locationName(Next,[NextLat,NextLon])
+		& savi_ros_java.savi_ros_bdi.navigation.range(CurLat,CurLon,NextLat,NextLon,Range).
+		
+// heutistic definition: h(CurrentState,Goal,H)
+h(Current,Goal,Range) 
+	:-	locationName(Current,[CurLat,CurLon])
+		& locationName(Goal,[GoalLat,GoalLon])
+		& savi_ros_java.savi_ros_bdi.navigation.range(CurLat,CurLon,GoalLat,GoalLon,Range).
 

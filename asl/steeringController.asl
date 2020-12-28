@@ -42,10 +42,10 @@ steeringSetting(TargetBearing, Correction/180)
 /**
  * Plans for steering the car.
  */
-+!steer(Bearing)
++!controlSteering(Bearing)
 	:	steeringSetting(Bearing, Steering)
 	<-	steering(Steering);
 		.broadcast(tell, steer(steering(Steering),bearing(Bearing))).
 
 // Default plan, should not be possible.
-+!steer(Bearing) <- .broadcast(tell, steer(default,bearing(Bearing))).
++!controlSteering(Bearing) <- .broadcast(tell, steer(default,bearing(Bearing))).

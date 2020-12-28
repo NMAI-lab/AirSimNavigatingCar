@@ -15,7 +15,7 @@
  */
 
 // Trigger the plan to drive to post3.
-!navigate(post4).
+!navigate(post3).
 
 /**
  * Rules for determining the nearest location, and if we are at or near a location

@@ -1,9 +1,0 @@
-MAS search {
-
-    agents:
-		steeringController;
-		//fullNavigator;
-		//rangeBearing;
-}
-
-

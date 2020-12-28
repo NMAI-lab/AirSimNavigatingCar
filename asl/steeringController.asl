@@ -6,6 +6,7 @@
  * Beliefs:		declanation(Declanation)
  				compass(CurrentBearing)[percept]
  * Actions:		steering(steeringSetting)
+ * Messages:	diagnostic messages.
  */
  
 // Expected compass declination. TODO: make this tunable.
@@ -40,9 +41,11 @@ steeringSetting(TargetBearing, Correction/180)
 		
 /**
  * Plans for steering the car.
- */		
+ */
 +!steer(Bearing)
 	:	steeringSetting(Bearing, Steering)
-	<-	.print(steering(Steering)).
+	<-	steering(Steering);
+		.broadcast(tell, steer(steering(Steering),bearing(Bearing))).
 
-+!steer(_) <- .print("Steer default").
+// Default plan, should not be possible.
++!steer(Bearing) <- .broadcast(tell, steer(default,bearing(Bearing))).

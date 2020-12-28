@@ -1,7 +1,7 @@
 MAS search {
 
     agents:
-		turnTest;
+		steeringController;
 		//fullNavigator;
 		//rangeBearing;
 }

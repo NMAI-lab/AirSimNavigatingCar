@@ -10,7 +10,7 @@ from std_msgs.msg import Float64
 def speedometer():
     pub = rospy.Publisher('sensor/speed', Float64, queue_size=1)
     rospy.init_node('speedometer', anonymous=True)
-    rate = rospy.Rate(2) # 2 Hz
+    rate = rospy.Rate(60) # 2 Hz
 
     # connect to the AirSim simulator 
     client = airsim.CarClient()

@@ -4,7 +4,7 @@ import airsim
 
 import rospy
 from std_msgs.msg import Float64
-# from numpy import arctan, pi
+from numpy import arctan2
 import math
 
 def compass():
@@ -21,6 +21,7 @@ def compass():
         magData = client.getMagnetometerData()
         compassAngle = getCompassAngle(magData.magnetic_field_body.x_val, magData.magnetic_field_body.y_val)
         
+        #rospy.loginfo(magData)
         rospy.loginfo(compassAngle)
         pub.publish(compassAngle)
               
@@ -51,10 +52,16 @@ def compass():
 # Print ISBN:9780471547952 |Online ISBN:9780470172704 |DOI:10.1002/9780470172704
 # Copyright 1997 John Wiley & Sons, Inc.
 def getCompassAngle(x,y):
-    return math.degrees(math.atan(0 - (y/x)))
+    # https://stackoverflow.com/questions/35600583/how-do-i-convert-raw-xyz-magnetometer-data-to-a-heading
+    # Gives compass angle that has the wrong sign for some reason (INVESTIGATE)
+   
+    compass = 0 - math.degrees(arctan2(y, x))
+    
+    return compass
 
 if __name__ == '__main__':
     try:
         compass()
     except rospy.ROSInterruptException:
         pass
+    

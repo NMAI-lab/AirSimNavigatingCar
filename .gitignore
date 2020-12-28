@@ -1,2 +1,12 @@
 
 *.asl~
+
+asl/bin/build.xml
+
+*.class
+
+*.java~
+
+*.mas2j~
+
+*.asl#

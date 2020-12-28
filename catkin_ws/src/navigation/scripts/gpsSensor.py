@@ -30,7 +30,7 @@ def gpsSensor():
     
     pub = rospy.Publisher('sensor/gps', GPS, queue_size=1)
     rospy.init_node('gpsSensor', anonymous=True)
-    rate = rospy.Rate(30) # Hz
+    rate = rospy.Rate(60) # Hz
 
     while not rospy.is_shutdown():
 

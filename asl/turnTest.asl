@@ -16,7 +16,20 @@ compass(-90).
  * Rule used for calculating the steering angles based on compass angle and
  * target bearing.
  */ 
+
+steeringSetting(TargetBearing, 1)
+	:-	courseCorrection(TargetBearing, Correction)
+		& (Correction >= 20).
  
+steeringSetting(TargetBearing, -1)
+	:-	courseCorrection(TargetBearing, Correction)
+		& (Correction <= -20).
+		
+steeringSetting(TargetBearing, Correction/180)
+	:-	courseCorrection(TargetBearing, Correction)
+		& (Correction < 20)
+		& (Correction > -20).
+		
 courseCorrection(TargetBearing, Correction)
 	:-	compass(CurrentBearing)
 		& declanation(Declanation)
@@ -57,7 +70,7 @@ destinationBearing(Location,Bearing)
 	<-	.print("tell, driveToward(main, Location, Range, Bearing)");
 		!steer(Bearing).
 
-
+/*
 +!steer(Bearing)
 	:	courseCorrection(Bearing, Correction)
 	  	& (Correction >= 20)
@@ -76,6 +89,10 @@ destinationBearing(Location,Bearing)
 		//& (Correction > -20)
 	<-	.print("tell, steer(3, Bearing, Correction)");
 		.print(steering(Correction/180)).
-		
+*/
++!steer(Bearing)
+	:	steeringSetting(Bearing, Steering)
+	<-	.print(steering(Steering)).
+
 +!driveToward(_) <- .print("Drive default").
 +!steer(_) <- .print("Steer default").

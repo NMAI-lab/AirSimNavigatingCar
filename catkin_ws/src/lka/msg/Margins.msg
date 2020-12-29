@@ -1,1 +1,0 @@
-float64 margin_diff

@@ -1,4 +1,0 @@
-<launch>
-  <node name="speed" pkg="sensors" type="speedometer.py" />
-  <node name="metrics" pkg="metrics" type="main.py" />
-</launch>

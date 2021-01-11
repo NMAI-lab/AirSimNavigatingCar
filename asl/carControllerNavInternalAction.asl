@@ -17,48 +17,22 @@
 // Trigger the plan to drive to post3.
 !navigate(post3).
 
-/**
- * Rules for determining the nearest location, and if we are at or near a location
- */
- 
-// Rule for determining if the location is nearby.
-nearLocation(Location, Range)
-	:-	gps(CurLat,CurLon)
-		& locationName(Location,[Lat,Lon])
-		& savi_ros_java.savi_ros_bdi.navigation.range(CurLat,CurLon,Lat,Lon,Range)
-		& Range < 20.
-		
-// Rule for determining if the location is nearby.
-atLocation(Location, Range)
-	:-	gps(CurLat,CurLon)
-		& locationName(Location,[Lat,Lon])
-		& savi_ros_java.savi_ros_bdi.navigation.range(CurLat,CurLon,Lat,Lon,Range)
-		& Range < 10.
+/*
+// Benchmark version
++path(Path)
+	:	startTime(StartTime)
+	<-	// Print the results
+		.print("solution A* =", Path, " in ", (system.time - StartTime), " ms.");
+		+done.
 
-// Rule for determining the name, range and bearing to the nearest location
-nearestLocation(Location,Range)
-	:-	gps(CurLat,CurLon)
-		& locationName(Location,[Lat,Lon])
-		& locationName(OtherLocation,[OtherLat,OtherLon])
-		& OtherLocation \== Location
-		& savi_ros_java.savi_ros_bdi.navigation.range(CurLat,CurLon,Lat,Lon,Range)
-		& savi_ros_java.savi_ros_bdi.navigation.range(CurLat,CurLon,OtherLat,OtherLon,OtherRange)
-		& Range < OtherRange.
++!navigate(Destination)
+	: 	(not done)
+	<-	+startTime(system.time);		// Get initial time stamp, for benchmarking performance
+		getPath(a,Destination);
+		!navigate(Destination).
 
-/**
- * Rules for calculating the range and bearing to destination.
- */ 
-
-destinationRange(Location,Range) 
-	:- 	locationName(Location,[DestLat,DestLon])
-		& gps(CurLat,CurLon)
-		& savi_ros_java.savi_ros_bdi.navigation.range(CurLat,CurLon,DestLat,DestLon,Range).
-		
-destinationBearing(Location,Bearing) 
-	:- 	locationName(Location,[DestLat,DestLon])
-		& gps(CurLat,CurLon)
-		& savi_ros_java.savi_ros_bdi.navigation.bearing(CurLat,CurLon,DestLat,DestLon,Bearing).	
-	
++!navigate(_) <- .print("Done").
+*/
 		
 /**
  * !navigate(Destination)
@@ -135,33 +109,15 @@ destinationBearing(Location,Bearing)
 	<-	.broadcast(tell, driveToward(default, Location));
 		!driveToward(Location).
 
+// Include rules for determining position
+{ include("D:/Local Documents/ROS_Workspaces/AirSimNavigatingCar/asl/positioningRules.asl") }
+
 // Steering controller.
 { include("D:/Local Documents/ROS_Workspaces/AirSimNavigatingCar/asl/steeringController.asl") }
 	
 // Speed controller.
 { include("D:/Local Documents/ROS_Workspaces/AirSimNavigatingCar/asl/speedController.asl") }
 
-			
-/**
- * A* Rules and Beliefs
- */
- 
 // Map of locations that the agent can visit.
 { include("D:/Local Documents/ROS_Workspaces/AirSimNavigatingCar/asl/map.asl") }
-
-// A* Nav Rules
-{ include("D:/Local Documents/ROS_Workspaces/AirSimNavigatingCar/asl/a_star.asl") }
-
-// sucessor definition: suc(CurrentState,NewState,Cost,Operation)
-suc(Current,Next,Range,drive) 
-	:-	possible(Current,Next) 
-		& locationName(Current,[CurLat,CurLon])
-		& locationName(Next,[NextLat,NextLon])
-		& savi_ros_java.savi_ros_bdi.navigation.range(CurLat,CurLon,NextLat,NextLon,Range).
-		
-// heutistic definition: h(CurrentState,Goal,H)
-h(Current,Goal,Range) 
-	:-	locationName(Current,[CurLat,CurLon])
-		& locationName(Goal,[GoalLat,GoalLon])
-		& savi_ros_java.savi_ros_bdi.navigation.range(CurLat,CurLon,GoalLat,GoalLon,Range).
 

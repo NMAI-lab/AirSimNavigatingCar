@@ -45,6 +45,17 @@ def translateSpeed(data, args):
     sem.release()
     sendUpdate(perceptionPublisher)
 
+# This is an asynch perception, send the update directly    
+def translatePath(data, args):
+    (perceptionsPublisher, _, _) = args
+    path = data.data
+    perceptionString = "path(" + path + ")"
+    perceptionString = perceptionString.replace(" ","")
+    perceptionString = perceptionString.replace("'","")
+    
+    rospy.loginfo("Perceptions: " + str(perceptionString))
+    perceptionsPublisher.publish(perceptionString) 
+
 def sendUpdate(publisher):
     global positionPerception, compassPerception, speedPerception, updateReady, sem
     sem.acquire()    
@@ -62,6 +73,7 @@ def rosMain():
     rospy.Subscriber('sensor/gps', GPS, translateGPS, (perceptionPublisher))
     rospy.Subscriber('sensor/compass', Float64, translateCompass, (perceptionPublisher))
     rospy.Subscriber('sensor/speed', Float64, translateSpeed, (perceptionPublisher))
+    rospy.Subscriber('nagivation/path', String, translatePath, (perceptionPublisher))
     rospy.spin()
 
 if __name__ == '__main__':

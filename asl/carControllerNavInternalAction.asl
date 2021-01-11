@@ -57,9 +57,9 @@
 	<-	.broadcast(tell, navigate(gettingRoute(Destination), Range));
 		.broadcast(tell, navigate(current(Current), CurrentRange));
 		+destination(Destination);
-		?a_star(Current,Destination,Solution,Cost);
-		.broadcast(tell, navigate(route(Solution,Cost), Destination, Range));
-		for (.member( op(drive,NextPosition), Solution)) {
+		savi_ros_java.savi_ros_bdi.navigation.getPath(Current,Destination,Path);
+		.broadcast(tell, navigate(route(Solution), Destination));
+		for (.member(NextPosition, Solution)) {
 			!driveToward(NextPosition);
 		}
 		!navigate(Destination).	

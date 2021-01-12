@@ -16,6 +16,23 @@
 
 // Trigger the plan to drive to post3.
 !navigate(post3).
+
+/*
+// Benchmark version
++path(Path)
+	:	startTime(StartTime)
+	<-	// Print the results
+		.print("solution A* =", Path, " in ", (system.time - StartTime), " ms.");
+		+done.
+
++!navigate(Destination)
+	: 	(not done)
+	<-	+startTime(system.time);		// Get initial time stamp, for benchmarking performance
+		getPath(a,Destination);
+		!navigate(Destination).
+
++!navigate(_) <- .print("Done").
+*/
 		
 /**
  * !navigate(Destination)
@@ -40,9 +57,9 @@
 	<-	.broadcast(tell, navigate(gettingRoute(Destination), Range));
 		.broadcast(tell, navigate(current(Current), CurrentRange));
 		+destination(Destination);
-		?a_star(Current,Destination,Solution,Cost);
-		.broadcast(tell, navigate(route(Solution,Cost), Destination, Range));
-		for (.member( op(drive,NextPosition), Solution)) {
+		savi_ros_java.savi_ros_bdi.navigation.getPath(Current,Destination,Solution);
+		.broadcast(tell, navigate(route(Solution), Destination));
+		for (.member(NextPosition, Solution)) {
 			!driveToward(NextPosition);
 		}
 		!navigate(Destination).	
@@ -92,7 +109,6 @@
 	<-	.broadcast(tell, driveToward(default, Location));
 		!driveToward(Location).
 
-
 // Include rules for determining position
 { include("D:/Local Documents/ROS_Workspaces/AirSimNavigatingCar/asl/positioningRules.asl") }
 
@@ -102,27 +118,6 @@
 // Speed controller.
 { include("D:/Local Documents/ROS_Workspaces/AirSimNavigatingCar/asl/speedController.asl") }
 
-			
-/**
- * A* Rules and Beliefs
- */
- 
 // Map of locations that the agent can visit.
 { include("D:/Local Documents/ROS_Workspaces/AirSimNavigatingCar/asl/map.asl") }
-
-// A* Nav Rules
-{ include("D:/Local Documents/ROS_Workspaces/AirSimNavigatingCar/asl/a_star.asl") }
-
-// sucessor definition: suc(CurrentState,NewState,Cost,Operation)
-suc(Current,Next,Range,drive) 
-	:-	possible(Current,Next) 
-		& locationName(Current,[CurLat,CurLon])
-		& locationName(Next,[NextLat,NextLon])
-		& savi_ros_java.savi_ros_bdi.navigation.range(CurLat,CurLon,NextLat,NextLon,Range).
-		
-// heutistic definition: h(CurrentState,Goal,H)
-h(Current,Goal,Range) 
-	:-	locationName(Current,[CurLat,CurLon])
-		& locationName(Goal,[GoalLat,GoalLon])
-		& savi_ros_java.savi_ros_bdi.navigation.range(CurLat,CurLon,GoalLat,GoalLon,Range).
 

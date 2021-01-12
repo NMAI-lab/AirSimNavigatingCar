@@ -16,7 +16,29 @@
 
 // Trigger the plan to drive to post3.
 !navigate(post3).
-		
+
+/*
+// Benchmark version
++path(Path)
+	:	startTime(StartTime)
+	<-	// Print the results
+		.print("solution A* =", Path, " in ", (system.time - StartTime), " ms.");
+		+done.
+
++!navigate(Destination)
+	: 	(not done)
+	<-	+startTime(system.time);		// Get initial time stamp, for benchmarking performance
+		getPath(a,Destination);
+		!navigate(Destination).
+
++!navigate(_) <- .print("Done").
+*/
+
+// Perception of a path provided by the environment based navigation support
++path(Path)
+	<-	.broadcast(tell, path(received, Path));
+		+route(Path).
+	
 /**
  * !navigate(Destination)
  * Used for setting up the navigation path to get from the current location to 
@@ -25,32 +47,36 @@
  * Actions: None
  * Goals Adopted: !driveToward(Location)
  */
- 
  // Case where we are already at the destination
 +!navigate(Destination)
 	:	atLocation(Destination, Range)
 	<-	.broadcast(tell, navigate(arrived(Destination,Range)));
 		-destinaton(Destination).
+		-route(Path).
 
-// We don't have a route plan, get one and set the waypoints.
+// We have a route path, set the waypoints.
++!navigate(Destination)
+	:	route(Path)
+	<-	.broadcast(tell, navigate(route(Solution), Destination));
+		for (.member(NextPosition, Path)) {
+			!driveToward(NextPosition);
+		}
+		!navigate(Destination).
+		
+// We don't have a route plan, get one.
 +!navigate(Destination)
 	:	(not atLocation(Destination,_))
 		& locationName(Destination,[DestLat,DestLon])
 		& nearestLocation(Current,Range)
 	<-	.broadcast(tell, navigate(gettingRoute(Destination), Range));
-		.broadcast(tell, navigate(current(Current), CurrentRange));
 		+destination(Destination);
-		?a_star(Current,Destination,Solution,Cost);
-		.broadcast(tell, navigate(route(Solution,Cost), Destination, Range));
-		for (.member( op(drive,NextPosition), Solution)) {
-			!driveToward(NextPosition);
-		}
-		!navigate(Destination).	
-		
+		getPath(Current,Destination);
+		!navigate(Destination).
+
  // !navigate(Destination) - should be impossible
  +!navigate(Destination)
  	<-	.broadcast(tell, navigate(default, Destination)).
-
+ 
 	
 /**
  * !driveToward(Location)
@@ -101,28 +127,7 @@
 	
 // Speed controller.
 { include("D:/Local Documents/ROS_Workspaces/AirSimNavigatingCar/asl/speedController.asl") }
-
-			
-/**
- * A* Rules and Beliefs
- */
  
 // Map of locations that the agent can visit.
 { include("D:/Local Documents/ROS_Workspaces/AirSimNavigatingCar/asl/map.asl") }
-
-// A* Nav Rules
-{ include("D:/Local Documents/ROS_Workspaces/AirSimNavigatingCar/asl/a_star.asl") }
-
-// sucessor definition: suc(CurrentState,NewState,Cost,Operation)
-suc(Current,Next,Range,drive) 
-	:-	possible(Current,Next) 
-		& locationName(Current,[CurLat,CurLon])
-		& locationName(Next,[NextLat,NextLon])
-		& savi_ros_java.savi_ros_bdi.navigation.range(CurLat,CurLon,NextLat,NextLon,Range).
-		
-// heutistic definition: h(CurrentState,Goal,H)
-h(Current,Goal,Range) 
-	:-	locationName(Current,[CurLat,CurLon])
-		& locationName(Goal,[GoalLat,GoalLon])
-		& savi_ros_java.savi_ros_bdi.navigation.range(CurLat,CurLon,GoalLat,GoalLon,Range).
 

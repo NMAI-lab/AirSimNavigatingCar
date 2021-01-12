@@ -32,7 +32,7 @@ def decodeAction(data, args):
 
         # Get the parameters
         action = str(data.data)
-        (steeringPublisher, speedPublisher) = args
+        (steeringPublisher, speedPublisher, positionPublisher, destinationPublisher) = args
         
         rospy.loginfo('Action: ' + action)
 
@@ -50,7 +50,20 @@ def decodeAction(data, args):
         
         elif 'steering' in action:
             steeringPublisher.publish(Float64(float(parameter)))
-            rospy.loginfo('Setting steering: ' + parameter)          
+            rospy.loginfo('Setting steering: ' + parameter)    
+            
+            # Action format: getPath(Current,Destination)
+        elif "getPath" in action:
+            parameter = parameter.replace(" ","")
+            parameterList = parameter.split(",")
+        
+            current = parameterList[0]
+            rospy.loginfo("Position: " + str(current))
+            positionPublisher.publish(current)
+        
+            destination = parameterList[1]
+            rospy.loginfo("Destination: " + str(destination))
+            destinationPublisher.publish(destination)
         
         else:
             rospy.loginfo("Received unsupported action: " + str(action))
@@ -63,11 +76,14 @@ def decodeAction(data, args):
         
 # Main execution
 def rosMain():
+    # Setup publishers
+    positionPublisher = rospy.Publisher('navigation/position', String, queue_size=10)    
+    destinationPublisher = rospy.Publisher('navigation/destination', String, queue_size=10)
     steeringPublisher = rospy.Publisher('action/steering', Float64, queue_size=1)    # Hack into the steering angle (for now)
     speedPublisher = rospy.Publisher('action/setSpeed', Float64, queue_size=1)
 
     rospy.init_node('actionTranslator', anonymous=True)
-    rospy.Subscriber('actions', String, decodeAction, (steeringPublisher, speedPublisher))
+    rospy.Subscriber('actions', String, decodeAction, (steeringPublisher, speedPublisher, positionPublisher, destinationPublisher))
 
     rospy.spin()
 

@@ -47,7 +47,7 @@ def translateSpeed(data, args):
 
 # This is an asynch perception, send the update directly    
 def translatePath(data, args):
-    (perceptionsPublisher, _, _) = args
+    (perceptionsPublisher) = args
     path = data.data
     perceptionString = "path(" + path + ")"
     perceptionString = perceptionString.replace(" ","")

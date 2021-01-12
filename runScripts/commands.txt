@@ -65,3 +65,10 @@ rostopic echo outbox
 
 # Listen to actions
 rostopic echo actions
+
+# RUN MAP
+D:
+cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\devel
+setup.bat
+cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\src\navigation\scripts
+python Map.py

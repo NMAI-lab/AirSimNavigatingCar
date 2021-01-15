@@ -57,7 +57,7 @@
 // We have a route path, set the waypoints.
 +!navigate(Destination)
 	:	route(Path)
-	<-	.broadcast(tell, navigate(route(Solution), Destination));
+	<-	.broadcast(tell, navigate(route(Path), Destination));
 		for (.member(NextPosition, Path)) {
 			!driveToward(NextPosition);
 		}

@@ -51,7 +51,7 @@
 +!navigate(Destination)
 	:	atLocation(Destination, Range)
 	<-	.broadcast(tell, navigate(arrived(Destination,Range)));
-		-destinaton(Destination).
+		-destinaton(Destination);
 		-route(_).
 
 // We have a route path, set the waypoints.
@@ -75,7 +75,8 @@
 
  // !navigate(Destination) - should be impossible
  +!navigate(Destination)
- 	<-	.broadcast(tell, navigate(default, Destination)).
+ 	<-	.broadcast(tell, navigate(default, Destination));
+		!navigate(Destination).
  
 // Include rules for determining position
 { include("D:/Local Documents/ROS_Workspaces/AirSimNavigatingCar/asl/driveTowardController.asl") }

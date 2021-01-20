@@ -15,7 +15,7 @@
  */
 
 // Trigger the plan to drive to post3.
-!navigate(post3).
+//!navigate(post3).
 		
 /**
  * !navigate(Destination)

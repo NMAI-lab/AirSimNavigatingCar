@@ -102,7 +102,7 @@ class Map(AStar):
         (publisher) = args
         start = data.data
         solutionPath = list(self.astar(start,self.destination))
-        rospy.loginfo("Destination set: " + self.destination)
+        rospy.loginfo("Solution path: " + str(solutionPath))
         publisher.publish(String(str(solutionPath)))
 
 

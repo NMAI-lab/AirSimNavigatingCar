@@ -52,7 +52,7 @@
 	:	atLocation(Destination, Range)
 	<-	.broadcast(tell, navigate(arrived(Destination,Range)));
 		-destinaton(Destination).
-		-route(Path).
+		-route(_).
 
 // We have a route path, set the waypoints.
 +!navigate(Destination)

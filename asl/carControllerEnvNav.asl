@@ -15,7 +15,7 @@
  */
 
 // Trigger the plan to drive to post3.
-!navigate(post3).
+//!navigate(post3).
 
 /*
 // Benchmark version
@@ -51,13 +51,13 @@
 +!navigate(Destination)
 	:	atLocation(Destination, Range)
 	<-	.broadcast(tell, navigate(arrived(Destination,Range)));
-		-destinaton(Destination).
-		-route(Path).
+		-destinaton(Destination);
+		-route(_).
 
 // We have a route path, set the waypoints.
 +!navigate(Destination)
 	:	route(Path)
-	<-	.broadcast(tell, navigate(route(Solution), Destination));
+	<-	.broadcast(tell, navigate(route(Path), Destination));
 		for (.member(NextPosition, Path)) {
 			!driveToward(NextPosition);
 		}
@@ -75,49 +75,11 @@
 
  // !navigate(Destination) - should be impossible
  +!navigate(Destination)
- 	<-	.broadcast(tell, navigate(default, Destination)).
+ 	<-	.broadcast(tell, navigate(default, Destination));
+		!navigate(Destination).
  
-	
-/**
- * !driveToward(Location)
- * Plans for driving the car toward a location called Location
- * Beliefs: gps(curLat,curtLon) - received by perception
- * 			locationName(Location,[destLat,destLon]) - should be in knowledge base
- * Actions: None
- * Goals Adopted: !controlSpeed(Speed), !controlSteering(Steering), !driveToward(_)
- */
- 
-// Close enough to the location, stop.
-+!driveToward(Location)
-	: 	atLocation(Location,_)
-	<-	.broadcast(tell, driveToward(arrived, Location));
-		!controlSpeed(0);
-		!controlSteering(0).
-
-// Approaching the location, slow down
-+!driveToward(Location)
-	: 	nearLocation(Location,_)
-		& (not atLocation(Location,_))
-		& destinationBearing(Location,Bearing) 
-	<-	.broadcast(tell, driveToward(near, Location));
-		!controlSteering(Bearing);
-		!controlSpeed(3);
-		!driveToward(Location).
-		
-// Drive toward the location.
-+!driveToward(Location)
-	: 	(not nearLocation(Location,_))
-		& destinationBearing(Location,Bearing) 
-	<-	.broadcast(tell, driveToward(main, Location));
-		!controlSteering(Bearing);	
-		!controlSpeed(8);
-		!driveToward(Location).
-		
-// !driveToward(Location) default
-+!driveToward(Location)
-	<-	.broadcast(tell, driveToward(default, Location));
-		!driveToward(Location).
-
+// Include rules for determining position
+{ include("D:/Local Documents/ROS_Workspaces/AirSimNavigatingCar/asl/driveTowardController.asl") }
 
 // Include rules for determining position
 { include("D:/Local Documents/ROS_Workspaces/AirSimNavigatingCar/asl/positioningRules.asl") }

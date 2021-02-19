@@ -57,13 +57,14 @@ def decodeAction(data, args):
             parameter = parameter.replace(" ","")
             parameterList = parameter.split(",")
         
-            current = parameterList[0]
-            rospy.loginfo("Position: " + str(current))
-            positionPublisher.publish(current)
-        
             destination = parameterList[1]
             rospy.loginfo("Destination: " + str(destination))
             destinationPublisher.publish(destination)
+            
+            current = parameterList[0]
+            rospy.loginfo("Position: " + str(current))
+            positionPublisher.publish(current)
+    
         
         else:
             rospy.loginfo("Received unsupported action: " + str(action))

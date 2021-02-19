@@ -14,7 +14,7 @@ atLocation(Location, Range)
 	:-	gps(CurLat,CurLon)
 		& locationName(Location,[Lat,Lon])
 		& savi_ros_java.savi_ros_bdi.navigation.range(CurLat,CurLon,Lat,Lon,Range)
-		& Range < 10.
+		& Range < 7.
 
 // Rule for determining the name, range and bearing to the nearest location
 nearestLocation(Location,Range)

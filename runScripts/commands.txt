@@ -60,15 +60,29 @@ D:
 cd D:\Local Documents\ROS_Workspaces\SAVI_ROS\rosjavaWorkspace\src\savi_ros_java\savi_ros_bdi\build\install\savi_ros_bdi\bin
 .\savi_ros_bdi.bat savi_ros_java.savi_ros_bdi.SAVI_Main
 
-# Listen to outbox
-rostopic echo outbox
-
-# Listen to actions
-rostopic echo actions
-
 # RUN MAP
 D:
 cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\devel
 setup.bat
 cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\src\navigation\scripts
 python Map.py
+
+# RUN LOGGER
+D:
+cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\devel
+setup.bat
+cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\src\translators\scripts
+python logger.py
+
+# RUN USER INTERFACE
+D:
+cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\devel
+setup.bat
+cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\src\translators\scripts
+python userInterface.py
+
+# Listen to outbox
+rostopic echo outbox
+
+# Listen to actions
+rostopic echo actions

@@ -48,7 +48,7 @@ setup.bat
 cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\src\sensors\scripts
 python compass.py
 
-# RUN OBSTACLE CAMERA - NOT YET INTEGRATED
+# RUN CAMERA - NOT YET INTEGRATED
 D:
 cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\devel
 setup.bat

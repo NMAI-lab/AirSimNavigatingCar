@@ -1,0 +1,10 @@
+<launch>
+  <node name="controller" pkg="controller" type="controller.py"/>
+  <node name="agent" pkg="agent" type="reactive_agent.py"/>
+  <node name="raw_image" pkg="sensors" type="car_image_raw.py" />
+  <node name="speed" pkg="sensors" type="speedometer.py" />
+  <node name="controls" pkg="controls" type="handle_controls.py" />
+  <node name ="lka" pkg="lka" type="lane_keep.py"/>
+  <node name ="obstacle_avoid" pkg="obstacle_avoid" type="obstacle_avoid.py"/>
+  <node name="acc" pkg="acc" type="acc.py" />
+</launch>

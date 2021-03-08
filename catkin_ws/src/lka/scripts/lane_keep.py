@@ -21,6 +21,9 @@ class LaneKeepAssist:
         self.steeringPub = rospy.Publisher('lka/steering', Float64, queue_size=1)
         self.lanePub = rospy.Publisher('lka/lanes', Lanes, queue_size=1)
         self.marginsPub = rospy.Publisher('lka/margins', Margins, queue_size=1)
+        
+        # Wholistic publisher in text format
+        self.fullPublisher = rospy.Publisher('lka', String, queue_size=1)
 
         self.steering = 0.0
         self.metrics = metrics
@@ -118,6 +121,11 @@ class LaneKeepAssist:
                     #pub.publish(reset)
                     self.steeringPub.publish(self.steering) # Was commented out
                     self.lanePub.publish(lanes_msg)
+                    
+                    
+                    fullMessage = 'lane(' + str(self.steering) + ',' + str(lanes_msg.lane_lines[0].slope) + ',' + str(lanes_msg.lane_lines[0].y_cept) + ',' + str(lanes_msg.lane_lines[1].slope) + ',' + str(lanes_msg.lane_lines[1].y_cept) + ')'
+                    self.fullPublisher.publish(fullMessage)
+                    rospy.loginfo(fullMessage)
                 else: # An error
                     rospy.loginfo('Unable to detect lines...')
                     

@@ -128,6 +128,9 @@ class LaneKeepAssist:
                     rospy.loginfo(fullMessage)
                 else: # An error
                     rospy.loginfo('Unable to detect lines...')
+                    fullMessage = 'lane(0.0,0.0,0.0,0.0,0.0)'
+                    self.fullPublisher.publish(fullMessage)
+                    rospy.loginfo(fullMessage)
                     
 
             except CvBridgeError as e:

@@ -17,6 +17,10 @@
 // Trigger the plan to drive to post3.
 //!navigate(post3).
 		
+
+// Include obstacle avoidance
+{ include("D:/Local Documents/ROS_Workspaces/AirSimNavigatingCar/asl/obstacleAvoid.asl") }
+
 /**
  * !navigate(Destination)
  * Used for setting up the navigation path to get from the current location to 

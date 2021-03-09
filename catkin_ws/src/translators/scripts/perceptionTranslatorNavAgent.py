@@ -84,7 +84,7 @@ def sendUpdate(publisher):
     global positionPerception, compassPerception, speedPerception, lkaPerception, obstaclePerception, updateReady, sem
     sem.acquire()    
     if not False in updateReady:
-        perception = positionPerception + " " + compassPerception + " " + speedPerception        
+        perception = positionPerception + " " + compassPerception + " " + speedPerception + " " + lkaPerception + " " + obstaclePerception      
         rospy.loginfo(perception)
         publisher.publish(perception)
         updateReady = [False,False,False,False,False]

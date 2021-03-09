@@ -41,7 +41,7 @@ steeringSetting(TargetBearing, Correction/180)
 		
 lkaSteering(Steering)
 	:-	lane(Steering,A,B,C,D)
-		& ((Steering < 0.6) & (Steering > -0.6))
+		//& ((Steering < 0.6) & (Steering > -0.6))
 		& ((not (C == 0)) | (not (D == 0))).
 		
 //steeringSetting(TargetBearing, Steering)

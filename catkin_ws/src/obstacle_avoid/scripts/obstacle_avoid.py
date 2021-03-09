@@ -32,7 +32,8 @@ def obstacleSensor():
             for i in points[:4]:
                 x.append(i[0])
                 distance = sum(x) / len (x)
-           
+
+        print(x)
         rospy.loginfo(distance)
         pub.publish(distance)       # Obstacle close if distance < 10
 

@@ -23,7 +23,7 @@ locationName(post4,[47.642634517703016,-122.14203898419318]).
 //locationName(post5,[47.6426152931,-122.139873466]).
 
 // next to the car
-locationName(post5,[47.6426229973,-122.139811136]).
+locationName(post5,[47.6426234412,-122.139749573]).
 
 // Possible map transitions.
 // possible(StartingPosition, PossibleNewPosition)

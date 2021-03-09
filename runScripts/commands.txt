@@ -48,7 +48,7 @@ setup.bat
 cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\src\sensors\scripts
 python compass.py
 
-# RUN CAMERA - NOT YET INTEGRATED
+# RUN CAMERA
 D:
 cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\devel
 setup.bat
@@ -56,7 +56,7 @@ cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\src\sensors\s
 python car_image_raw.py
 
 
-# RUN OBSTACLE AVOID - NOT YET INTEGRATED
+# RUN OBSTACLE AVOID
 D:
 cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\devel
 setup.bat
@@ -72,7 +72,7 @@ cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\src\stop_dete
 python stop_detect.py
 
 
-# RUN LANE KEEP ASSIST - NOT YET INTEGRATED
+# RUN LANE KEEP ASSIST
 D:
 cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\devel
 setup.bat

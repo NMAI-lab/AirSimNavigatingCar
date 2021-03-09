@@ -13,7 +13,7 @@ from sensor_msgs.msg import Image
 def airpub():
     pub = rospy.Publisher("airsim/image_raw", Image, queue_size=1)
     rospy.init_node('image_raw', anonymous=True)
-    rate = rospy.Rate(10) # 10hz
+    rate = rospy.Rate(60) # 10hz
 
     # connect to the AirSim simulator 
     client = airsim.CarClient()

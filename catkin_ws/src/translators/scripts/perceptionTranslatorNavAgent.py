@@ -9,10 +9,14 @@ from threading import Semaphore
 positionPerception = ""
 compassPerception = ""
 speedPerception = ""
-updateReady = [False,False,False]
+lkaPerception = ""
+obstaclePerception = ""
+updateReady = [False,False,False,False,False]
 positionIndex = 0
 compassIndex = 1
 speedIndex = 2
+lkaIndex = 3
+obstacleIndex = 4
 sem = Semaphore()
 
 def translateGPS(data, args):
@@ -44,6 +48,26 @@ def translateSpeed(data, args):
     updateReady[speedIndex] = True
     sem.release()
     sendUpdate(perceptionPublisher)
+    
+def translateLka(data, args):
+    (perceptionPublisher) = args
+    global lkaPerception, updateReady, lkaIndex, sem
+    lkaData = data.data   
+    sem.acquire()
+    lkaPerception = lkaData
+    updateReady[lkaIndex] = True
+    sem.release()
+    sendUpdate(perceptionPublisher)
+    
+def translateObstacle(data, args):
+    (perceptionPublisher) = args
+    global obstaclePerception, updateReady, obstacleIndex, sem
+    obstacle = data.data   
+    sem.acquire()
+    obstaclePerception = "obstacle({})".format(obstacle)
+    updateReady[obstacleIndex] = True
+    sem.release()
+    sendUpdate(perceptionPublisher)    
 
 # This is an asynch perception, send the update directly    
 def translatePath(data, args):
@@ -57,13 +81,13 @@ def translatePath(data, args):
     perceptionsPublisher.publish(perceptionString) 
 
 def sendUpdate(publisher):
-    global positionPerception, compassPerception, speedPerception, updateReady, sem
+    global positionPerception, compassPerception, speedPerception, lkaPerception, obstaclePerception, updateReady, sem
     sem.acquire()    
     if not False in updateReady:
         perception = positionPerception + " " + compassPerception + " " + speedPerception        
         rospy.loginfo(perception)
         publisher.publish(perception)
-        updateReady = [False, False, False]
+        updateReady = [False,False,False,False,False]
     sem.release()
 
 # Initialize the node, setup the publisher and subscriber
@@ -74,6 +98,9 @@ def rosMain():
     rospy.Subscriber('sensor/compass', Float64, translateCompass, (perceptionPublisher))
     rospy.Subscriber('sensor/speed', Float64, translateSpeed, (perceptionPublisher))
     rospy.Subscriber('nagivation/path', String, translatePath, (perceptionPublisher))
+    rospy.Subscriber('lka', String, translateLka, (perceptionPublisher))
+    rospy.Subscriber('sensor/obstacle', Float64, translateObstacle, (perceptionPublisher))
+    
     rospy.spin()
 
 if __name__ == '__main__':

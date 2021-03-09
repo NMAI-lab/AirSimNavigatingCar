@@ -137,7 +137,7 @@ def listener():
     rospy.init_node('lka', anonymous=True)
     lka = LaneKeepAssist(True)
     rospy.Subscriber('airsim/image_raw', Image, lka.processImage)
-    rospy.Subscriber('controller',String,lka.cll)
+    #rospy.Subscriber('controller',String,lka.cll)
     rospy.spin()
 
 if __name__ == "__main__":

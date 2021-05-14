@@ -41,16 +41,15 @@ steeringSetting(TargetBearing, Correction/180)
 		
 lkaSteering(Steering)
 	:-	lane(Steering,A,B,C,D)
-		//& ((Steering < 0.6) & (Steering > -0.6))
 		& ((not (C == 0)) | (not (D == 0))).
-		
-//steeringSetting(TargetBearing, Steering)
-//	:-	lkaSteering(LkaSteer) & steeringToTarget(TargetBearing, CompassSteer)
 	
 		
 /**
  * Plans for steering the car.
  */
+
+movement(controlSteering).
+
  // LKA not available or turned off, use compass
  //+!controlSteering(Bearing, lkaSetting)
 +!controlSteering(Bearing,LkaSetting)

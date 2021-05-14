@@ -1,5 +1,5 @@
 /**
- * !driveToward(Location)
+ * !waypoint(Location)
  * Plans for driving the car toward a location called Location
  * Beliefs: gps(curLat,curtLon) - received by perception
  * 			locationName(Location,[destLat,destLon]) - should be in knowledge base
@@ -7,33 +7,35 @@
  * Goals Adopted: !controlSpeed(Speed), !controlSteering(Steering, lkaStatus), !driveToward(_)
  */
  
+movement(waypoint).
+ 
 // Close enough to the location, stop.
-+!driveToward(Location)
++!waypoint(Location)
 	: 	atLocation(Location,_)
 	<-	.broadcast(tell, driveToward(arrived, Location));
 		!controlSpeed(0);
 		!controlSteering(0, lkaOff).
 
 // Approaching the location, slow down, LKA off
-+!driveToward(Location)
++!waypoint(Location)
 	: 	nearLocation(Location,_)
 		& (not atLocation(Location,_))
 		& destinationBearing(Location,Bearing) 
 	<-	.broadcast(tell, driveToward(near, Location));
 		!controlSteering(Bearing, lkaOff);
 		!controlSpeed(3);
-		!driveToward(Location).
+		!waypoint(Location).
 		
 // Drive toward the location.
-+!driveToward(Location)
++!waypoint(Location)
 	: 	(not nearLocation(Location,_))
 		& destinationBearing(Location,Bearing) 
 	<-	.broadcast(tell, driveToward(main, Location));
 		!controlSteering(Bearing, lkaOn);	
 		!controlSpeed(8);
-		!driveToward(Location).
+		!waypoint(Location).
 		
 // !driveToward(Location) default
-+!driveToward(Location)
++!waypoint(Location)
 	<-	.broadcast(tell, driveToward(default, Location));
-		!driveToward(Location).
+		!waypoint(Location).

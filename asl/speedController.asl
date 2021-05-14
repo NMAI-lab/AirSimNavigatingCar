@@ -6,6 +6,7 @@
 
 // Initial speed of the car.
 speedSetting(0).
+movement(controlSpeed).
 
 // Speed is out of date, update
 +!controlSpeed(Speed)

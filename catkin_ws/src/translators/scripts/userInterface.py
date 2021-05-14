@@ -22,7 +22,7 @@ def sendMailMission(publisher):
 
     # Build message with the mail mission, log and send it
     messageType = "achieve"
-    messageContent = "navigate(" + str(destination) + ")"
+    messageContent = "mission(navigate,[" + str(destination) + "])"  
     message = "<" + str(messageID) + "," + userID + "," + messageType + "," + agentID + "," + messageContent + ">"
     rospy.loginfo("Sending message: " + str(message))
     publisher.publish(message)

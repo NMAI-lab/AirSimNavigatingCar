@@ -14,9 +14,17 @@
  * 
  */
 
-// Trigger the plan to drive to post3.
-//!navigate(post3).
-		
+mission(mission).
++!mission(Goal,Parameters)
+	:	Goal = navigate
+		& Parameters = [Destination]
+	<-	+mission(Goal,Parameters);
+		!navigate(Destination);
+		-mission(Goal,Parameters).
+
+// Include obstacle avoidance
+{ include("D:/Local Documents/ROS_Workspaces/AirSimNavigatingCar/asl/obstacleAvoid.asl") }
+
 /**
  * !navigate(Destination)
  * Used for setting up the navigation path to get from the current location to 
@@ -25,12 +33,13 @@
  * Actions: None
  * Goals Adopted: !driveToward(Location)
  */
- 
+
+navigation(navigate).
+
  // Case where we are already at the destination
 +!navigate(Destination)
 	:	atLocation(Destination, Range)
-	<-	.broadcast(tell, navigate(arrived(Destination,Range)));
-		-destinaton(Destination).
+	<-	.broadcast(tell, navigate(arrived(Destination,Range))).
 
 // We don't have a route plan, get one and set the waypoints.
 +!navigate(Destination)
@@ -39,11 +48,10 @@
 		& nearestLocation(Current,Range)
 	<-	.broadcast(tell, navigate(gettingRoute(Destination), Range));
 		.broadcast(tell, navigate(current(Current), CurrentRange));
-		+destination(Destination);
 		?a_star(Current,Destination,Solution,Cost);
 		.broadcast(tell, navigate(route(Solution,Cost), Destination, Range));
 		for (.member( op(drive,NextPosition), Solution)) {
-			!driveToward(NextPosition);
+			!waypoint(NextPosition);
 		}
 		!navigate(Destination).	
 		

@@ -39,13 +39,31 @@ steeringSetting(TargetBearing, Correction/180)
 		& (Correction < 20)
 		& (Correction > -20).
 		
+lkaSteering(Steering)
+	:-	lane(Steering,A,B,C,D)
+		& ((not (C == 0)) | (not (D == 0))).
+	
+		
 /**
  * Plans for steering the car.
  */
-+!controlSteering(Bearing)
-	:	steeringSetting(Bearing, Steering)
-	<-	steering(Steering);
-		.broadcast(tell, steer(steering(Steering),bearing(Bearing))).
 
+movement(controlSteering).
+
+ // LKA not available or turned off, use compass
+ //+!controlSteering(Bearing, lkaSetting)
++!controlSteering(Bearing,LkaSetting)
+	:	steeringSetting(Bearing, Steering)
+		& ( (not lkaSteering(_)) | (LkaSetting == lkaOff))
+	<-	steering(Steering);
+		.broadcast(tell, compassSteer(steering(Steering),bearing(Bearing))).
+
+// LKA available and enabled, use it
++!controlSteering(Bearing,lkaOn)
+	:	lkaSteering(Steering)
+	<-	steering(Steering);
+		.broadcast(tell, lkaSteer(steering(Steering),bearing(Bearing))).
+		
 // Default plan, should not be possible.
 +!controlSteering(Bearing) <- .broadcast(tell, steer(default,bearing(Bearing))).
+

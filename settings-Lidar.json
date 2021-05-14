@@ -1,0 +1,44 @@
+{
+	"SeeDocsAt": "https://github.com/Microsoft/AirSim/blob/master/docs/settings.md",
+	"SettingsVersion": 1.2,
+	"CameraDefaults": {
+		"CaptureSettings": [
+			{
+				"ImageType": 0,
+				"Width": 640,
+				"Height": 360,
+				"FOV_Degrees": 90,
+				"AutoExposureSpeed": 100,
+				"MotionBlurAmount": 0
+			}
+		]
+	},
+	"DefaultSensors": {
+		"Distance": {
+			"SensorType": 5,
+			"Enabled" : true
+		},
+		"Gps": {
+			"SensorType": 3,
+			"Enabled" : true
+		},
+		"Magnetometer": {
+		"SensorType": 4,
+		"Enabled" : true
+		}
+	},
+	"LidarSensor1": {
+                    "SensorType": 6,
+                    "Enabled" : true,
+                    "NumberOfChannels": 8,
+                    "RotationsPerSecond": 10,
+                    "PointsPerSecond": 10000,
+                    "X": 1, "Y": 0, "Z": -1,
+                    "Roll": 0, "Pitch": 0, "Yaw" : 0,
+                    "VerticalFOVUpper": 0,
+                    "VerticalFOVLower": -5,
+                    "HorizontalFOVStart": 5,
+                    "HorizontalFOVEnd": 10,
+                    "DataFrame": "SensorLocalFrame"
+                }
+}

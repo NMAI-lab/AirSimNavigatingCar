@@ -6,7 +6,12 @@ This project uses Jason to run: https://github.com/jason-lang and http://jason.s
 
 The reasoner connects to ROS using SAVI_ROS_BDI: https://github.com/NMAI-lab/savi_ros_bdi
 
-A paper explaining this in more detail is being submitted to EMAS 2021.
+A paper explaining this in more detail was presented at EMAS 2021.
+- Workshop: https://emas2021.in.tu-clausthal.de/index.php/accepted-papers
+- Presentation at EMAS: https://youtu.be/8jqWhd0i3eo
+- Car navigating: https://youtu.be/yX20gJjjbMg
+- Car driving with lane keep and avoidance: https://youtu.be/tvqkNnpKIPo
+
 
 ### Installation
 

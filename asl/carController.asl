@@ -23,7 +23,8 @@ mission(mission).
 		-mission(Goal,Parameters).
 
 // Include obstacle avoidance
-{ include("D:/Local Documents/ROS_Workspaces/AirSimNavigatingCar/asl/obstacleAvoid.asl") }
+//{ include("D:/Local Documents/ROS_Workspaces/AirSimNavigatingCar/asl/obstacleAvoid.asl") }
+{ include("D:/Local Documents/ROS_Workspaces/AirSimNavigatingCar/asl/obstacleAvoidStopper.asl") }
 
 /**
  * !navigate(Destination)

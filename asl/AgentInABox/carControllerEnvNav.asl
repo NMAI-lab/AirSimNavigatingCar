@@ -79,17 +79,17 @@
 		!navigate(Destination).
  
 // Include rules for determining position
-{ include("D:/Local Documents/ROS_Workspaces/AirSimNavigatingCar/asl/driveTowardController.asl") }
+{ include("D:/Local Documents/ROS_Workspaces/AirSimNavigatingCar/asl/AgentInABox/driveTowardController.asl") }
 
 // Include rules for determining position
-{ include("D:/Local Documents/ROS_Workspaces/AirSimNavigatingCar/asl/positioningRules.asl") }
+{ include("D:/Local Documents/ROS_Workspaces/AirSimNavigatingCar/asl/AgentInABox/positioningRules.asl") }
 
 // Steering controller.
-{ include("D:/Local Documents/ROS_Workspaces/AirSimNavigatingCar/asl/steeringController.asl") }
+{ include("D:/Local Documents/ROS_Workspaces/AirSimNavigatingCar/asl/AgentInABox/steeringController.asl") }
 	
 // Speed controller.
-{ include("D:/Local Documents/ROS_Workspaces/AirSimNavigatingCar/asl/speedController.asl") }
+{ include("D:/Local Documents/ROS_Workspaces/AirSimNavigatingCar/asl/AgentInABox/speedController.asl") }
  
 // Map of locations that the agent can visit.
-{ include("D:/Local Documents/ROS_Workspaces/AirSimNavigatingCar/asl/map.asl") }
+{ include("D:/Local Documents/ROS_Workspaces/AirSimNavigatingCar/asl/AgentInABox/map.asl") }
 

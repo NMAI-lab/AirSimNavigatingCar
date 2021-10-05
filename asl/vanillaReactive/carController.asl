@@ -18,8 +18,12 @@ mission(mission).
 +!mission(Goal,Parameters)
 	:	Goal = navigate
 		& Parameters = [Destination]
-	<-	+navigate(Destination).
+	<-	.broadcast(tell, mission(Goal, Destination));
+		+navigate(Destination).//;
+		//!busy.
 
+
+		
 // Include rules for determining position
 { include("D:/Local Documents/ROS_Workspaces/AirSimNavigatingCar/asl/vanillaReactive/driveTowardController.asl") }
 

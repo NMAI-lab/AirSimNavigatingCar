@@ -81,6 +81,13 @@ D:
 cd D:\Local Documents\ROS_Workspaces\SAVI_ROS\rosjavaWorkspace\src\savi_ros_java\savi_ros_bdi\build\install\savi_ros_bdi\bin
 .\savi_ros_bdi.bat savi_ros_java.savi_ros_bdi.SAVI_Main
 
+# Run THE PYTHON REASONER
+D:
+cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\devel
+setup.bat
+cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\src\controls\scripts
+python traditionalAgent.py
+
 # RUN USER INTERFACE
 D:
 cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\devel

@@ -3,10 +3,14 @@
 import rospy
 from std_msgs.msg import String
 from datetime import datetime
+import nvector as nv
 
-
+stopRange = 5.5
+speedSetting = 0
 mid = 0
 mission = -1
+wgs84 = nv.FrameE(name='WGS84')
+destination = wgs84.GeoPoint(latitude=6426242556, longitude=-122.140354517, degrees = True)
 
 def receiveMessage(data, args):
     (outboxPublisher,_,_) = args
@@ -24,25 +28,73 @@ def perceive(data, args):
     (gps,compass,lane,speed,obstacle) = extractPerceptions(perceptionString)
     decide(gps,compass,lane,speed,obstacle,reasoningStart,outboxPublisher, actionsPublisher, reasoningRatePublisher)
 
-# TODO: Finish this method    
 def extractPerceptions(perceptionString):
-    gps = 0
-    compass = 0
-    lane = 0
-    speed = 0
-    obstacle = 0
+    (gps,compass,lane,speed,obstacle) = (0,0,0,0,0)
+    perceptList = perceptionString.split(')')
+    
+    for p in perceptList:
+        if '(' in p:
+            values = p.split('(')[1]
+            if 'gps' in p:
+                lat = float(values.split(', ')[0])
+                lon = float(values.split(', ')[1])
+                gps = (lat,lon)
+            elif 'compass' in p:
+                compass = float(values)
+            elif 'lane' in p:
+                lkaParams = values.split(',')
+                lane = tuple([float(i) for i in lkaParams])
+            elif 'speed' in p:
+                speed = float(values)
+            elif 'obstacle' in p:
+                obstacle = float(values)
+            
     return (gps,compass,lane,speed,obstacle)
 
-# TODO: Finish this method
+
 def decide(gps,compass,lane,speed,obstacle,reasoningStart,outboxPublisher,actionsPublisher,reasoningRatePublisher):
-    # Think about what to do
+    global stopRange, speedSetting
     
-    action = "cat(meow)"
-    act(action,actionsPublisher)
-    sendMessage(action,outboxPublisher)
+    action = ''
+    if (obstacle < stopRange):
+        action = 'setSpeed(0)'
+    elif speedSetting == 0:
+        speedSetting = 8
+        action = 'setSpeed(' + speedSetting + ')'
+    else:
+        (lkaSteering,_,_,c,d) = lane
+        if ((c != 0) or (d != 0)):
+            action = 'steering(' + str(lkaSteering) + ')'
+        else:
+            compassSteering = getCompassSteering(gps,compass)
+            action = 'steering(' + str(compassSteering) + ')'
+
+
+    if action != '':
+        act(action,actionsPublisher)
+        sendMessage(action,outboxPublisher)
     sendReasoningPerforamnce(reasoningStart, datetime.now(), reasoningRatePublisher)
+
+
+def getCompassSteering(gps,compass):
+    global destination, wgs84
+    declanation = 7.5
+
+    (curLat,curLon) = gps
+    current = wgs84.GeoPoint(latitude=curLat, longitude=curLon, degrees = True)
+    destinationBearing = destination.delta_to(current).azimuth_deg[0]
+    courseCorrection = destinationBearing - (compass + declanation)
+
+    if courseCorrection >= 20:
+        steeringSetting = 1
+    elif courseCorrection <= -20:
+        steeringSetting = -1
+    else:
+        steeringSetting = courseCorrection/180
     
+    return steeringSetting
     
+   
 def act(action, publisher):
     rospy.loginfo("Action: " + str(action))
     publisher.publish(action)
@@ -75,7 +127,13 @@ def rosMain():
     
     rospy.spin()
 
+#def test():
+#    perceptionString = "gps(47.64148237132387, -122.1403649909945) compass(-8.76061640298) speed(0.0) lane(0.0,0.0,0.0,0.0,0.0) obstacle(32.6919536591)"
+#    (gps,compass,lane,speed,obstacle) = extractPerceptions(perceptionString)
+#    steering = getCompassSteering(gps,compass)
+
 if __name__ == '__main__':
+#    test()
     try:
         rosMain()
     except rospy.ROSInterruptException:

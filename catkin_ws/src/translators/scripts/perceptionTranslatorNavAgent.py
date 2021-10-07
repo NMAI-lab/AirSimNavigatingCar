@@ -6,7 +6,7 @@ from navigation.msg import GPS
 from std_msgs.msg import Float64
 from threading import Semaphore    
 
-noiseParams = 10
+noiseParams = 0
 
 positionPerception = ""
 compassPerception = ""

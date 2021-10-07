@@ -9,10 +9,6 @@
  
 movement(waypoint).
 
-obstacleStop
-	:-	obstacle(Distance)
-		& Distance < 5.5.
-
 // Close enough to the location, stop.
 +!waypoint(Location)
 	: 	atLocation(Location,_)

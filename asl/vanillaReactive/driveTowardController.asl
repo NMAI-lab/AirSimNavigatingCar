@@ -13,10 +13,6 @@ mission(navigate).
 +navigate(Destination)
 	<-	.broadcast(tell, navigate(Destination)).
 
-obstacleStop 
-	:-	obstacle(Distance)
-		& Distance < 5.5.
-	
 +obstacle(Distance)
 	:	obstacleStop
 	<-	setSpeed(0);

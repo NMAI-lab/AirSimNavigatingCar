@@ -26,7 +26,10 @@ def perceive(data, args):
     (outboxPublisher, actionsPublisher, reasoningRatePublisher) = args
     reasoningStart = datetime.now()
     (gps,compass,lane,speed,obstacle) = extractPerceptions(perceptionString)
-    decide(gps,compass,lane,speed,obstacle,reasoningStart,outboxPublisher, actionsPublisher, reasoningRatePublisher)
+    
+    global mission
+    if mission != -1:
+        decide(gps,compass,lane,speed,obstacle,reasoningStart,outboxPublisher, actionsPublisher, reasoningRatePublisher)
 
 def extractPerceptions(perceptionString):
     (gps,compass,lane,speed,obstacle) = (0,0,0,0,0)
@@ -60,7 +63,7 @@ def decide(gps,compass,lane,speed,obstacle,reasoningStart,outboxPublisher,action
         action = 'setSpeed(0)'
     elif speedSetting == 0:
         speedSetting = 8
-        action = 'setSpeed(' + speedSetting + ')'
+        action = 'setSpeed(' + str(speedSetting) + ')'
     else:
         (lkaSteering,_,_,c,d) = lane
         if ((c != 0) or (d != 0)):
@@ -73,7 +76,8 @@ def decide(gps,compass,lane,speed,obstacle,reasoningStart,outboxPublisher,action
     if action != '':
         act(action,actionsPublisher)
         sendMessage(action,outboxPublisher)
-    sendReasoningPerforamnce(reasoningStart, datetime.now(), reasoningRatePublisher)
+        reasoningStop = datetime.now()
+    sendReasoningPerforamnce(reasoningStart, reasoningStop, reasoningRatePublisher)
 
 
 def getCompassSteering(gps,compass):
@@ -109,7 +113,7 @@ def sendMessage(message, publisher):
     
 def sendReasoningPerforamnce(start, stop, publisher):
     reasoningTime = stop - start
-    publisher.pub(str(reasoningTime))
+    publisher.publish(str(reasoningTime))
 
 
 # Initialize the node, setup the publisher and subscriber

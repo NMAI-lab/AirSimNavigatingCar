@@ -5,7 +5,7 @@ from std_msgs.msg import String
 from datetime import datetime
 import nvector as nv
 
-stopRange = 5.5
+stopRange = 5.0
 speedSetting = 0
 mid = 0
 mission = -1

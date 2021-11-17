@@ -8,6 +8,7 @@ Created on Wed Nov 17 15:52:06 2021
 class StateMachine:
     state = ''
     stateTransitions = {}
+    triggerActionParameterCount = {}
 
     def addStateTransition(self, startState, trigger, action, newState):
         if not startState in self.stateTransitions.keys():
@@ -17,6 +18,7 @@ class StateMachine:
     def updateState(self, trigger):
         startState = self.state
         (action,self.state) = self.stateTransitions[startState][trigger]
+        
         return action
 
 def buildStateMachine():

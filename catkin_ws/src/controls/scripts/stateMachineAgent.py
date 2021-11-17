@@ -4,6 +4,8 @@ import rospy
 from std_msgs.msg import String
 from datetime import datetime
 import nvector as nv
+from stateMachine import StateMachine
+
 
 stopRange = 5.0
 speedSetting = 0
@@ -11,6 +13,7 @@ mid = 0
 mission = -1
 wgs84 = nv.FrameE(name='WGS84')
 destination = wgs84.GeoPoint(latitude=6426242556, longitude=-122.140354517, degrees = True)
+stateMachine = StateMachine()
 
 def receiveMessage(data, args):
     (outboxPublisher,_,_) = args
@@ -55,23 +58,46 @@ def extractPerceptions(perceptionString):
     return (gps,compass,lane,speed,obstacle)
 
 
-def decide(gps,compass,lane,speed,obstacle,reasoningStart,outboxPublisher,actionsPublisher,reasoningRatePublisher):
-    global stopRange, speedSetting
-    
-    action = ''
-    if (obstacle < stopRange):
-        action = 'setSpeed(0)'
-    elif speedSetting == 0:
-        speedSetting = 8
-        action = 'setSpeed(' + str(speedSetting) + ')'
-    else:
-        (lkaSteering,_,_,c,d) = lane
-        if ((c != 0) or (d != 0)):
-            action = 'steering(' + str(lkaSteering) + ')'
-        else:
-            compassSteering = getCompassSteering(gps,compass)
-            action = 'steering(' + str(compassSteering) + ')'
+# TODO
+def buildStateMachine():
+    return 1
 
+# TODO
+def buildTrigger():
+    return 1
+
+# TODO: Finish this off?
+def parameterizeAction(action, lane,compass,gps):
+    if action == 'compassSteer':
+        compassSteering = getCompassSteering(gps,compass)
+        newAction = 'steering(' + str(compassSteering) + ')'
+    else: # action == 'lkaSteer':
+        (lkaSteering,_,_,_,_) = lane
+        newAction = 'steering(' + str(lkaSteering) + ')'
+    return newAction
+    
+
+def decide(gps,compass,lane,speed,obstacle,reasoningStart,outboxPublisher,actionsPublisher,reasoningRatePublisher):
+    global stopRange, speedSetting, stateMachine
+    
+    trigger = buildTrigger(gps,compass,lane,speed,obstacle)
+    action = stateMachine.updateState(trigger)
+    action = parameterizeAction(action)
+    
+    
+#    action = ''
+#    if (obstacle < stopRange):
+#        action = 'setSpeed(0)'
+#    elif speedSetting == 0:
+#        speedSetting = 8
+#        action = 'setSpeed(' + str(speedSetting) + ')'
+#    else:
+#        (lkaSteering,_,_,c,d) = lane
+#        if ((c != 0) or (d != 0)):
+#            action = 'steering(' + str(lkaSteering) + ')'
+#        else:
+#            compassSteering = getCompassSteering(gps,compass)
+#            action = 'steering(' + str(compassSteering) + ')'
 
     if action != '':
         act(action,actionsPublisher)

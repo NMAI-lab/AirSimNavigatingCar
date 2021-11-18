@@ -12,6 +12,8 @@ class CarStateMachine:
     def __init__(self):
         self.stateMachine = StateMachine()
         self.loadStates()
+        self.nextWaypoint()
+        self.destination()
         
     # TODO
     def loadStates(self):
@@ -30,7 +32,16 @@ class CarStateMachine:
     def processPerception(self, gps, lka, obstacle):
         
         procesedPerception = 0
+    
+        
+        # trigger outputs:
+        # waypoint: at, near, far
+        # lka: available, not available
+        # obstacle: near, far
+    
         return procesedPerception
+    
+    
     
     # TODO
     def getPositionTrigger(gps):

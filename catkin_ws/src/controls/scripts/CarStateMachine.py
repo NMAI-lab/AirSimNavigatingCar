@@ -6,15 +6,13 @@ Created on Thu Nov 18 10:18:24 2021
 """
 
 from stateMachine import StateMachine
-import nvframe as nv
+import nvector as nv
 
 class CarStateMachine:
         
     def __init__(self):
         self.stateMachine = StateMachine()
         self.loadStates()
-        self.nextWaypoint()
-        self.destination()
         
         self.declanation = 7.5
         self.nearWaypointRange = 20
@@ -22,9 +20,11 @@ class CarStateMachine:
         self.obstacleRange = 5
         
         self.wgs84 = nv.FrameE(name='WGS84')
-        self.destination = self.wgs84.GeoPoint(latitude=6426242556, longitude=-122.140354517, degrees = True)
+        self.waypoint = self.wgs84.GeoPoint(latitude=6426242556, longitude=-122.140354517, degrees = True)
         
-    # TODO
+        self.stateMachine.setState('SpeedSet0')
+        
+
     def loadStates(self):
         self.stateMachine.addStateTransition('SpeedSet0',       ('at',      False,  False),     'none',         'SpeedSet0')
         self.stateMachine.addStateTransition('SpeedSet0',       ('at',      False,  True),      'none',         'SpeedSet0')
@@ -84,12 +84,12 @@ class CarStateMachine:
     def getPositionTrigger(self, gps):
         (curLat,curLon) = gps
         current = self.wgs84.GeoPoint(latitude=curLat, longitude=curLon, degrees = True)
-        destinationRange = self.destination.delta_to(current).length
+        waypointRange = self.waypoint.delta_to(current).length
         
         position = ""
-        if destinationRange < self.atWayPointRange:
+        if waypointRange < self.atWayPointRange:
             position = "at"
-        elif destinationRange < self.nearWaypointRange:
+        elif waypointRange < self.nearWaypointRange:
             position = "near"
         else:
             position = "far"
@@ -112,6 +112,9 @@ class CarStateMachine:
         else:
             return False
         
+    def getCurrentState(self):
+        return self.stateMachine.state
+        
     def processAction(self, action, lka, compass, gps):
         if "lkaSteering" in action:
             processedAction = "steering(" + str(self.getLkaSteeringAction(lka)) + ")"
@@ -126,8 +129,8 @@ class CarStateMachine:
     def getCompassSteering(self, gps, compass):
         (curLat,curLon) = gps
         current = self.wgs84.GeoPoint(latitude=curLat, longitude=curLon, degrees = True)
-        destinationBearing = self.destination.delta_to(current).azimuth_deg[0]
-        courseCorrection = destinationBearing - (compass + self.declanation)
+        waypointBearing = self.waypoint.delta_to(current).azimuth_deg[0]
+        courseCorrection = waypointBearing - (compass + self.declanation)
         
         if courseCorrection >= 20: 
             steeringSetting = 1
@@ -142,3 +145,12 @@ class CarStateMachine:
     def getLkaSteeringAction(self, lka):
         (steering,_,_,_,_) = lka
         return steering
+    
+def testCarStateMachine():
+    testMachine = CarStateMachine()
+    print(testMachine.getCurrentState())
+    
+    
+if __name__ == '__main__':
+    testCarStateMachine()
+    

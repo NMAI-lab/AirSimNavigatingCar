@@ -6,9 +6,11 @@ Created on Wed Nov 17 15:52:06 2021
 """
 
 class StateMachine:
-    state = ''
-    stateTransitions = {}
-    triggerActionParameterCount = {}
+    
+    def __init__(self):
+        self.state = ''
+        self.stateTransitions = {}
+        self.triggerActionParameterCount = {}
 
     def addStateTransition(self, startState, trigger, action, newState):
         if not startState in self.stateTransitions.keys():
@@ -20,6 +22,15 @@ class StateMachine:
         (action,self.state) = self.stateTransitions[startState][trigger]
         
         return action
+    
+    def setState(self, newState):
+        if newState in self.stateTransitions.keys():
+            self.state = newState
+            return True
+        else:
+            print("Unknown state provided, ignored.")
+            return False
+        
 
 def buildStateMachine():
     machine = StateMachine()

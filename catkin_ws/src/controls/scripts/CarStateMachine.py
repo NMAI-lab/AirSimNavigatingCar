@@ -116,10 +116,12 @@ class CarStateMachine:
         return self.stateMachine.state
         
     def processAction(self, action, lka, compass, gps):
-        if "lkaSteering" in action:
+        if "lkaSteer" in action:
             processedAction = "steering(" + str(self.getLkaSteeringAction(lka)) + ")"
-        elif "compassSteering" in action:
+        elif "compassSteer" in action:
             processedAction = "steering(" + str(self.getCompassSteering(gps, compass)) + ")"
+        elif "none" in action:
+            processedAction = ""
         else:
             processedAction = action
 
@@ -129,7 +131,7 @@ class CarStateMachine:
     def getCompassSteering(self, gps, compass):
         (curLat,curLon) = gps
         current = self.wgs84.GeoPoint(latitude=curLat, longitude=curLon, degrees = True)
-        waypointBearing = self.waypoint.delta_to(current).azimuth_deg[0]
+        waypointBearing = self.waypoint.delta_to(current).azimuth_deg
         courseCorrection = waypointBearing - (compass + self.declanation)
         
         if courseCorrection >= 20: 
@@ -150,6 +152,42 @@ def testCarStateMachine():
     testMachine = CarStateMachine()
     print(testMachine.getCurrentState())
     
+    # At starting location. Car should set speed to full
+    gps = (47.64148237134305, -122.14036499083176)
+    compass = -5.63447277411
+    speed = 0.0
+    lka = (0.0,0.0,0.0,0.0,0.0)
+    obstacle = 48.2278885841
+    perception = (gps, lka, speed, compass, obstacle)
+    action = testMachine.update(perception)
+    print(action)
+    print(testMachine.getCurrentState())
+    
+    # Car is driving. No LKA, should do compass steering
+    gps = (47.64148237134305, -122.14036499083176)
+    compass = -5.63447277411
+    speed = 8.0
+    lka = (0.0,0.0,0.0,0.0,0.0)
+    obstacle = 48.2278885841
+    perception = (gps, lka, speed, compass, obstacle)
+    action = testMachine.update(perception)
+    print(action)
+    print(testMachine.getCurrentState())    
+    
+    
+    # Car is driving. LKA available, should do LKA steering
+    gps = (47.64148237134305, -122.14036499083176)
+    compass = -80
+    speed = 8.0
+    lka = (0.6118902439024382,0.0,0.0,0.30147058823529455,84.41176470588215)
+    obstacle = 48.2278885841
+    perception = (gps, lka, speed, compass, obstacle)
+    action = testMachine.update(perception)
+    print(action)
+    print(testMachine.getCurrentState()) 
+    
+    
+
     
 if __name__ == '__main__':
     testCarStateMachine()

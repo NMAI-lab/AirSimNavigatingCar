@@ -14,6 +14,9 @@ class CarStateMachine:
         self.stateMachine = StateMachine()
         self.loadStates()
         
+        # Set Initial State
+        self.stateMachine.setState('SpeedSet0')
+        
         self.declanation = 7.5
         self.nearWaypointRange = 20
         self.atWayPointRange = 7
@@ -21,9 +24,7 @@ class CarStateMachine:
         
         self.wgs84 = nv.FrameE(name='WGS84')
         self.waypoint = self.wgs84.GeoPoint(latitude=47.6426242556, longitude=-122.140354517, degrees = True)
-        
-        self.stateMachine.setState('SpeedSet0')
-        
+
 
     def loadStates(self):
         self.stateMachine.addStateTransition('SpeedSet0',       ('at',      False,  False),     'none',         'SpeedSet0')

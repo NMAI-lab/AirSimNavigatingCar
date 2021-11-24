@@ -20,7 +20,7 @@ class CarStateMachine:
         self.obstacleRange = 5
         
         self.wgs84 = nv.FrameE(name='WGS84')
-        self.waypoint = self.wgs84.GeoPoint(latitude=6426242556, longitude=-122.140354517, degrees = True)
+        self.waypoint = self.wgs84.GeoPoint(latitude=47.6426242556, longitude=-122.140354517, degrees = True)
         
         self.stateMachine.setState('SpeedSet0')
         
@@ -215,8 +215,14 @@ def testCarStateMachine():
     print("Action: " + action + ", New State: " + testMachine.getCurrentState()) 
     
     # TODO
-    # Car is driving. LKA available, near waypoint, should slow down
-    gps = (47.64148237134305, -122.14036499083176) # Figure our the coordinates
+    # Car is driving at full speed. LKA available, near waypoint, should slow down
+    
+    # Car is driving in slow speed. LKA available, near waypoint, should LKA steer
+    
+    # Car is driving in slow speed. LKA not available, near waypoint, should compass steer
+    
+    # Car is driving in slow speed. LKA not available, at waypoint, should stop
+    gps = (47.6426242556, -122.140354517)
     compass = -80
     speed = 8.0
     lka = (0.0,0.0,0.0,0.0,0.0)
@@ -224,6 +230,9 @@ def testCarStateMachine():
     perception = (gps, lka, speed, compass, obstacle)
     action = testMachine.update(perception)
     print("Action: " + action + ", New State: " + testMachine.getCurrentState()) 
+    
+    
+
     
 if __name__ == '__main__':
     testCarStateMachine()

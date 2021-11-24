@@ -10,7 +10,7 @@ speedSetting = 0
 mid = 0
 mission = -1
 wgs84 = nv.FrameE(name='WGS84')
-destination = wgs84.GeoPoint(latitude=6426242556, longitude=-122.140354517, degrees = True)
+destination = wgs84.GeoPoint(latitude=47.6426242556, longitude=-122.140354517, degrees = True)
 
 def receiveMessage(data, args):
     (outboxPublisher,_,_) = args

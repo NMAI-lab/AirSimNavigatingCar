@@ -2,7 +2,7 @@
 start roscore
 
 :: RUN THE SIMULATOR
-cd C:\Documents\Utilities\AirSim\Neighborhood
+cd C:\Users\Patrick\Documents\Utilities\AirSim\Neighborhood
 start run.bat
 
 :: WAIT FOR THE SIMULATOR TO START

@@ -150,7 +150,7 @@ class CarStateMachine:
     
 def testCarStateMachine():
     testMachine = CarStateMachine()
-    print(testMachine.getCurrentState())
+    print("Start State: " + testMachine.getCurrentState())
     
     # At starting location. Car should set speed to full
     gps = (47.64148237134305, -122.14036499083176)
@@ -160,8 +160,7 @@ def testCarStateMachine():
     obstacle = 48.2278885841
     perception = (gps, lka, speed, compass, obstacle)
     action = testMachine.update(perception)
-    print(action)
-    print(testMachine.getCurrentState())
+    print("Action: " + action + ", New State: " + testMachine.getCurrentState()) 
     
     # Car is driving. No LKA, should do compass steering
     gps = (47.64148237134305, -122.14036499083176)
@@ -171,8 +170,7 @@ def testCarStateMachine():
     obstacle = 48.2278885841
     perception = (gps, lka, speed, compass, obstacle)
     action = testMachine.update(perception)
-    print(action)
-    print(testMachine.getCurrentState())    
+    print("Action: " + action + ", New State: " + testMachine.getCurrentState())     
     
     
     # Car is driving. LKA available, should do LKA steering
@@ -183,11 +181,49 @@ def testCarStateMachine():
     obstacle = 48.2278885841
     perception = (gps, lka, speed, compass, obstacle)
     action = testMachine.update(perception)
-    print(action)
-    print(testMachine.getCurrentState()) 
+    print("Action: " + action + ", New State: " + testMachine.getCurrentState()) 
     
     
-
+    # Car is driving. LKA available, obstacle is in range, should do avoidance
+    gps = (47.64148237134305, -122.14036499083176)
+    compass = -80
+    speed = 8.0
+    lka = (0.6118902439024382,0.0,0.0,0.30147058823529455,84.41176470588215)
+    obstacle = 4.2278885841
+    perception = (gps, lka, speed, compass, obstacle)
+    action = testMachine.update(perception)
+    print("Action: " + action + ", New State: " + testMachine.getCurrentState()) 
+    
+    # Car is driving. LKA not available, obstacle is in range, should do avoidance
+    gps = (47.64148237134305, -122.14036499083176)
+    compass = -80
+    speed = 8.0
+    lka = (0.0,0.0,0.0,0.0,0.0)
+    obstacle = 4.2278885841
+    perception = (gps, lka, speed, compass, obstacle)
+    action = testMachine.update(perception)
+    print("Action: " + action + ", New State: " + testMachine.getCurrentState()) 
+    
+    # Car is driving. LKA available, near waypoint, should slow down
+    gps = (47.64148237134305, -122.14036499083176)
+    compass = -80
+    speed = 8.0
+    lka = (0.0,0.0,0.0,0.0,0.0)
+    obstacle = 4.2278885841
+    perception = (gps, lka, speed, compass, obstacle)
+    action = testMachine.update(perception)
+    print("Action: " + action + ", New State: " + testMachine.getCurrentState()) 
+    
+    # TODO
+    # Car is driving. LKA available, near waypoint, should slow down
+    gps = (47.64148237134305, -122.14036499083176) # Figure our the coordinates
+    compass = -80
+    speed = 8.0
+    lka = (0.0,0.0,0.0,0.0,0.0)
+    obstacle = 4.2278885841
+    perception = (gps, lka, speed, compass, obstacle)
+    action = testMachine.update(perception)
+    print("Action: " + action + ", New State: " + testMachine.getCurrentState()) 
     
 if __name__ == '__main__':
     testCarStateMachine()

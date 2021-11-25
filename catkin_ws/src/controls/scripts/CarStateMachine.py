@@ -68,6 +68,7 @@ class CarStateMachine:
     def update(self, perception):
         (gps, lka, speed, compass, obstacle) = perception
         trigger = self.processPerception(gps,lka,obstacle)
+        #print("trigger: " + str(trigger))
         rawAction = self.stateMachine.updateState(trigger)
         action = self.processAction(rawAction,lka,compass,gps)
         return action
@@ -108,7 +109,7 @@ class CarStateMachine:
     
     # obstacle near: True, False
     def getObstacleTrigger(self, obstacle):
-        if obstacle <= self.obstacleRange:
+        if (obstacle <= self.obstacleRange) and (obstacle > 0):
             return True
         else:
             return False
@@ -233,7 +234,7 @@ def testCarStateMachine():
     print("Action: " + action + ", New State: " + testMachine.getCurrentState()) 
     
     
-
+    print(testMachine.getObstacleTrigger(5.00000000001))
     
 if __name__ == '__main__':
     testCarStateMachine()

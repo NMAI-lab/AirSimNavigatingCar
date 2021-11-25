@@ -27,6 +27,7 @@ class CarStateMachine:
 
 
     def loadStates(self):
+        #                                   Current State       Waypoint    LKA     Obstacle    Action          New State
         self.stateMachine.addStateTransition('SpeedSet0',       ('at',      False,  False),     'none',         'SpeedSet0')
         self.stateMachine.addStateTransition('SpeedSet0',       ('at',      False,  True),      'none',         'SpeedSet0')
         self.stateMachine.addStateTransition('SpeedSet0',       ('at',      True,   False),     'none',         'SpeedSet0')
@@ -68,9 +69,11 @@ class CarStateMachine:
     def update(self, perception):
         (gps, lka, speed, compass, obstacle) = perception
         trigger = self.processPerception(gps,lka,obstacle)
+        #print("GPS: " + str(gps) + " LKA: " + str(lka) + " Speed: " + str(speed) + " Compass: " + str(compass) + " Obstale: " + str(obstacle))
         #print("trigger: " + str(trigger))
         rawAction = self.stateMachine.updateState(trigger)
         action = self.processAction(rawAction,lka,compass,gps)
+        #print("action: " + str(action))
         return action
     
     
@@ -133,7 +136,7 @@ class CarStateMachine:
     def getCompassSteering(self, gps, compass):
         (curLat,curLon) = gps
         current = self.wgs84.GeoPoint(latitude=curLat, longitude=curLon, degrees = True)
-        waypointBearing = self.waypoint.delta_to(current).azimuth_deg
+        waypointBearing = current.delta_to(self.waypoint).azimuth_deg
         courseCorrection = waypointBearing - (compass + self.declanation)
         
         if courseCorrection >= 20: 
@@ -235,6 +238,10 @@ def testCarStateMachine():
     
     
     print(testMachine.getObstacleTrigger(5.00000000001))
+    
+    gps = (47.64148237065906, -122.1403649917269) 
+    compass = -9.70055611466
+    print(testMachine.getCompassSteering(gps, compass))
     
 if __name__ == '__main__':
     testCarStateMachine()

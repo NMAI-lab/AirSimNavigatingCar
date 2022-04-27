@@ -6,6 +6,8 @@ from navigation.msg import GPS
 from std_msgs.msg import Float64
 from threading import Semaphore    
 
+noiseParams = 0
+
 positionPerception = ""
 compassPerception = ""
 speedPerception = ""
@@ -76,15 +78,25 @@ def translatePath(data, args):
     perceptionString = "path(" + path + ")"
     perceptionString = perceptionString.replace(" ","")
     perceptionString = perceptionString.replace("'","")
+    perceptionString = perceptionString
     
     rospy.loginfo("Perceptions: " + str(perceptionString))
     perceptionsPublisher.publish(perceptionString) 
+    
+def generateNoise(numNoiseParams):
+    noisePercept = ""
+    for i in range(numNoiseParams):
+        noisePercept = noisePercept + " noise" + str(i) + "(" + str(i) + ")"
+    return noisePercept
+    
 
 def sendUpdate(publisher):
     global positionPerception, compassPerception, speedPerception, lkaPerception, obstaclePerception, updateReady, sem
     sem.acquire()    
     if not False in updateReady:
         perception = positionPerception + " " + compassPerception + " " + speedPerception + " " + lkaPerception + " " + obstaclePerception      
+        global noiseParams
+        perception = perception + generateNoise(noiseParams)
         rospy.loginfo(perception)
         publisher.publish(perception)
         updateReady = [False,False,False,False,False]

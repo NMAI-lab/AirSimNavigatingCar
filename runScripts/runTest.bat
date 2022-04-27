@@ -1,123 +1,124 @@
-# Run ROSCORE
-roscore
+:: Run ROSCORE
+start roscore
 
-# RUN THE SIMULATOR
+:: RUN THE SIMULATOR
 D:
 cd D:\Local Documents\Utilities\AirSim\Neighborhood
-run.bat
+start run.bat
 
-# RUN THE CONTROLLER
+:: WAIT FOR THE SIMULATOR TO START
+TIMEOUT 20
+
+:: RUN THE CONTROLLER
 D:
 cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\devel
-setup.bat
+call setup.bat
 cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\src\controls\scripts
-python controller.py
+start python controller.py
+TIMEOUT 2
 
-# RUN THE ACTION TRANSLATOR
+:: RUN THE ACTION TRANSLATOR
 D:
 cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\devel
-setup.bat
+call setup.bat
 cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\src\translators\scripts
-python actionTranslatorNavAgent.py
+start python actionTranslatorNavAgent.py
+TIMEOUT 2
 
-# RUN THE ACC
+:: RUN THE ACC
 D:
 cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\devel
-setup.bat
+call setup.bat
 cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\src\acc\scripts
-python acc.py
+start python acc.py
+TIMEOUT 2
 
-# RUN SPEEDOMETER
+:: RUN SPEEDOMETER
 D:
 cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\devel
-setup.bat
+call setup.bat
 cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\src\sensors\scripts
-python speedometer.py
+start python speedometer.py
+TIMEOUT 2
 
-# RUN GPS SENSOR
+:: RUN GPS SENSOR
 D:
 cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\devel
-setup.bat
+call setup.bat
 cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\src\navigation\scripts
-python gpsSensor.py
+start python gpsSensor.py
+TIMEOUT 2
 
-# RUN COMPASS
+:: RUN COMPASS
 D:
 cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\devel
-setup.bat
+call setup.bat
 cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\src\sensors\scripts
-python compass.py
+start python compass.py
+TIMEOUT 2
 
-# RUN CAMERA
+:: RUN CAMERA
 D:
 cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\devel
-setup.bat
+call setup.bat
 cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\src\sensors\scripts
-python car_image_raw.py
+start python car_image_raw.py
+TIMEOUT 2
 
-# RUN OBSTACLE AVOID
+:: RUN OBSTACLE AVOID
 D:
 cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\devel
-setup.bat
+call setup.bat
 cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\src\obstacle_avoid\scripts
-python obstacle_avoid.py
+start python obstacle_avoid.py
+TIMEOUT 2
 
-# RUN LANE KEEP ASSIST
+:: RUN LANE KEEP ASSIST
 D:
 cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\devel
-setup.bat
+call setup.bat
 cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\src\lka\scripts
-python lane_keep.py
+start python lane_keep.py
+TIMEOUT 2
 
-# RUN PERCEPTION TRANSLATOR
+:: RUN PERCEPTION TRANSLATOR
 D:
 cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\devel
-setup.bat
+call setup.bat
 cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\src\translators\scripts
-python perceptionTranslatorNavAgent.py
+start python perceptionTranslatorNavAgent.py
+TIMEOUT 2
 
-# RUN THE REASONER
-D:
-cd D:\Local Documents\ROS_Workspaces\SAVI_ROS\rosjavaWorkspace\src\savi_ros_java\savi_ros_bdi\build\install\savi_ros_bdi\bin
-.\savi_ros_bdi.bat savi_ros_java.savi_ros_bdi.SAVI_Main
+:: RUN THE REASONER
+::D:
+::cd D:\Local Documents\ROS_Workspaces\SAVI_ROS\rosjavaWorkspace\src\savi_ros_java\savi_ros_bdi\build\install\savi_ros_bdi\bin
+::start .\savi_ros_bdi.bat savi_ros_java.savi_ros_bdi.SAVI_Main
+::TIMEOUT 2
 
-# Run THE PYTHON REASONER
+:: Run THE PYTHON REASONER
 D:
 cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\devel
-setup.bat
+call setup.bat
 cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\src\controls\scripts
-python traditionalAgent.py
+start python traditionalAgent.py
+TIMEOUT 2
 
-# RUN USER INTERFACE
+:: RUN USER INTERFACE
 D:
 cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\devel
-setup.bat
+call setup.bat
 cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\src\translators\scripts
-python userInterface.py
+start python userInterface.py
+TIMEOUT 2
 
-# RUN LOGGER
+:: RUN LOGGER
 D:
 cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\devel
-setup.bat
+call setup.bat
 cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\src\translators\scripts
-python logger.py
+start python logger.py
+TIMEOUT 2
 
-# Listen to outbox
-rostopic echo outbox
-
-# Listen to actions
-rostopic echo actions
-
-# RUN MAP
+:: Get back to the start directory
 D:
-cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\devel
-setup.bat
-cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\src\navigation\scripts
-python Map.py
-
-# RUN STOP SIGN DETECT - NOT YET INTEGRATED
-D:
-cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\devel
-setup.bat
-cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\catkin_ws\src\stop_detect\scripts
-python stop_detect.py
+cd D:\Local Documents\ROS_Workspaces\AirSimNavigatingCar\runScripts

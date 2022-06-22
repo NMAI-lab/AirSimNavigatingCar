@@ -54,10 +54,10 @@ navigation(navigate).
 		for (.member( op(drive,NextPosition), Solution)) {
 			!waypoint(NextPosition);
 		}
-		!navigate(Destination).	
+		!navigate(Destination).
 		
  // !navigate(Destination) - should be impossible
- +!navigate(Destination)
++!navigate(Destination)
  	<-	.broadcast(tell, navigate(default, Destination)).
 
 // Include rules for determining position

@@ -47,7 +47,7 @@ mission(navigate).
 		& lkaSteering(Steering)
 	<-	.broadcast(tell, driveToward(lka(on), Location));
 		steering(Steering);	
-		setSpeed(8).	
+		setSpeed(8).
 
 // Drive toward the location, LKA not available.
 +obstacle(Distance)

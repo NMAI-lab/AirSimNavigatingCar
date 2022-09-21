@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tree type="Call tree comparison" threadSelection="All threads" threadStatus="Runnable" aggregation="Methods" differenceCalculation="Average call times">
+    <node leaf="false" class="jason.infra.centralised.CentralisedAgArch" methodName="reasoningCycle" methodSignature="()V" timeDelta="-54" timeBase="3629" countDelta="0" countBase="51">
+      <node leaf="false" class="jason.infra.centralised.CentralisedAgArch" methodName="deliberate" methodSignature="()V" timeDelta="5" timeBase="105" countDelta="0" countBase="51">
+        <node leaf="false" class="jason.asSemantics.TransitionSystem" methodName="deliberate" methodSignature="()V" timeDelta="128" timeBase="2473" countDelta="0" countBase="2">
+          <node leaf="false" class="jason.asSemantics.TransitionSystem" methodName="applySemanticRuleDeliberate" methodSignature="()V" timeDelta="43" timeBase="821" countDelta="0" countBase="6">
+            <node leaf="false" class="jason.asSemantics.TransitionSystem" methodName="applyAddIM" methodSignature="()V" timeDelta="218" timeBase="4539" countDelta="0" countBase="1">
+              <node leaf="false" class="jason.asSemantics.Intention" methodName="&lt;init&gt;" methodSignature="()V" timeDelta="175" timeBase="3227" countDelta="0" countBase="1">
+                <node leaf="true" class="jason.asSemantics.Circumstance$IntentionPlace" methodName="&lt;clinit&gt;" methodSignature="()V" timeDelta="9" timeBase="38" countDelta="0" countBase="1"/>
+                <node leaf="true" class="java.util.concurrent.atomic.AtomicInteger" methodName="incrementAndGet" methodSignature="()I" timeDelta="1" timeBase="4" countDelta="0" countBase="1"/>
+                <node leaf="true" class="java.util.ArrayDeque" methodName="&lt;init&gt;" methodSignature="()V" timeDelta="-2" timeBase="5" countDelta="0" countBase="1"/>
+              </node>
+              <node leaf="false" class="jason.asSemantics.IntendedMeans" methodName="&lt;init&gt;" methodSignature="(Ljason/asSemantics/Option;Ljason/asSyntax/Trigger;)V" timeDelta="2" timeBase="62" countDelta="0" countBase="1">
+                <node leaf="false" class="jason.asSyntax.Trigger" methodName="capply" methodSignature="(Ljason/asSemantics/Unifier;)Ljason/asSyntax/Trigger;" timeDelta="1" timeBase="47" countDelta="0" countBase="1">
+                  <node leaf="false" class="jason.asSyntax.LiteralImpl" methodName="capply" methodSignature="(Ljason/asSemantics/Unifier;)Ljason/asSyntax/Term;" timeDelta="2" timeBase="40" countDelta="0" countBase="1">
+                    <node leaf="false" class="jason.asSyntax.LiteralImpl" methodName="&lt;init&gt;" methodSignature="(Ljason/asSyntax/Literal;Ljason/asSemantics/Unifier;)V" timeDelta="2" timeBase="40" countDelta="0" countBase="1">
+                      <node leaf="false" class="jason.asSyntax.Pred" methodName="&lt;init&gt;" methodSignature="(Ljason/asSyntax/Literal;Ljason/asSemantics/Unifier;)V" timeDelta="2" timeBase="38" countDelta="0" countBase="1">
+                        <node leaf="false" class="jason.asSyntax.Pred" methodName="setAnnots" methodSignature="(Ljason/asSyntax/ListTerm;)Ljason/asSyntax/Literal;" timeDelta="1" timeBase="22" countDelta="0" countBase="1">
+                          <node leaf="true" class="jason.asSyntax.ListTermImpl" methodName="listTermIterator" methodSignature="()Ljava/util/Iterator;" timeDelta="1" timeBase="1" countDelta="0" countBase="1"/>
+                          <node leaf="false" class="jason.asSyntax.Pred" methodName="addAnnot" methodSignature="(Ljason/asSyntax/Term;)Z" timeDelta="-1" timeBase="11" countDelta="0" countBase="1">
+                            <node leaf="true" class="jason.asSyntax.Atom" methodName="compareTo" methodSignature="(Ljava/lang/Object;)I" timeDelta="1" timeBase="0" countDelta="1" countBase="0"/>
+                          </node>
+                        </node>
+                        <node leaf="true" class="jason.asSyntax.ListTermImpl" methodName="capply" methodSignature="(Ljason/asSemantics/Unifier;)Ljason/asSyntax/Term;" timeDelta="-1" timeBase="8" countDelta="0" countBase="1"/>
+                        <node leaf="true" class="jason.asSyntax.Pred" methodName="getAnnots" methodSignature="()Ljason/asSyntax/ListTerm;" timeDelta="-1" timeBase="1" countDelta="-1" countBase="1"/>
+                        <node leaf="true" class="jason.asSyntax.Pred" methodName="hasAnnot" methodSignature="()Z" timeDelta="-1" timeBase="1" countDelta="-1" countBase="1"/>
+                      </node>
+                    </node>
+                  </node>
+                </node>
+              </node>
+              <node leaf="false" class="jason.asSemantics.Circumstance" methodName="addRunningIntention" methodSignature="(Ljason/asSemantics/Intention;)V" timeDelta="1" timeBase="10" countDelta="0" countBase="1">
+                <node leaf="true" class="java.util.Queue" methodName="offer" methodSignature="(Ljava/lang/Object;)Z" timeDelta="1" timeBase="4" countDelta="0" countBase="1"/>
+              </node>
+              <node leaf="false" class="jason.asSemantics.Intention" methodName="push" methodSignature="(Ljason/asSemantics/IntendedMeans;)V" timeDelta="1" timeBase="13" countDelta="0" countBase="1">
+                <node leaf="false" class="jason.asSemantics.IntendedMeans" methodName="isAtomic" methodSignature="()Z" timeDelta="1" timeBase="3" countDelta="0" countBase="1">
+                  <node leaf="true" class="jason.asSyntax.Plan" methodName="isAtomic" methodSignature="()Z" timeDelta="1" timeBase="0" countDelta="1" countBase="0"/>
+                </node>
+                <node leaf="true" class="java.util.Deque" methodName="push" methodSignature="(Ljava/lang/Object;)V" timeDelta="1" timeBase="6" countDelta="0" countBase="1"/>
+              </node>
+              <node leaf="true" class="jason.asSyntax.Trigger" methodName="isAchvGoal" methodSignature="()Z" timeDelta="1" timeBase="1" countDelta="0" countBase="1"/>
+            </node>
+            <node leaf="false" class="jason.asSemantics.TransitionSystem" methodName="applyRelPl" methodSignature="()V" timeDelta="25" timeBase="251" countDelta="0" countBase="1">
+              <node leaf="false" class="jason.asSemantics.TransitionSystem" methodName="relevantPlans" methodSignature="(Ljason/asSyntax/Trigger;)Ljava/util/List;" timeDelta="25" timeBase="247" countDelta="0" countBase="1">
+                <node leaf="false" class="jason.asSyntax.Plan" methodName="isRelevant" methodSignature="(Ljason/asSyntax/Trigger;Ljason/asSemantics/Unifier;)Ljason/asSemantics/Unifier;" timeDelta="5" timeBase="40" countDelta="0" countBase="2">
+                  <node leaf="false" class="jason.asSemantics.Unifier" methodName="unifiesNoUndo" methodSignature="(Ljason/asSyntax/Trigger;Ljason/asSyntax/Trigger;)Z" timeDelta="6" timeBase="34" countDelta="0" countBase="2">
+                    <node leaf="false" class="jason.asSemantics.Unifier" methodName="unifiesNoUndo" methodSignature="(Ljason/asSyntax/Term;Ljason/asSyntax/Term;)Z" timeDelta="6" timeBase="30" countDelta="0" countBase="2">
+                      <node leaf="true" class="jason.asSemantics.Unifier" methodName="unifyTerms" methodSignature="(Ljason/asSyntax/Term;Ljason/asSyntax/Term;)Z" timeDelta="2" timeBase="22" countDelta="0" countBase="2"/>
+                    </node>
+                  </node>
+                </node>
+                <node leaf="false" class="jason.asSyntax.Trigger" methodName="clone" methodSignature="()Ljason/asSyntax/Trigger;" timeDelta="4" timeBase="25" countDelta="0" countBase="1">
+                  <node leaf="false" class="jason.asSyntax.Literal" methodName="copy" methodSignature="()Ljason/asSyntax/Literal;" timeDelta="2" timeBase="18" countDelta="0" countBase="1">
+                    <node leaf="false" class="jason.asSyntax.LiteralImpl" methodName="clone" methodSignature="()Ljason/asSyntax/Term;" timeDelta="1" timeBase="17" countDelta="0" countBase="1">
+                      <node leaf="false" class="jason.asSyntax.LiteralImpl" methodName="&lt;init&gt;" methodSignature="(Ljason/asSyntax/Literal;)V" timeDelta="2" timeBase="16" countDelta="0" countBase="1">
+                        <node leaf="false" class="jason.asSyntax.Pred" methodName="&lt;init&gt;" methodSignature="(Ljason/asSyntax/Literal;)V" timeDelta="1" timeBase="15" countDelta="0" countBase="1">
+                          <node leaf="true" class="jason.asSyntax.Atom" methodName="getNS" methodSignature="()Ljason/asSyntax/Atom;" timeDelta="1" timeBase="0" countDelta="1" countBase="0"/>
+                          <node leaf="false" class="jason.asSyntax.Pred" methodName="&lt;init&gt;" methodSignature="(Ljason/asSyntax/Atom;Ljason/asSyntax/Literal;)V" timeDelta="1" timeBase="14" countDelta="0" countBase="1">
+                            <node leaf="true" class="jason.asSyntax.Structure" methodName="&lt;init&gt;" methodSignature="(Ljason/asSyntax/Atom;Ljason/asSyntax/Literal;)V" timeDelta="1" timeBase="2" countDelta="0" countBase="1"/>
+                          </node>
+                        </node>
+                        <node leaf="true" class="jason.asSyntax.LiteralImpl" methodName="negated" methodSignature="()Z" timeDelta="-1" timeBase="1" countDelta="-1" countBase="1"/>
+                      </node>
+                    </node>
+                  </node>
+                </node>
+                <node leaf="false" class="jason.asSyntax.PlanLibrary" methodName="getCandidatePlans" methodSignature="(Ljason/asSyntax/Trigger;)Ljava/util/List;" timeDelta="2" timeBase="18" countDelta="0" countBase="1">
+                  <node leaf="false" class="jason.asSyntax.Trigger" methodName="getPredicateIndicator" methodSignature="()Ljason/asSyntax/PredicateIndicator;" timeDelta="1" timeBase="9" countDelta="0" countBase="1">
+                    <node leaf="true" class="jason.asSyntax.Structure" methodName="getArity" methodSignature="()I" timeDelta="1" timeBase="0" countDelta="1" countBase="0"/>
+                    <node leaf="true" class="java.lang.StringBuilder" methodName="&lt;init&gt;" methodSignature="()V" timeDelta="-1" timeBase="1" countDelta="-1" countBase="1"/>
+                  </node>
+                  <node leaf="true" class="java.util.List" methodName="isEmpty" methodSignature="()Z" timeDelta="1" timeBase="0" countDelta="1" countBase="0"/>
+                  <node leaf="false" class="java.util.Map" methodName="get" methodSignature="(Ljava/lang/Object;)Ljava/lang/Object;" timeDelta="1" timeBase="5" countDelta="0" countBase="1">
+                    <node leaf="false" class="jason.asSyntax.PredicateIndicator" methodName="equals" methodSignature="(Ljava/lang/Object;)Z" timeDelta="1" timeBase="3" countDelta="0" countBase="1">
+                      <node leaf="true" class="jason.asSyntax.PredicateIndicator" methodName="hashCode" methodSignature="()I" timeDelta="-1" timeBase="1" countDelta="-1" countBase="1"/>
+                    </node>
+                  </node>
+                </node>
+                <node leaf="true" class="java.util.List" methodName="iterator" methodSignature="()Ljava/util/Iterator;" timeDelta="1" timeBase="0" countDelta="1" countBase="0"/>
+                <node leaf="true" class="java.util.Iterator" methodName="next" methodSignature="()Ljava/lang/Object;" timeDelta="-1" timeBase="1" countDelta="-2" countBase="2"/>
+                <node leaf="true" class="java.util.LinkedList" methodName="&lt;init&gt;" methodSignature="()V" timeDelta="-1" timeBase="4" countDelta="0" countBase="1"/>
+              </node>
+            </node>
+            <node leaf="false" class="jason.asSemantics.TransitionSystem" methodName="applyApplPl" methodSignature="()V" timeDelta="10" timeBase="64" countDelta="0" countBase="1">
+              <node leaf="false" class="jason.asSemantics.TransitionSystem" methodName="applicablePlans" methodSignature="(Ljava/util/List;)Ljava/util/List;" timeDelta="9" timeBase="59" countDelta="0" countBase="1">
+                <node leaf="false" class="jason.asSyntax.Literal" methodName="logicalConsequence" methodSignature="(Ljason/asSemantics/Agent;Ljason/asSemantics/Unifier;)Ljava/util/Iterator;" timeDelta="3" timeBase="29" countDelta="0" countBase="1">
+                  <node leaf="true" class="java.util.logging.Logger" methodName="isLoggable" methodSignature="(Ljava/util/logging/Level;)Z" timeDelta="2" timeBase="2" countDelta="0" countBase="1"/>
+                  <node leaf="true" class="jason.asSemantics.Agent" methodName="getBB" methodSignature="()Ljason/bb/BeliefBase;" timeDelta="-1" timeBase="1" countDelta="-1" countBase="1"/>
+                </node>
+                <node leaf="true" class="java.util.Iterator" methodName="hasNext" methodSignature="()Z" timeDelta="1" timeBase="0" countDelta="0" countBase="4"/>
+                <node leaf="true" class="java.util.List" methodName="iterator" methodSignature="()Ljava/util/Iterator;" timeDelta="1" timeBase="3" countDelta="0" countBase="1"/>
+                <node leaf="true" class="jason.asSemantics.Option" methodName="getUnifier" methodSignature="()Ljason/asSemantics/Unifier;" timeDelta="-1" timeBase="1" countDelta="-1" countBase="1"/>
+                <node leaf="true" class="jason.asSyntax.Plan" methodName="getContext" methodSignature="()Ljason/asSyntax/LogicalFormula;" timeDelta="-1" timeBase="1" countDelta="0" countBase="2"/>
+                <node leaf="true" class="java.util.Iterator" methodName="next" methodSignature="()Ljava/lang/Object;" timeDelta="-1" timeBase="1" countDelta="0" countBase="2"/>
+              </node>
+            </node>
+            <node leaf="false" class="jason.asSemantics.TransitionSystem" methodName="applySelEv" methodSignature="()V" timeDelta="2" timeBase="17" countDelta="0" countBase="2">
+              <node leaf="false" class="SaviAgentBrain" methodName="selectEvent" methodSignature="(Ljava/util/Queue;)Ljason/asSemantics/Event;" timeDelta="2" timeBase="15" countDelta="0" countBase="1">
+                <node leaf="true" class="java.util.Queue" methodName="size" methodSignature="()I" timeDelta="1" timeBase="5" countDelta="0" countBase="1"/>
+              </node>
+              <node leaf="true" class="jason.asSemantics.Agent" methodName="hasCustomSelectOption" methodSignature="()Z" timeDelta="1" timeBase="0" countDelta="1" countBase="0"/>
+              <node leaf="true" class="jason.asSemantics.Circumstance" methodName="hasEvent" methodSignature="()Z" timeDelta="-1" timeBase="1" countDelta="0" countBase="2"/>
+              <node leaf="true" class="java.util.logging.Logger" methodName="isLoggable" methodSignature="(Ljava/util/logging/Level;)Z" timeDelta="-1" timeBase="1" countDelta="-1" countBase="1"/>
+            </node>
+            <node leaf="true" class="jason.asSemantics.TransitionSystem" methodName="applySelAppl" methodSignature="()V" timeDelta="-1" timeBase="28" countDelta="0" countBase="1"/>
+          </node>
+          <node leaf="true" class="java.util.Queue" methodName="poll" methodSignature="()Ljava/lang/Object;" timeDelta="1" timeBase="2" countDelta="0" countBase="2"/>
+        </node>
+      </node>
+      <node leaf="false" class="jason.infra.centralised.CentralisedAgArch" methodName="act" methodSignature="()V" timeDelta="-1" timeBase="40" countDelta="0" countBase="51">
+        <node leaf="false" class="jason.asSemantics.TransitionSystem" methodName="act" methodSignature="()V" timeDelta="-14" timeBase="686" countDelta="0" countBase="2">
+          <node leaf="false" class="jason.asSemantics.Circumstance" methodName="addPendingAction" methodSignature="(Ljason/asSemantics/ActionExec;)V" timeDelta="3" timeBase="25" countDelta="0" countBase="1">
+            <node leaf="true" class="java.util.Map" methodName="put" methodSignature="(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;" timeDelta="2" timeBase="7" countDelta="0" countBase="1"/>
+            <node leaf="true" class="jason.asSemantics.Intention" methodName="getId" methodSignature="()I" timeDelta="1" timeBase="0" countDelta="1" countBase="0"/>
+            <node leaf="true" class="java.lang.Integer" methodName="valueOf" methodSignature="(I)Ljava/lang/Integer;" timeDelta="1" timeBase="4" countDelta="0" countBase="1"/>
+            <node leaf="true" class="jason.asSemantics.Intention" methodName="isAtomic" methodSignature="()Z" timeDelta="-1" timeBase="1" countDelta="-1" countBase="1"/>
+          </node>
+          <node leaf="false" class="jason.asSemantics.TransitionSystem" methodName="applySemanticRuleAct" methodSignature="()V" timeDelta="2" timeBase="57" countDelta="0" countBase="6">
+            <node leaf="false" class="jason.asSemantics.TransitionSystem" methodName="applyExecInt" methodSignature="()V" timeDelta="12" timeBase="213" countDelta="0" countBase="1">
+              <node leaf="false" class="jason.asSemantics.Intention" methodName="isFinished" methodSignature="()Z" timeDelta="11" timeBase="4" countDelta="0" countBase="1">
+                <node leaf="true" class="java.util.Deque" methodName="isEmpty" methodSignature="()Z" timeDelta="13" timeBase="2" countDelta="0" countBase="1"/>
+              </node>
+              <node leaf="true" class="jason.asSemantics.IntendedMeans" methodName="getCurrentStep" methodSignature="()Ljason/asSyntax/PlanBody;" timeDelta="1" timeBase="0" countDelta="1" countBase="0"/>
+              <node leaf="true" class="jason.asSemantics.IntendedMeans" methodName="isFinished" methodSignature="()Z" timeDelta="1" timeBase="4" countDelta="0" countBase="1"/>
+              <node leaf="true" class="jason.asSyntax.DefaultTerm" methodName="isPlanBody" methodSignature="()Z" timeDelta="1" timeBase="0" countDelta="1" countBase="0"/>
+              <node leaf="true" class="jason.asSyntax.LiteralImpl" methodName="capply" methodSignature="(Ljason/asSemantics/Unifier;)Ljason/asSyntax/Term;" timeDelta="1" timeBase="13" countDelta="0" countBase="1"/>
+              <node leaf="false" class="jason.asSemantics.Intention" methodName="peek" methodSignature="()Ljason/asSemantics/IntendedMeans;" timeDelta="-10" timeBase="16" countDelta="0" countBase="1">
+                <node leaf="true" class="java.util.Deque" methodName="peek" methodSignature="()Ljava/lang/Object;" timeDelta="-10" timeBase="16" countDelta="0" countBase="1"/>
+              </node>
+            </node>
+            <node leaf="false" class="jason.asSemantics.TransitionSystem" methodName="applyProcAct" methodSignature="()V" timeDelta="1" timeBase="52" countDelta="0" countBase="2">
+              <node leaf="false" class="jason.asSemantics.Circumstance" methodName="hasFeedbackAction" methodSignature="()Z" timeDelta="1" timeBase="2" countDelta="0" countBase="2">
+                <node leaf="true" class="java.util.Iterator" methodName="next" methodSignature="()Ljava/lang/Object;" timeDelta="1" timeBase="0" countDelta="1" countBase="0"/>
+                <node leaf="true" class="java.util.Iterator" methodName="hasNext" methodSignature="()Z" timeDelta="-1" timeBase="1" countDelta="-1" countBase="1"/>
+              </node>
+              <node leaf="false" class="jason.asSemantics.TransitionSystem" methodName="applyClrInt" methodSignature="(Ljason/asSemantics/Intention;)V" timeDelta="1" timeBase="40" countDelta="0" countBase="1">
+                <node leaf="true" class="jason.asSemantics.Intention" methodName="pop" methodSignature="()Ljason/asSemantics/IntendedMeans;" timeDelta="1" timeBase="7" countDelta="0" countBase="1"/>
+                <node leaf="true" class="jason.asSyntax.Trigger" methodName="isAddition" methodSignature="()Z" timeDelta="-1" timeBase="1" countDelta="-1" countBase="1"/>
+              </node>
+              <node leaf="false" class="jason.asSemantics.Agent" methodName="selectAction" methodSignature="(Ljava/util/Queue;)Ljason/asSemantics/ActionExec;" timeDelta="-1" timeBase="6" countDelta="0" countBase="1">
+                <node leaf="true" class="java.util.Queue" methodName="isEmpty" methodSignature="()Z" timeDelta="1" timeBase="2" countDelta="0" countBase="1"/>
+              </node>
+              <node leaf="false" class="jason.asSemantics.Circumstance" methodName="removePendingAction" methodSignature="(I)Ljason/asSemantics/ActionExec;" timeDelta="-1" timeBase="10" countDelta="0" countBase="1">
+                <node leaf="true" class="java.util.Map" methodName="remove" methodSignature="(Ljava/lang/Object;)Ljava/lang/Object;" timeDelta="-1" timeBase="8" countDelta="0" countBase="1"/>
+              </node>
+              <node leaf="false" class="jason.asSemantics.TransitionSystem" methodName="removeActionReQueue" methodSignature="(Ljason/asSemantics/Intention;)V" timeDelta="-2" timeBase="23" countDelta="0" countBase="1">
+                <node leaf="false" class="jason.asSemantics.IntendedMeans" methodName="removeCurrentStep" methodSignature="()Ljason/asSyntax/Term;" timeDelta="-1" timeBase="9" countDelta="0" countBase="1">
+                  <node leaf="true" class="jason.asSyntax.PlanBodyImpl" methodName="getBodyTerm" methodSignature="()Ljason/asSyntax/Term;" timeDelta="-1" timeBase="1" countDelta="-1" countBase="1"/>
+                </node>
+              </node>
+            </node>
+          </node>
+          <node leaf="false" class="jason.infra.centralised.CentralisedAgArch" methodName="act" methodSignature="(Ljason/asSemantics/ActionExec;)V" timeDelta="-45" timeBase="980" countDelta="0" countBase="1">
+            <node leaf="true" class="jason.infra.centralised.CentralisedAgArch" methodName="isRunning" methodSignature="()Z" timeDelta="1" timeBase="0" countDelta="1" countBase="0"/>
+            <node leaf="false" class="jason.infra.centralised.CentralisedEnvironment" methodName="act" methodSignature="(Ljava/lang/String;Ljason/asSemantics/ActionExec;)V" timeDelta="-46" timeBase="975" countDelta="0" countBase="1">
+              <node leaf="false" class="jason.environment.Environment" methodName="scheduleAction" methodSignature="(Ljava/lang/String;Ljason/asSyntax/Structure;Ljava/lang/Object;)V" timeDelta="-47" timeBase="970" countDelta="0" countBase="1">
+                <node leaf="true" class="jason.environment.Environment$1" methodName="&lt;init&gt;" methodSignature="(Ljason/environment/Environment;Ljava/lang/String;Ljason/asSyntax/Structure;Ljava/lang/Object;)V" timeDelta="1" timeBase="10" countDelta="0" countBase="1"/>
+                <node leaf="true" class="java.util.concurrent.ExecutorService" methodName="execute" methodSignature="(Ljava/lang/Runnable;)V" timeDelta="-61" timeBase="455" countDelta="0" countBase="1"/>
+              </node>
+            </node>
+          </node>
+        </node>
+      </node>
+      <node leaf="false" class="jason.infra.centralised.CentralisedAgArch" methodName="sense" methodSignature="()V" timeDelta="-59" timeBase="3478" countDelta="0" countBase="51">
+        <node leaf="false" class="jason.asSemantics.TransitionSystem" methodName="sense" methodSignature="()V" timeDelta="-58" timeBase="3474" countDelta="0" countBase="51">
+          <node leaf="false" class="jason.asSemantics.TransitionSystem" methodName="applySemanticRuleSense" methodSignature="()V" timeDelta="41" timeBase="24" countDelta="0" countBase="51">
+            <node leaf="true" class="jason.asSemantics.TransitionSystem$3" methodName="&lt;clinit&gt;" methodSignature="()V" timeDelta="-9" timeBase="64" countDelta="0" countBase="1"/>
+          </node>
+          <node leaf="false" class="jason.asSemantics.Agent" methodName="buf" methodSignature="(Ljava/util/Collection;)I" timeDelta="6" timeBase="178" countDelta="0" countBase="51">
+            <node leaf="false" class="java.util.Iterator" methodName="remove" methodSignature="()V" timeDelta="8" timeBase="49" countDelta="0" countBase="5">
+              <node leaf="false" class="jason.bb.DefaultBeliefBase$1" methodName="remove" methodSignature="()V" timeDelta="7" timeBase="47" countDelta="0" countBase="5">
+                <node leaf="false" class="jason.asSyntax.Pred" methodName="delAnnot" methodSignature="(Ljason/asSyntax/Term;)Z" timeDelta="3" timeBase="9" countDelta="0" countBase="5">
+                  <node leaf="true" class="jason.asSyntax.ListTermImpl" methodName="remove" methodSignature="(Ljava/lang/Object;)Z" timeDelta="3" timeBase="7" countDelta="0" countBase="5"/>
+                </node>
+                <node leaf="false" class="jason.bb.DefaultBeliefBase" methodName="removeFromEntry" methodSignature="(Ljason/asSyntax/Literal;)Z" timeDelta="3" timeBase="29" countDelta="0" countBase="5">
+                  <node leaf="false" class="jason.asSyntax.Pred" methodName="hasSource" methodSignature="()Z" timeDelta="1" timeBase="4" countDelta="0" countBase="5">
+                    <node leaf="false" class="java.util.Iterator" methodName="hasNext" methodSignature="()Z" timeDelta="2" timeBase="1" countDelta="0" countBase="5">
+                      <node leaf="true" class="jason.asSyntax.ListTermImpl$3" methodName="hasNext" methodSignature="()Z" timeDelta="1" timeBase="1" countDelta="0" countBase="5"/>
+                    </node>
+                  </node>
+                  <node leaf="true" class="jason.bb.DefaultBeliefBase$BelEntry" methodName="isEmpty" methodSignature="()Z" timeDelta="1" timeBase="1" countDelta="0" countBase="5"/>
+                  <node leaf="false" class="jason.bb.DefaultBeliefBase$BelEntry" methodName="remove" methodSignature="(Ljason/asSyntax/Literal;)V" timeDelta="1" timeBase="16" countDelta="0" countBase="5">
+                    <node leaf="true" class="java.util.Deque" methodName="remove" methodSignature="(Ljava/lang/Object;)Z" timeDelta="1" timeBase="5" countDelta="0" countBase="5"/>
+                    <node leaf="false" class="java.util.Map" methodName="remove" methodSignature="(Ljava/lang/Object;)Ljava/lang/Object;" timeDelta="1" timeBase="8" countDelta="0" countBase="5">
+                      <node leaf="false" class="jason.bb.StructureWrapperForLiteral" methodName="equals" methodSignature="(Ljava/lang/Object;)Z" timeDelta="1" timeBase="2" countDelta="0" countBase="5">
+                        <node leaf="true" class="jason.asSyntax.Pred" methodName="equalsAsStructure" methodSignature="(Ljava/lang/Object;)Z" timeDelta="1" timeBase="1" countDelta="0" countBase="5"/>
+                      </node>
+                    </node>
+                    <node leaf="true" class="jason.bb.StructureWrapperForLiteral" methodName="&lt;init&gt;" methodSignature="(Ljason/asSyntax/Literal;)V" timeDelta="-2" timeBase="2" countDelta="0" countBase="5"/>
+                  </node>
+                </node>
+                <node leaf="true" class="java.util.Iterator" methodName="remove" methodSignature="()V" timeDelta="-1" timeBase="3" countDelta="0" countBase="5"/>
+              </node>
+            </node>
+            <node leaf="false" class="jason.asSyntax.PlanLibrary" methodName="hasCandidatePlan" methodSignature="(Ljason/asSyntax/Trigger;)Z" timeDelta="4" timeBase="11" countDelta="0" countBase="5">
+              <node leaf="false" class="jason.asSyntax.PlanLibrary" methodName="getCandidatePlans" methodSignature="(Ljason/asSyntax/Trigger;)Ljava/util/List;" timeDelta="5" timeBase="10" countDelta="0" countBase="5">
+                <node leaf="false" class="jason.asSyntax.Trigger" methodName="getPredicateIndicator" methodSignature="()Ljason/asSyntax/PredicateIndicator;" timeDelta="3" timeBase="7" countDelta="0" countBase="5">
+                  <node leaf="true" class="java.lang.StringBuilder" methodName="&lt;init&gt;" methodSignature="()V" timeDelta="1" timeBase="0" countDelta="0" countBase="5"/>
+                  <node leaf="true" class="java.lang.StringBuilder" methodName="append" methodSignature="(Ljava/lang/Object;)Ljava/lang/StringBuilder;" timeDelta="-1" timeBase="1" countDelta="0" countBase="5"/>
+                </node>
+              </node>
+            </node>
+            <node leaf="false" class="java.util.Set" methodName="remove" methodSignature="(Ljava/lang/Object;)Z" timeDelta="2" timeBase="19" countDelta="0" countBase="250">
+              <node leaf="false" class="jason.bb.StructureWrapperForLiteral" methodName="equals" methodSignature="(Ljava/lang/Object;)Z" timeDelta="2" timeBase="17" countDelta="0" countBase="245">
+                <node leaf="false" class="jason.asSyntax.Pred" methodName="equalsAsStructure" methodSignature="(Ljava/lang/Object;)Z" timeDelta="2" timeBase="17" countDelta="0" countBase="245">
+                  <node leaf="false" class="jason.asSyntax.Structure" methodName="equals" methodSignature="(Ljava/lang/Object;)Z" timeDelta="2" timeBase="16" countDelta="0" countBase="245">
+                    <node leaf="false" class="jason.asSyntax.ArithFunctionTerm" methodName="equals" methodSignature="(Ljava/lang/Object;)Z" timeDelta="1" timeBase="7" countDelta="0" countBase="147">
+                      <node leaf="true" class="jason.asSyntax.Structure" methodName="equals" methodSignature="(Ljava/lang/Object;)Z" timeDelta="1" timeBase="6" countDelta="0" countBase="147"/>
+                    </node>
+                  </node>
+                </node>
+              </node>
+            </node>
+            <node leaf="true" class="jason.asSyntax.Trigger" methodName="&lt;init&gt;" methodSignature="(Ljason/asSyntax/Trigger$TEOperator;Ljason/asSyntax/Trigger$TEType;Ljason/asSyntax/Literal;)V" timeDelta="1" timeBase="3" countDelta="0" countBase="10"/>
+            <node leaf="false" class="jason.asSemantics.TransitionSystem" methodName="updateEvents" methodSignature="(Ljason/asSemantics/Event;)V" timeDelta="-1" timeBase="14" countDelta="0" countBase="5">
+              <node leaf="false" class="jason.asSyntax.PlanLibrary" methodName="hasCandidatePlan" methodSignature="(Ljason/asSyntax/Trigger;)Z" timeDelta="-1" timeBase="11" countDelta="0" countBase="5">
+                <node leaf="false" class="jason.asSyntax.PlanLibrary" methodName="getCandidatePlans" methodSignature="(Ljason/asSyntax/Trigger;)Ljava/util/List;" timeDelta="-1" timeBase="10" countDelta="0" countBase="5">
+                  <node leaf="true" class="jason.asSyntax.Trigger" methodName="getPredicateIndicator" methodSignature="()Ljason/asSyntax/PredicateIndicator;" timeDelta="-1" timeBase="7" countDelta="0" countBase="5"/>
+                </node>
+              </node>
+            </node>
+            <node leaf="false" class="jason.asSyntax.Literal" methodName="copy" methodSignature="()Ljason/asSyntax/Literal;" timeDelta="-1" timeBase="14" countDelta="0" countBase="5">
+              <node leaf="false" class="jason.asSyntax.LiteralImpl" methodName="clone" methodSignature="()Ljason/asSyntax/Term;" timeDelta="-1" timeBase="13" countDelta="0" countBase="5">
+                <node leaf="false" class="jason.asSyntax.LiteralImpl" methodName="&lt;init&gt;" methodSignature="(Ljason/asSyntax/Literal;)V" timeDelta="-1" timeBase="13" countDelta="0" countBase="5">
+                  <node leaf="false" class="jason.asSyntax.Pred" methodName="&lt;init&gt;" methodSignature="(Ljason/asSyntax/Literal;)V" timeDelta="-1" timeBase="12" countDelta="0" countBase="5">
+                    <node leaf="false" class="jason.asSyntax.Pred" methodName="&lt;init&gt;" methodSignature="(Ljason/asSyntax/Atom;Ljason/asSyntax/Literal;)V" timeDelta="-1" timeBase="11" countDelta="0" countBase="5">
+                      <node leaf="false" class="jason.asSyntax.Structure" methodName="&lt;init&gt;" methodSignature="(Ljason/asSyntax/Atom;Ljason/asSyntax/Literal;)V" timeDelta="-1" timeBase="10" countDelta="0" countBase="5">
+                        <node leaf="true" class="jason.asSyntax.Atom" methodName="&lt;init&gt;" methodSignature="(Ljason/asSyntax/Atom;Ljason/asSyntax/Literal;)V" timeDelta="-1" timeBase="1" countDelta="0" countBase="5"/>
+                      </node>
+                    </node>
+                  </node>
+                </node>
+              </node>
+            </node>
+            <node leaf="false" class="jason.asSyntax.Pred" methodName="addAnnot" methodSignature="(Ljason/asSyntax/Term;)Z" timeDelta="-1" timeBase="10" countDelta="0" countBase="5">
+              <node leaf="true" class="jason.asSyntax.ListTermImpl" methodName="&lt;init&gt;" methodSignature="()V" timeDelta="-1" timeBase="2" countDelta="0" countBase="5"/>
+              <node leaf="true" class="jason.asSyntax.ListTermImpl" methodName="insert" methodSignature="(Ljason/asSyntax/Term;)Ljason/asSyntax/ListTerm;" timeDelta="-1" timeBase="2" countDelta="0" countBase="5"/>
+            </node>
+            <node leaf="false" class="jason.bb.DefaultBeliefBase" methodName="getPercepts" methodSignature="()Ljava/util/Iterator;" timeDelta="-3" timeBase="19" countDelta="0" countBase="51">
+              <node leaf="true" class="jason.bb.DefaultBeliefBase$1" methodName="&lt;init&gt;" methodSignature="(Ljason/bb/DefaultBeliefBase;Ljava/util/Iterator;)V" timeDelta="1" timeBase="0" countDelta="0" countBase="51"/>
+              <node leaf="true" class="java.util.Set" methodName="iterator" methodSignature="()Ljava/util/Iterator;" timeDelta="-1" timeBase="2" countDelta="0" countBase="51"/>
+            </node>
+            <node leaf="false" class="jason.bb.DefaultBeliefBase" methodName="add" methodSignature="(Ljason/asSyntax/Literal;)Z" timeDelta="-8" timeBase="74" countDelta="0" countBase="5">
+              <node leaf="false" class="jason.bb.DefaultBeliefBase" methodName="add" methodSignature="(Ljason/asSyntax/Literal;Z)Z" timeDelta="-7" timeBase="73" countDelta="0" countBase="5">
+                <node leaf="false" class="jason.bb.DefaultBeliefBase" methodName="provideBelEntry" methodSignature="(Ljason/asSyntax/Literal;)Ljason/bb/DefaultBeliefBase$BelEntry;" timeDelta="-2" timeBase="10" countDelta="0" countBase="5">
+                  <node leaf="true" class="jason.asSyntax.Atom" methodName="getNS" methodSignature="()Ljason/asSyntax/Atom;" timeDelta="-1" timeBase="1" countDelta="0" countBase="5"/>
+                  <node leaf="true" class="jason.bb.DefaultBeliefBase$BelEntry" methodName="&lt;init&gt;" methodSignature="(Ljason/bb/DefaultBeliefBase;)V" timeDelta="-1" timeBase="3" countDelta="0" countBase="5"/>
+                </node>
+                <node leaf="false" class="jason.asSyntax.Pred" methodName="hasAnnot" methodSignature="(Ljason/asSyntax/Term;)Z" timeDelta="-6" timeBase="29" countDelta="0" countBase="5">
+                  <node leaf="true" class="java.util.Iterator" methodName="next" methodSignature="()Ljava/lang/Object;" timeDelta="-1" timeBase="2" countDelta="0" countBase="5"/>
+                  <node leaf="false" class="jason.asSyntax.Atom" methodName="compareTo" methodSignature="(Ljava/lang/Object;)I" timeDelta="-5" timeBase="20" countDelta="0" countBase="5">
+                    <node leaf="false" class="jason.asSyntax.Atom" methodName="compareTo" methodSignature="(Ljason/asSyntax/Term;)I" timeDelta="-4" timeBase="19" countDelta="0" countBase="5">
+                      <node leaf="false" class="jason.asSyntax.Atom" methodName="compareTo" methodSignature="(Ljava/lang/Object;)I" timeDelta="-1" timeBase="8" countDelta="0" countBase="5">
+                        <node leaf="true" class="jason.asSyntax.Atom" methodName="compareTo" methodSignature="(Ljason/asSyntax/Term;)I" timeDelta="-2" timeBase="8" countDelta="0" countBase="5"/>
+                      </node>
+                      <node leaf="true" class="jason.asSyntax.DefaultTerm" methodName="isNumeric" methodSignature="()Z" timeDelta="-1" timeBase="1" countDelta="0" countBase="5"/>
+                    </node>
+                  </node>
+                </node>
+              </node>
+            </node>
+          </node>
+          <node leaf="false" class="jason.infra.centralised.CentralisedAgArch" methodName="perceive" methodSignature="()Ljava/util/Collection;" timeDelta="-105" timeBase="3249" countDelta="0" countBase="51">
+            <node leaf="false" class="DebugEnvironment" methodName="getPercepts" methodSignature="(Ljava/lang/String;)Ljava/util/Collection;" timeDelta="-104" timeBase="3240" countDelta="0" countBase="51">
+              <node leaf="false" class="jason.asSyntax.Literal" methodName="parseLiteral" methodSignature="(Ljava/lang/String;)Ljason/asSyntax/Literal;" timeDelta="1" timeBase="306" countDelta="0" countBase="250">
+                <node leaf="false" class="jason.asSyntax.parser.as2j" methodName="&lt;init&gt;" methodSignature="(Ljava/io/Reader;)V" timeDelta="2" timeBase="59" countDelta="0" countBase="250">
+                  <node leaf="false" class="jason.asSyntax.parser.SimpleCharStream" methodName="&lt;init&gt;" methodSignature="(Ljava/io/Reader;II)V" timeDelta="1" timeBase="23" countDelta="0" countBase="250">
+                    <node leaf="true" class="jason.asSyntax.parser.SimpleCharStream" methodName="&lt;init&gt;" methodSignature="(Ljava/io/Reader;III)V" timeDelta="1" timeBase="22" countDelta="0" countBase="250"/>
+                  </node>
+                  <node leaf="true" class="jason.asSyntax.parser.as2j$LookaheadSuccess" methodName="&lt;init&gt;" methodSignature="(Ljason/asSyntax/parser/as2j$1;)V" timeDelta="1" timeBase="6" countDelta="0" countBase="250"/>
+                  <node leaf="true" class="jason.asSyntax.parser.as2jTokenManager" methodName="&lt;init&gt;" methodSignature="(Ljason/asSyntax/parser/SimpleCharStream;)V" timeDelta="1" timeBase="0" countDelta="0" countBase="250"/>
+                </node>
+              </node>
+              <node leaf="true" class="java.util.ArrayList" methodName="&lt;init&gt;" methodSignature="()V" timeDelta="1" timeBase="2" countDelta="0" countBase="51"/>
+              <node leaf="true" class="java.util.List" methodName="iterator" methodSignature="()Ljava/util/Iterator;" timeDelta="1" timeBase="0" countDelta="0" countBase="51"/>
+              <node leaf="true" class="java.lang.String" methodName="split" methodSignature="(Ljava/lang/String;)[Ljava/lang/String;" timeDelta="-3" timeBase="140" countDelta="0" countBase="50"/>
+              <node leaf="false" class="java.lang.Object" methodName="toString" methodSignature="()Ljava/lang/String;" timeDelta="-10" timeBase="88" countDelta="0" countBase="250">
+                <node leaf="false" class="jason.asSyntax.Structure" methodName="toString" methodSignature="()Ljava/lang/String;" timeDelta="-11" timeBase="88" countDelta="0" countBase="250">
+                  <node leaf="true" class="java.util.stream.Stream" methodName="map" methodSignature="(Ljava/util/function/Function;)Ljava/util/stream/Stream;" timeDelta="-1" timeBase="3" countDelta="0" countBase="250"/>
+                  <node leaf="false" class="java.util.stream.Stream" methodName="collect" methodSignature="(Ljava/util/stream/Collector;)Ljava/lang/Object;" timeDelta="-10" timeBase="69" countDelta="0" countBase="250">
+                    <node leaf="false" class="jason.asSyntax.ArithExpr" methodName="toString" methodSignature="()Ljava/lang/String;" timeDelta="-16" timeBase="58" countDelta="0" countBase="150">
+                      <node leaf="false" class="java.lang.StringBuilder" methodName="append" methodSignature="(Ljava/lang/Object;)Ljava/lang/StringBuilder;" timeDelta="-8" timeBase="26" countDelta="0" countBase="300">
+                        <node leaf="false" class="jason.asSyntax.NumberTermImpl" methodName="toString" methodSignature="()Ljava/lang/String;" timeDelta="-16" timeBase="49" countDelta="0" countBase="150">
+                          <node leaf="true" class="java.lang.String" methodName="valueOf" methodSignature="(D)Ljava/lang/String;" timeDelta="-16" timeBase="48" countDelta="0" countBase="150"/>
+                        </node>
+                      </node>
+                    </node>
+                  </node>
+                </node>
+              </node>
+              <node leaf="false" class="java.util.logging.Logger" methodName="info" methodSignature="(Ljava/lang/String;)V" timeDelta="-12" timeBase="199" countDelta="0" countBase="251">
+                <node leaf="false" class="jason.runtime.MASConsoleLogHandler" methodName="publish" methodSignature="(Ljava/util/logging/LogRecord;)V" timeDelta="-11" timeBase="143" countDelta="0" countBase="251">
+                  <node leaf="false" class="jason.runtime.MASConsoleGUI" methodName="append" methodSignature="(Ljava/lang/String;Ljava/lang/String;)V" timeDelta="-11" timeBase="133" countDelta="0" countBase="251">
+                    <node leaf="true" class="javax.swing.JTextArea" methodName="append" methodSignature="(Ljava/lang/String;)V" timeDelta="-11" timeBase="129" countDelta="0" countBase="251"/>
+                  </node>
+                </node>
+              </node>
+            </node>
+          </node>
+        </node>
+      </node>
+    </node>
+</tree>
